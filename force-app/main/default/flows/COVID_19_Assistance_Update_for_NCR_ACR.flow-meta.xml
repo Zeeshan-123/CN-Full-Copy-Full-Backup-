@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <processMetadataValues>
+            <name>emailAlertSelection</name>
+            <value>
+                <stringValue>COVID_19_Assistance_Application_Update_for_ACR</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_1_A1</name>
+        <label>Send Address Correction Required Alert</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <actionName>Case.COVID_19_Assistance_Application_Update_for_ACR</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <processMetadataValues>
+            <name>emailAlertSelection</name>
+            <value>
+                <stringValue>COVID_19_Assistance_Application_Update_for_NCR</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>myRule_3_A1</name>
+        <label>Send Name Correction Required Alert</label>
+        <locationX>300</locationX>
+        <locationY>200</locationY>
+        <actionName>Case.COVID_19_Assistance_Application_Update_for_NCR</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>myDecision2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>When Status Updated to ACR</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision2</name>
+        <label>myDecision2</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_3</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_3_A1</targetReference>
+            </connector>
+            <label>When Status Updated to NCR</label>
+        </rules>
+    </decisions>
+    <description>Process to send updatesfor COVID-19 Assistance applications that were not able to get processed due to incorrect name or mailing address</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>not(isnew())
+&amp;&amp;
+[Case].Account.RecordType.DeveloperName  == &apos;CN_Registration&apos;
+&amp;&amp;
+[Case].RecordType.DeveloperName  == &apos;RRR&apos;
+&amp;&amp;
+[Case].Logged_In_Users_Case__c == true
+&amp;&amp;
+TEXT([Case].Status) == &apos;ADDRESS CORRECTION REQUIRED&apos; 
+&amp;&amp;
+ISCHANGED([Case].Status) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>not(isnew())
+&amp;&amp;
+{!myVariable_current.Account.RecordType.DeveloperName}  == &apos;CN_Registration&apos;
+&amp;&amp;
+{!myVariable_current.RecordType.DeveloperName}  == &apos;RRR&apos;
+&amp;&amp;
+{!myVariable_current.Logged_In_Users_Case__c} == true
+&amp;&amp;
+TEXT({!myVariable_current.Status}) == &apos;ADDRESS CORRECTION REQUIRED&apos; 
+&amp;&amp;
+ISCHANGED({!myVariable_current.Status})</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>not(isnew())
+&amp;&amp;
+[Case].Account.RecordType.DeveloperName  == &apos;CN_Registration&apos;
+&amp;&amp;
+[Case].RecordType.DeveloperName  == &apos;RRR&apos;
+&amp;&amp;
+[Case].Logged_In_Users_Case__c == true
+&amp;&amp;
+TEXT([Case].Status) == &apos;NAME CORRECTION REQUIRED&apos; 
+&amp;&amp;
+ISCHANGED([Case].Status) </stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_3</name>
+        <dataType>Boolean</dataType>
+        <expression>not(isnew())
+&amp;&amp;
+{!myVariable_current.Account.RecordType.DeveloperName}  == &apos;CN_Registration&apos;
+&amp;&amp;
+{!myVariable_current.RecordType.DeveloperName}  == &apos;RRR&apos;
+&amp;&amp;
+{!myVariable_current.Logged_In_Users_Case__c} == true
+&amp;&amp;
+TEXT({!myVariable_current.Status}) == &apos;NAME CORRECTION REQUIRED&apos; 
+&amp;&amp;
+ISCHANGED({!myVariable_current.Status})</expression>
+    </formulas>
+    <interviewLabel>COVID_19_Assistance_Update_for_NCR_ACR-2_InterviewLabel</interviewLabel>
+    <label>COVID-19 Assistance Update for NCR/ACR</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Case</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onAllChanges</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+</Flow>

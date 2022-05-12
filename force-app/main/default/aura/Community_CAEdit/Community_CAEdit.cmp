@@ -1,0 +1,243 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" controller="Community_CAEditController">
+      <ltng:require styles="{!$Resource.CN_Boot}"/>
+     <!--Allow Multi Line Space in Toast Messages-->
+     <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        } 
+    </aura:html>
+    
+    <aura:attribute name="showReviewScreen" type="boolean" default="false"/>
+    <aura:attribute name="caseId" type="String" access="global"/>
+    <aura:attribute name="requestNumber" type="String"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:attribute name="dataLoaded" type="boolean" default="false"/>
+   
+    <!--Attributes for file-->
+    <aura:attribute name="filetype" type="List" default="['.jpg', '.PNG', '.jpeg', '.pdf']"/>
+    <aura:attribute name="W9FileName" type="String" default="" />
+    <aura:attribute name="DocID" type="String[]" />
+    <aura:attribute name="parentId" type="String"/>
+    <aura:attribute name="ShowFileModal" type="boolean" default="false"/>
+    <aura:attribute name="uploadedfiles" type="String"/>
+    <aura:attribute name="files" type="ContentDocumentLink[]"/>  
+    
+    <aura:attribute name="exceptionMsg" type="String"/>
+    <aura:attribute name="redirectURL" type="String" default="{!$Label.c.Community_CAURL}"/>
+    
+     <!--Attributes for Students-->
+    <aura:attribute name="StudentsList" type="CA_Household_Member__c[]" /> 
+    <aura:attribute name="StudentsListSendToApex" type="CA_Household_Member__c[]" /> 
+    <aura:attribute name="StudentsListToReview" type="CA_Household_Member__c[]" /> 
+    
+    <!--Attributes for Button -->
+    <aura:attribute name="iAccept" type="Boolean" default="false"/>
+   
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+ 
+    <!--Cloting Assistance Form Div-->
+        <div class="main-container"> 
+            <div class="card m-box ">
+
+                <div class="m-box-style">
+                     <div class="panel-head2"> 
+                         <h5 class="mainHeading text-center">Upload Files</h5>
+                    </div>
+                    <div class="txt-align" style="margin-top: -25px;">
+                        <lightning:fileUpload 
+                                              name="fileUploader"
+                                            aura:id="W9FileId" 
+                                              multiple="true"
+                                              accept="{!v.filetype}"
+                                              onuploadfinished="{!c.addFiles}"                      
+                                              /> 
+                        <div>{!v.W9FileName} </div>
+                                <p>File type PDF, JPEG, JPG and PNG only</p>
+                    </div>
+				
+                    <div class="table-responsive-sm" aura:id="parent-aura-div-id" style="margin-top: 25px; !important">            
+                        <table class="table table-bordered">
+                            <!-- hide the table header if file is empty -->
+                            <aura:if isTrue="{!not(empty(v.files))}">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="txt-align" scope="col">Title</th>
+                                        <th class="txt-align" scope="col">File Type</th>
+                                        <th class="txt-align" scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                           </aura:if>
+                      <tbody>
+                      <aura:iteration items="{!v.files}" var="f"> 
+                          <tr scope="row">
+                              <td class="txt-align">
+                                  <a href="{!'/sfc/servlet.shepherd/document/download/'+f.ContentDocumentId}" target="_blank">  
+                                      {!f.ContentDocument.Title} 
+                                  </a>
+                              </td>
+                              <td class="txt-align">
+                                  {!f.ContentDocument.FileType}
+                              </td>
+                              <td class="txt-align">
+                                  <a href="javascript:void(0)" id="{!f.ContentDocumentId}" onclick="{!c.deleteSelectedFile}">
+                                      <lightning:icon size="x-small" iconName="utility:delete" alternativeText="Delete" />
+                                  </a>
+                              </td>                               
+                          </tr>
+                                </aura:iteration>     
+                            </tbody>
+                        </table>
+                    </div>
+                   <div class="panel-head2">  <h5 class="mainHeading text-center">Withdraw Students</h5> </div>
+
+                    <!--table-->
+                    <div id="tbl">
+                        <div class="table-responsive-sm" aura:id="parent-aura-div-id">            
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="txt-align" scope="col">First Name</th>
+                                        <th class="txt-align" scope="col">Last Name</th>
+                                        <th class="txt-align" scope="col">Citizen Id</th>
+                                        <th class="txt-align" scope="col">Date of Birth</th>
+                                        <th class="txt-align" scope="col">Grade</th>
+                                        <th class="txt-align" scope="col">School Category</th>
+                                        <th class="txt-align" scope="col">Duplicate?</th>
+                                        <th class="txt-align" scope="col">Withdraw</th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <aura:iteration items="{!v.StudentsList}" var="st" indexVar="index">
+                                        <tr  scope="row">
+                                            <td class="txt-align">
+                                                {!st.First_Name__c}
+                                            </td>
+                                            
+                                            <td class="txt-align">
+                                                {!st.Last_Name__c}
+                                            </td>
+                                            
+                                            <td class="txt-align">
+                                                {!st.Citizen_ID__c}
+                                            </td>
+                                            
+                                            <td class="txt-align"> 
+                                                {!st.Date_of_Birth__c}
+                                            </td>
+                                                                   
+                                            <td class="txt-align">
+                                                {!st.Grade__c}
+               						  </td>
+                                            <td class="txt-align">
+                                               {!st.Sector__c}
+                                            </td> 
+                                          <td class="txt-align">
+                                              <aura:if isTrue="{!st.Duplicate__c}">
+                                              	Yes
+                                                  <aura:set attribute="else">
+                                                      No
+                                                  </aura:set>
+                                              </aura:if>
+                                            </td>
+                                          <td class="txt-align">
+                                         <!--         <span  id="{!index}"   onclick="{!c.setWithdraw}">    </span> -->
+                                              <input class="alignField"
+                                                                 type="checkbox"
+                                                                 value="{!st.Withdraw__c}"
+                                                                 id="{!st.Id}"/>
+                                                    
+                                             
+                                            </td>  
+                                                  
+                                        </tr>
+                                        
+                                    </aura:iteration>   
+                                    <aura:if isTrue="{!and(empty(v.StudentsList), v.dataLoaded)}">
+                                        <tr scope="row">
+                                            <td class="txt-align" colspan="8">
+                                                There are no more duplicate entries found on this application. No further action required.
+                                            </td>
+                                        </tr>
+                                    </aura:if>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/table-->
+                    
+                    <!--cards-->
+                    <div id="crds">
+                        <div class="table-responsive-sm requestsTable clsSmallScreen" style="margin-top:15px;">            
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <aura:iteration items="{!v.StudentsList}" var="st" indexVar="index">
+                                        <tr>
+                                          
+                                             <td data-th="First Name" class="clsSmallScreentatus">
+                                                    {!st.First_Name__c}
+                                            </td>
+                                            
+                                              <td data-th="Last Name" class="clsSmallScreentatus">
+                                                    {!st.Last_Name__c}
+                                            </td>
+                                             <td data-th="Citizen Id" class="clsSmallScreentatus">
+                                                    {!st.Citizen_ID__c}
+                                            </td>
+                                            
+                                            <td data-th="Date of Birth" class="clsSmallScreentatus">
+                                                   {!st.Date_of_Birth__c}
+                                            </td>
+                                            
+                                            <td data-th="Grade" class="clsSmallScreentatus">
+                                                  {!st.Grade__c}
+                                            </td>
+                                            
+                                             <td data-th="School Category" class="clsSmallScreentatus">
+                                                   {!st.Sector__c}
+                                            </td>
+                                            <td data-th="Duplicate?" class="clsSmallScreentatus">
+                                              <aura:if isTrue="{!st.Duplicate__c}">
+                                              	Yes
+                                                  <aura:set attribute="else">
+                                                      No
+                                                  </aura:set>
+                                              </aura:if>
+                                            </td>
+                                            <lightning:input   label="Withdraw"
+                                                               type="checkbox"
+                                                               value="{!st.Withdraw__c}"
+                                                               />
+                                        </tr>
+                                    </aura:iteration>
+                                    <aura:if isTrue="{!and(empty(v.StudentsList), v.dataLoaded)}">
+                                        <tr scope="row">
+                                            <td class="clsSmallScreentatus">
+                                                There are no more duplicate entries found on this application. No further action required.
+                                            </td>
+                                        </tr>
+                                    </aura:if>
+                                </tbody>
+                            </table>
+                        </div>
+                     
+                    </div>
+                    <!--/cards-->         
+                    
+                    
+                    <div class=" text-center">
+                        <lightning:button label="Submit" disabled="{!v.isActive}" class="btn sr-button " variant="brand" onclick="{!c.showConfirmation}"/>
+                        <aura:if isTrue="{!v.showSpinner}">
+                            <div class="spinner"> 
+                                <lightning:spinner aura:id="saveSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large"/>     
+                            </div>  
+                        </aura:if>
+                    </div> 
+                </div>
+            </div>
+        </div>
+        {!v.body}
+    
+    <!--Clothing Assistance Form Div-->	
+      
+</aura:component>

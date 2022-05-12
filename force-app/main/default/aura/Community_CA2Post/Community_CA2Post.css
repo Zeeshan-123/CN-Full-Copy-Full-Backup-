@@ -1,0 +1,86 @@
+/*Message Box Css*/
+.THIS .m2 
+{
+	font-size: 18px;
+}
+
+.THIS .msgTextFont 
+{
+    text-align: center;
+    font-size:16px;
+    font-family: sans-serif;
+    margin-bottom: .7rem;
+    margin-top: 0px !important;
+}
+    
+.THIS .warning 
+{
+    color:red;
+	font-size: 16px;
+}
+
+.THIS .align-s-content
+{
+    margin:30px 40px 30px 40px;
+} 
+
+.THIS .sm-box {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+
+/*End Message Box Css*/
+
+.THIS p {
+    margin-bottom: 0;
+    font-size:14px;
+    margin-top: 2px;
+}
+
+.THIS .s-button
+{
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin-top: 2px;
+    margin-bottom: 18px;
+    margin-right: 20px;
+}
+
+.THIS  .s-button:hover 
+{
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+
+/*Mobile*/
+@media screen and (min-width:280px) and (max-width: 767px)
+{    
+   
+    .THIS p
+    {
+        font-size:13px;
+    }
+    
+   
+     .THIS .s-button
+	{
+        padding: 5px 15px;
+        font-size: 12px;
+        margin-right: 6px;
+    }
+    
+
+    .THIS .msgTextFont
+	{
+        font-size: 14px;
+    }
+   
+}

@@ -1,0 +1,14 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global">
+	
+    <div class="main-container " > 
+        <div class="marquee">
+            <div class="row ">
+                <div class=" col-sm-12"> 
+                    <div class="text-left">
+                        <img class="sm-img" src="{!$Resource.Banner_img}" alt=""/>
+                    </div>     
+                </div>
+            </div>
+        </div>     
+    </div>
+</aura:component>

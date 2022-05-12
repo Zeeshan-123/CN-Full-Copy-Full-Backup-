@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Daily Followup Task</label>
+    <protected>false</protected>
+    <values>
+        <field>Access_Token__c</field>
+        <value xsi:type="xsd:string">c8f63299f278d64a4fbd77985c85ed78fccbb076</value>
+    </values>
+    <values>
+        <field>AdditionalDays__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>AdminID__c</field>
+        <value xsi:type="xsd:string">0053t000008GfVLAA0</value>
+    </values>
+    <values>
+        <field>CI_TeamLead_Role__c</field>
+        <value xsi:type="xsd:string">Lead_Case_Investigator</value>
+    </values>
+    <values>
+        <field>CI_TeamMember_Role__c</field>
+        <value xsi:type="xsd:string">CI_Team_Member</value>
+    </values>
+    <values>
+        <field>CT_Member_Role__c</field>
+        <value xsi:type="xsd:string">CT_Team_Member</value>
+    </values>
+    <values>
+        <field>CT_Nurse_Role__c</field>
+        <value xsi:type="xsd:string">CT_Nurse</value>
+    </values>
+    <values>
+        <field>DailyFollowUpTaskSubject__c</field>
+        <value xsi:type="xsd:string">Daily Followup Task</value>
+    </values>
+    <values>
+        <field>Exposed_Asymptomatic__c</field>
+        <value xsi:type="xsd:string">Exposed - Asymptomatic</value>
+    </values>
+    <values>
+        <field>Exposed_Symptomatic__c</field>
+        <value xsi:type="xsd:string">Exposed - Symptomatic</value>
+    </values>
+    <values>
+        <field>Exposed__c</field>
+        <value xsi:type="xsd:string">Exposed</value>
+    </values>
+    <values>
+        <field>InactiveError__c</field>
+        <value xsi:type="xsd:string">Please mark all Tasks as Completed to proceed.</value>
+    </values>
+    <values>
+        <field>Negative_Test_Symptoms__c</field>
+        <value xsi:type="xsd:string">Negative - Symptomatic</value>
+    </values>
+    <values>
+        <field>Negative_Test__c</field>
+        <value xsi:type="xsd:string">Negative - Asymptomatic</value>
+    </values>
+    <values>
+        <field>Nurse_Role__c</field>
+        <value xsi:type="xsd:string">CI_Nurse</value>
+    </values>
+    <values>
+        <field>PMTCriticalTasks__c</field>
+        <value xsi:type="xsd:double">20.0</value>
+    </values>
+    <values>
+        <field>PMTCrititcal__c</field>
+        <value xsi:type="xsd:string">Critical</value>
+    </values>
+    <values>
+        <field>PMTOtherTasks__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+    <values>
+        <field>PMTTaskSubject__c</field>
+        <value xsi:type="xsd:string">Daily Patient Followup Task</value>
+    </values>
+    <values>
+        <field>Positive_Test_No_Symptoms__c</field>
+        <value xsi:type="xsd:string">Positive - Asymptomatic</value>
+    </values>
+    <values>
+        <field>Positive_Test_Symptoms__c</field>
+        <value xsi:type="xsd:string">Positive - Symptomatic</value>
+    </values>
+    <values>
+        <field>Positive_Test__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Unknown__c</field>
+        <value xsi:type="xsd:string">Unknown</value>
+    </values>
+    <values>
+        <field>daystoFollowup__c</field>
+        <value xsi:type="xsd:double">15.0</value>
+    </values>
+    <values>
+        <field>delete_error__c</field>
+        <value xsi:type="xsd:string">Please reach your administrator for deleting the record(s).</value>
+    </values>
+</CustomMetadata>

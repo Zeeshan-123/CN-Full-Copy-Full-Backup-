@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignmentRule>
+        <fullName>Case Assignment Rules</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <assignedTo>brenda-butler@cherokee.org</assignedTo>
+            <assignedToType>User</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Scholarship Application</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Scholarship_Application__c</field>
+                <operation>equals</operation>
+                <value>Concurrent Enrollment Scholarship</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>chrissy-marsh@cherokee.org</assignedTo>
+            <assignedToType>User</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Scholarship Application</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Scholarship_Application__c</field>
+                <operation>equals</operation>
+                <value>Valedictorian and Salutatorian</value>
+            </criteriaItems>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>shayna-macias@cherokee.org</assignedTo>
+            <assignedToType>User</assignedToType>
+            <criteriaItems>
+                <field>Case.RecordTypeId</field>
+                <operation>equals</operation>
+                <value>Scholarship Application</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Scholarship_Application__c</field>
+                <operation>notEqual</operation>
+                <value>Concurrent Enrollment Scholarship,Valedictorian and Salutatorian</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Case.Primary_Contact_Last_Name__c</field>
+                <operation>startsWith</operation>
+                <value>L,M,N,O,P,Q,R</value>
+            </criteriaItems>
+        </ruleEntry>
+    </assignmentRule>
+</AssignmentRules>

@@ -1,0 +1,1185 @@
+<aura:component  implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_CAMPCaseCntrl">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <!--Allow Multi Line Space in Toast Messages-->
+    <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        } 
+    </aura:html>
+     <aura:attribute name="addressClicked" type="boolean" default="false"/>
+   
+    <aura:attribute name="CVCase" type="Case"
+                    default="{ 'sobjectType': 'Case'
+                             }"/>
+    <aura:attribute name="CVCaseClone" type="Case"
+                    default="{ 'sobjectType': 'Case'
+                             }"/>
+    <aura:attribute name="Acnt" type="Account"/>
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false"/>
+    <aura:attribute name="showPrimaryGuardianSection" type="boolean" default="false"/>
+    <aura:attribute name="showCAForm" type="boolean" default="false"/>
+    <aura:attribute name="showAgeResr" type="boolean" default="false"/>
+    <aura:attribute name="showReviewScreen" type="boolean" default="false"/>
+    <aura:attribute name="UpdateAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="UpdatePhysicalAddressRequired" type="boolean" default="false"/>
+    
+    <!--Attributes for Mailing Melissa Data-->
+    <aura:attribute name="location" type="string" default=""/>
+    <aura:attribute name="predictions" type="List" default="[]"/>
+    <aura:attribute name="states" type="List" default="[]"/>
+    <aura:attribute name="isManual" type="boolean" default="false"/>
+    <aura:attribute name="selectedAddressIndex" type="Integer" default="0"/>
+    <aura:attribute name="isAddressChanged" type="boolean" default="false"/>
+    <aura:attribute name="selectedAddress" type="string" default=""/>
+    <aura:attribute name="showManualCB" type="boolean" default="false"/>
+    <aura:attribute name="showLookUp" type="boolean" default="false"/>
+    
+    <!--Attributes for Physical Melissa Data-->
+    <aura:attribute name="locationPA" type="string" default=""/>
+    <aura:attribute name="predictionsPA" type="List" default="[]"/>
+    <aura:attribute name="isPAManual" type="boolean" default="false"/>
+    <aura:attribute name="selectedPhyAddressIndex" type="Integer" default="0"/>
+    <aura:attribute name="isPhyAddressChanged" type="boolean" default="false"/>
+    <aura:attribute name="selectedPhyAddress" type="string" default=""/>
+    <aura:attribute name="showPAManualCB" type="boolean" default="false"/>
+    <aura:attribute name="showPALookUp" type="boolean" default="false"/>
+    
+    <aura:attribute name="caseId" type="String"/>
+    <aura:attribute name="requestNumber" type="String"/>
+    
+    <!--Attributes for Students-->
+    <aura:attribute name="StudentsList" type="CA_Student2__c[]" /> 
+    <aura:attribute name="ProcessedStudentsList" type="CA_Student2__c[]" /> 
+    
+    <!--Attributes for HH Members-->
+    <aura:attribute name="HHMembersList" type="HH_Member__c[]" /> 
+    
+    <!--Attributes for Required-->
+    <aura:attribute name="mailingAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="FFAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="physicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="FFPhysicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="HHMembersRequired" type="boolean" default="false"/>
+    
+    <!--Attributes for Physical and Mailing State/Country Picklists-->
+    <aura:attribute name="getMailingParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getMailingChildList" type="list" default="[]"/>
+    <aura:attribute name="getPhysicalParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getPhysicalChildList" type="list" default="[]"/>
+    <aura:attribute name="getPickListMap" type="map"/>
+    
+    <!--Attributes to show hide State/Other State Fields-->
+    <aura:attribute name="showMailingState" type="boolean" default="true"/>
+    <aura:attribute name="showMailingOtherState" type="boolean" default="false"/>
+    <aura:attribute name="showPhysicalState" type="boolean" default="true"/>
+    <aura:attribute name="showPhysicalOtherState" type="boolean" default="false"/>
+    
+    <!--Attributes for Button -->
+    <aura:attribute name="iAccept" type="Boolean" default="false"/>
+    <aura:attribute name="iAcceptStu" type="Boolean" default="false"/>
+    <aura:attribute name="malingAddressCorrect" type="Boolean" default="false"/>
+    <aura:attribute name="addressUpdate" type="Boolean" default="false"/>
+    <aura:attribute name="physicalAddressCorrect" type="Boolean" default="false"/>
+    <aura:attribute name="physicalAddressUpdate" type="Boolean" default="false"/>
+    <aura:attribute name="isActive2" type="Boolean" default="false"/>
+    <aura:attribute name="isActive" type="Boolean" default="false"/>
+    <aura:attribute name="Signedinunder18" type="Boolean" default="false"/>
+    
+    
+    <!--Attributes for Picklists-->
+    <aura:attribute name="gradeList" type="String[]" />
+    <aura:attribute name="category" type="String[]" />
+    <aura:attribute name="relationList" type="String[]" />
+    <aura:attribute name="HHMRelationList" type="String[]" />
+    
+    <aura:attribute name="filetype" type="List" default="['.png', '.jpg', '.jpeg','.pdf']"/>
+    <aura:attribute name="incomeUploadedFilesList" type="List" default="[]" access="public"/>
+    <aura:attribute name="custodyUploadedFilesList" type="List" default="[]" access="public"/>
+    <aura:attribute name="isLoading" type="boolean" default="false"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <aura:if isTrue="{!v.showCAForm}">
+        <div class="main-container"> 
+            <aura:if isTrue="{!v.isLoading}">
+                <lightning:spinner aura:id="mySpinner" variant="brand" />
+            </aura:if>
+            <div class="card m-box ">
+                <img src="{!$Resource.CAMP_Case_Application}" alt=""/>
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #1B4D81;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                                 2022 CASE Camp Application
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                </div>
+                <div class="m-box-style">
+                    <br/>
+                    
+                    <p style="margin-top: 0px;">
+                        The CASE Summer Camp is designed to introduce Cherokee students to Culture, Arts, Science, and Engineering.  While attending the camp, students will visit museums promoting Native American culture and art.  Students will also visit college campuses and learn more about careers in STEM fields.  Through a partnership with Delaware Resource Group, campers will visit with leaders in aerospace and aviation to gain a better understanding for the future of these particular industries. 
+                      <br/><br/>
+                        To complete the application, students will need to submit all documentation with their application, including a current photo.  Students will be notified of their application status within three weeks after the application deadline.  For questions regarding the camp or application, email education@cherokee.org, or call 918-453-5742.
+                    </p><p style="margin-top: 0px;">  <br/> 
+                        <b>Camp Dates:</b>  July 18 - July 22, 2022.
+                    </p><p style="margin-top: 0px;"><br/>
+                    <b>Application Deadline:</b>  April 30, 2022 at 11:59pm CST.
+                    </p><p style="margin-top: 0px;">    <br/>
+                    <b>Eligibility Requirements</b>
+                    <p style="margin-top: 1px;">
+                        <b>Age:</b>  Grades incoming 7th to outgoing 10th grade.
+                    </p><p style="margin-top: 1px;">
+                    <b>Citizenship:</b>  Must be a registered Cherokee Nation citizen.
+                    </p><p style="margin-top: 1px;">
+                    <b>Income:</b>  No restrictions.
+                    </p><p style="margin-top: 1px;">
+                    <b>Residency:</b>  No restrictions.
+                    </p>
+                    </p>
+                    <br/>
+                    <!--Parent / Legal Guardian-->
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Primary Contact</h5> </div>
+                    <h1 class="head">Primary Contact:</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="First Name" 
+                                             aura:id="priConFirstName"
+                                             value="{!v.CVCase.Primary_Contact_First_Name__c}"
+                                             class="alignField col_14" 
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Middle Name"
+                                             aura:id="priConMiddleName"
+                                             value="{!v.Acnt.Middle_Name__c}"
+                                             class="alignField col_14"
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Last Name"
+                                             aura:id="priConLastName"
+                                             value="{!v.CVCase.Primary_Contact_Last_Name__c}"
+                                             class="alignField col_14"
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        
+                        <div class=" col-sm-4">
+                            <lightning:input label="Cherokee Nation Citizen Registry ID #"
+                                             aura:id="RegID"
+                                             value="{!v.Acnt.Tribe_Id__c}"
+                                             class="alignField col_14"
+                                             type="text"
+                                             disabled="true"/>
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input class="alignField col_14"
+                                             label="Date of Birth"
+                                             aura:id="priConDob"
+                                             value="{!v.Acnt.Date_of_Birth__c}"
+                                             disabled="true"
+                                             placeholder="MM/DD/YYYY"/>               
+                        </div> 
+                        <div class=" col-sm-4"> 
+                            <lightning:input aura:id="priConEmail" 
+                                             label="Email" 
+                                             value="{!v.Acnt.Users[0].Email}"
+                                             type="email"
+                                             class=" alignField col_14" 
+                                             disabled="true"/>      
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Mobile"
+                                             aura:id="priConCellPhone"
+                                             value="{!v.CVCase.Ebt_Mobile_Phone__c}"
+                                             class="alignField"
+                                             required="true"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             onchange="{!c.formatPhone}"
+                                             />
+                        </div>
+                    </div>
+                    
+                    <!--/Mobile-->
+                    
+                    <!--Physical Address-->   
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Physical Address</h5> </div>
+                    <p style=" font-weight: 500;  margin-bottom:-10px !important;">NOTE: P.O. BOX address details are not acceptable for physical address.</p>
+                    <h1 class="head" style="margin-bottom: -1%;">Physical Address (If your physical address is not correct, please click the update address toggle and use the Address Lookup field that appears):</h1>  
+                    <div class="row">     
+                        <div class="col-sm-12 " >  
+                            <strong>
+                                <lightning:input type="checkbox"  required="true"
+                                                 style = 'margin-top: 22px;'
+                                                 label="I have verified that my physical address is correct"
+                                                 class="alignField"
+                                                 aura:id="pAddressCheckBox" checked="{!v.physicalAddressCorrect}" />
+                            </strong>
+                        </div>
+                        
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalStreetInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Physical_Street__c}"
+                                             label="Address Line1: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             required="{!v.physicalAddressRequired}" 
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalAddress2Input" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Physical_Address2__c}"
+                                             label="Address Line2: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalSuiteInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Physical_Suite__c}"
+                                             label="Suite: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalCityInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Physical_City__c}"
+                                             label="City: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             required="{!v.physicalAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" >
+                            <lightning:select class="alignField "
+                                              value="{!v.CVCase.Physical_Countries__c}"
+                                              aura:id="PhysicalCountryInput"
+                                              label="Country"
+                                              disabled="{!not(v.isPAManual)}"
+                                              required="{!v.physicalAddressRequired}"
+                                              onblur="{!c.clearErrors}"
+                                              onchange="{!c.onPhysicalCountryChange}">
+                                
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.getPhysicalParentList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.CVCase.Physical_Countries__c}">{!value}</option>
+                                </aura:iteration>
+                                
+                            </lightning:select>    
+                        </div>  
+                        
+                        <aura:if isTrue="{!v.showPhysicalState}">
+                            <div class="col-sm-6" > 
+                                <lightning:select class="alignField "
+                                                  aura:id="PhysicalStateInput"
+                                                  value="{!v.CVCase.Physical_States__c}"
+                                                  name="childField"
+                                                  label="State"
+                                                  disabled="{!not(v.isPAManual)}"
+                                                  required="{!v.physicalAddressRequired}"
+                                                  onblur="{!c.clearErrors}">
+                                    
+                                    <option value="">--None--</option>
+                                    <aura:iteration items="{!v.getPhysicalChildList}" var="value">
+                                        <option value="{!value}" selected="{!value==v.CVCase.Physical_States__c}">{!value}</option>
+                                        
+                                    </aura:iteration>
+                                    
+                                </lightning:select>    
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showPhysicalOtherState}">
+                            <div class="col-sm-6 " >  
+                                <lightning:input aura:id="PhysicalOtherState" 
+                                                 class="alignField inputField"
+                                                 value="{!v.CVCase.Other_Physical_State__c}"
+                                                 label="Other State/Territory:" 
+                                                 disabled="{!not(v.isPAManual)}"
+                                                 required="{!v.physicalAddressRequired}"
+                                                 onblur="{!c.clearErrors}"/>
+                            </div>
+                        </aura:if>
+                        
+                        <div class="col-sm-6" >               
+                            <lightning:input aura:id="PhysicalzipInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Physical_ZipPostal_Code__c}"
+                                             label="Zip Code: "  
+                                             disabled="{!not(v.isPAManual)}"
+                                             required="{!v.physicalAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" > 
+                            
+                            <Strong>
+                                <label class="slds-form-element__label" style = 'margin-top: 8px;' for="toggle">Update Physical Address</label>
+                            </Strong>  
+                            <lightning:input class="cell"
+                                             type="toggle" 
+                                             aura:id="addressUpdateCheckBoxPhysical" 
+                                             checked="{!v.physicalAddressUpdate}"
+                                             onchange="{!c.handlePhysicalAddreesUpdate}"
+                                             messageToggleActive="Yes"
+                                             messageToggleInactive="No"
+                                             required="{!v.UpdatePhysicalAddressRequired}"/>
+                        </div>
+                        
+                        <aura:if isTrue="{!v.showPALookUp}">
+                            <div class="col-sm-6">
+                                <lightning:input aura:id="AddressFreeFormInputPhysical" 
+                                                 class="alignField" 
+                                                 label="Address Lookup: "  
+                                                 value="{!v.locationPA}"
+                                                 onchange="{!c.handlePhysicalAddressChange}"
+                                                 required="{!v.FFPhysicalAddressRequired}"/>
+                                <aura:if isTrue="{!v.predictionsPA.length > 0}">		 
+                                    <ul class="result" id="addressResultPA">
+                                        <aura:iteration items="{!v.predictionsPA}" var="prediction" indexVar="indexVar">
+                                            <aura:if isTrue="{!prediction.Address.SuiteCount > 0}">
+                                                <aura:iteration items="{!prediction.Address.SuiteList}" var="suite" indexVar="indexVar2">
+                                                    <li class="slds-listbox__item">
+                                                        <a onclick="{!c.handlePhysicalAddressClick}" data-placeid="{!indexVar+indexVar2}" data-place="{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}">{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                                    </li>
+                                                </aura:iteration>
+                                                <aura:set attribute="else">
+                                                    <li class="slds-listbox__item">
+                                                        <a onclick="{!c.handlePhysicalAddressClick}" data-placeid="{!indexVar}" data-place="{!prediction.Address.AddressLine1 + (prediction.Address.SuiteName != ''?' '+prediction.Address.SuiteName:'') +', '+ prediction.Address.City+', '+prediction.Address.State}">
+                                                            {!prediction.Address.AddressLine1} <aura:if isTrue="{!prediction.Address.SuiteName != ''}">{!' '+prediction.Address.SuiteName}</aura:if> {!', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                                    </li>
+                                                </aura:set>
+                                            </aura:if> 
+                                        </aura:iteration>
+                                    </ul> 	 
+                                </aura:if>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="slds-form slds-form_stacked">
+                                    <div class="slds-form-element">
+                                        <aura:if isTrue="{!v.showPAManualCB == true}">
+                                            <label class="slds-form-element__label" for="toggle">Enter address manually</label>
+                                            <lightning:input class="cell" type="toggle" 
+                                                             aura:id="checkPAManual" 
+                                                             checked="{!v.isPAManual}"
+                                                             onchange="{!c.handlePhysicalToggleChange}"
+                                                             messageToggleActive="Yes"
+                                                             messageToggleInactive="No"/>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                    </div>
+                    <!--/Physical Address--> 
+                    
+                    <!--Show Primary Guardian Section -->
+                    <aura:if isTrue="{!v.showPrimaryGuardianSection}">     
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Primary Guardian</h5> </div>
+                        <h1 class="head">Primary Guardian Contact:</h1>  
+                        <div class="row ">
+                            <div class=" col-sm-6"> 
+                                <lightning:input label="First Name" 
+                                                 aura:id="PriGuardianFirstName"
+                                                 value="{!v.CVCase.PG_First_Name__c}"
+                                                 class="alignField" 
+                                                 type="text"
+                                                 maxlength="30"
+                                                 required="true"
+                                                 onchange="{!c.validateLName}"/>    
+                            </div>
+                            
+                            <div class=" col-sm-6"> 
+                                <lightning:input label="Last Name"
+                                                 aura:id="PriGuardianLastName"
+                                                 value="{!v.CVCase.PG_Last_Name__c}"
+                                                 class="alignField "
+                                                 type="text"
+                                                 maxlength="40"
+                                                 required="true"
+                                                 onchange="{!c.validateLName}"
+                                                 /> 
+                            </div>
+                            
+                            <div class=" col-sm-6">
+                                <lightning:input label="Mobile"
+                                                 aura:id="PriGuardianPhone"
+                                                 value="{!v.CVCase.PG_Mobile_Phone__c}"
+                                                 class="alignField"
+                                                 onblur="{!c.clearErrors}"
+                                                 maxlength="14"  
+                                                 onchange="{!c.formatPhone}"
+                                                 required="true"
+                                                 />   
+                            </div>
+                            <div class=" col-sm-6">
+                                <lightning:input label="Email"
+                                                 type=" email"
+                                                 aura:id="PriGuardianEmail"
+                                                 value="{!v.CVCase.PG_Email__c}"
+                                                 class="alignField"
+                                                 required="true"
+                                                 maxlength="40"
+                                                 pattern="^[a-zA-Z0-9._-]+@[a-z0-9\-]+\.[a-z]{2,3}$"
+                                                 messageWhenValueMissing="Email required."
+                                                 messageWhenPatternMismatch="Please enter email in correct format For example example@mail.com"
+                                                 
+                                                 />   
+                            </div>
+                            
+                        </div>
+                        
+                        
+                    </aura:if> 
+                    <!--/Show Primary Guardian Section-->                    
+                    
+                    <!--Emergency Contact Section -->
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Emergency Contact</h5> </div>
+                    <h1 class="head">Emergency Contact:</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:input label="First Name" 
+                                             aura:id="SecConFirstName"
+                                             value="{!v.CVCase.Sec_First_Name__c}"
+                                             class="alignField" 
+                                             type="text"
+                                             maxlength="30" 
+                                             required="true"
+                                             onchange="{!c.validateLName}"/>  
+                        </div>
+                        
+                        <div class=" col-sm-6"> 
+                            <lightning:input label="Last Name"
+                                             aura:id="SecConLastName"
+                                             value="{!v.CVCase.Sec_Last_Name__c}"
+                                             class="alignField "
+                                             type="text"
+                                             maxlength="40"
+                                             required="true"
+                                             onchange="{!c.validateLName}"
+                                             /> 
+                        </div>
+                        
+                        <div class=" col-sm-6">
+                            <lightning:input label="Mobile"
+                                             aura:id="SecConPhone"
+                                             value="{!v.CVCase.Sec_Phone__c}"
+                                             class="alignField"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             required="true"
+                                             onchange="{!c.formatPhone}"
+                                             /> 
+                        </div>
+                        <div class=" col-sm-6">
+                            <lightning:select aura:id="SecConRelation"
+                                              value="{!v.CVCase.Relation__c}"
+                                              label="Relation to Student"
+                                              required="true"
+                                              onblur="{!c.clearErrors}"> 
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.relationList}" var="rel" indexVar="key">   
+                                    <option text="{!rel.value}" value="{!rel.key}"/>
+                                </aura:iteration>
+                            </lightning:select> 
+                        </div>
+                        
+                    </div>
+                    <!--/Emergency Contact Section-->     
+                    
+                    <div class="panel-head2" ><h5 class="mainHeading text-center">Student Information</h5> </div>
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:select aura:id="StTShirtSize"
+                                              value="{!v.CVCase.T_Shirt_Size__c}"
+                                              label="T-Shirt Size"
+                                              onblur="{!c.clearErrors}"
+                                              required="true"> 
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.HHMRelationList}" var="rel" indexVar="key">   
+                                    <option text="{!rel.value}" value="{!rel.key}"/>
+                                </aura:iteration>
+                            </lightning:select> 
+                            
+                        </div>
+                        <div class=" col-sm-6">
+                            <lightning:input aura:id="StHighSchool" 
+                                             class="alignField "
+                                             value="{!v.CVCase.High_School__c}"
+                                             label="Name of School"  
+                                             required="true"
+                                             onblur="{!c.clearErrors}"
+                                             onchange="{!c.validateSchoolName}"/>
+                            
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:select aura:id="StGrade1"
+                                              value="{!v.CVCase.Grade__c}"
+                                              label="Grade"
+                                              onblur="{!c.clearErrors}"
+                                              required="true"> 
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.gradeList}" var="rel" indexVar="key">   
+                                    <option text="{!rel.value}" value="{!rel.key}"/>
+                                </aura:iteration>
+                            </lightning:select> 
+                            
+                        </div>
+                        <div class=" col-sm-6">
+                            <lightning:input aura:id="StGPA" 
+                                             type="Text"
+                                             class="alignField "
+                                             value="{!v.CVCase.GPA__c}"
+                                             label="GPA"  
+                                             required="true"
+                                             maxlength="4"  
+                                             onchange="{!c.formatGPA}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:textarea name="CollegeCareerGoalStatement" aura:id="StCollegeCareer" required="true" value="{!v.CVCase.College_Career_Goal_Statement__c}" label="College And Career Goal Statement (Limitation: 1200 characters max)" maxlength="1200" messageWhenTooLong="A maximum of 1200 characters are allowed." messageWhenValueMissing="Please enter tha missing value."  />
+                            
+                        </div>
+                        <div class=" col-sm-6">
+                            <lightning:textarea name="rolestitlesheld" aura:id="Strolestitlesheld" required="true" value="{!v.CVCase.Services_roles_titles__c}" label="School/Tribal/Church organizations or services, roles/titles held, etc.(Limitation: 1200 characters max)" maxlength="1200" messageWhenTooLong="A maximum of 1200 characters are allowed." messageWhenValueMissing="Please enter tha missing value." />
+                            
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:textarea name="List_of_current_medical_issues" aura:id="Listofcurrentmedicalissues" value="{!v.CVCase.List_of_current_medical_issues__c}" label="List of current medical/health issues we should be aware of (Limitation: 1200 characters max)" maxlength="1200" messageWhenTooLong="A maximum of 1200 characters are allowed."  />
+                            
+                        </div>
+                        <div class=" col-sm-6">
+                            <lightning:textarea name="List_of_current_medications" aura:id="Listofcurrentmedications" value="{!v.CVCase.List_of_current_medications__c}" label="List of current medications and medication routine (Limitation: 1200 characters max)" maxlength="1200" messageWhenTooLong="A maximum of 1200 characters are allowed."  />
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="row ">
+                        <!-- Income Files Section-->
+                        <div class=" col-sm-6">
+                            <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                <abbr class="slds-required" title="required">* </abbr>Please upload Letter of Recommendation from school teacher/counselor/principal:
+                            </p>
+                            <lightning:fileUpload label=""
+                                                  aura:id="W9FileId" 
+                                                  name="fileUploader"
+                                                  variant="label-hidden"
+                                                  multiple="true"
+                                                  accept="{!v.filetype}"
+                                                  required = "true"
+                                                  onuploadfinished="{!c.handleIncomeFilesUpload}" />
+                            <p style="font-weight: 500;">Maximum File Size 20 MB with supported types PDF, JPEG, JPG and PNG only</p>
+                            <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                    <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                    name="{!file.Id}" label="{!file.Title}"
+                                                    onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}">
+                                        <aura:set attribute="media">
+                                            <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                        </aura:set>
+                                    </lightning:pill>
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                        </div>
+                        
+                        <!--/End Income Files Section-->
+                        
+                        <!-- Custody Files Section-->
+                        <div class=" col-sm-6">
+                            <p style="margin-top:10px !important; margin-bottom:-7px !important; font-weight: 500;"><abbr class="slds-required" title="required">* </abbr>Current Photo: 
+                            </p>
+                            <lightning:fileUpload label=""
+                                                  aura:id="custodyFiles" 
+                                                  name="fileUploader2"
+                                                  variant="label-hidden"
+                                                  multiple="true"
+                                                  accept="{!v.filetype}"
+                                                  required = "true"
+                                                  onuploadfinished="{!c.handleCustodyFilesUpload}" />
+                            <p style="font-weight: 500;">Maximum File Size 20 MB with supported types PDF, JPEG, JPG and PNG only</p>
+                            <aura:iteration items="{!v.custodyUploadedFilesList}" var="file">
+                                <lightning:layoutItem  class = "custom_pillLayout" size="6" mediumDeviceSize="3" padding="around-small">
+                                    <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                    name="{!file.Id}" label="{!file.Title}"
+                                                    onremove="{!c.onCustodyFileRemove}" onclick="{!c.previewFile}">
+                                        <aura:set attribute="media">
+                                            <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                        </aura:set>
+                                    </lightning:pill>
+                                </lightning:layoutItem>
+                            </aura:iteration>                            
+                        </div>
+                        <!--/End Custody Files Section-->
+                    </div>
+                    
+                    
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Terms and Conditions</h5> </div>
+                    <p ></p>
+                    <div class="row ">        
+                        <div class="col-sm-12" > 
+                            <aura:if isTrue="{!v.Signedinunder18}">
+                                <h6>To Be Completed by the Student:</h6> 
+                                <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+                                    I acknowledge that if I am selected as a Participant for the CASE Summer Camp, in my role of a CASE Summer Camp Participant, I agree to the following terms:
+                                    
+                                    <ol class="slds-list_ordered">
+                                        <br/>
+                                        <li>I agree to represent the Cherokee Nation in a positive manner, l am aware that during my participation I will represent the Cherokee Nation at all times and should remember that, even when I am not wearing my CASE Camp shirt, I am still an Ambassador of the CASE Summer Camp and should act as such at all times. I am aware that others will look at me as a role model during my participation.
+                                        </li><br/>
+                                        <li>I agree to attend all meetings, trainings and social events the CASE Summer Camp accepts. In the event that an emergency prevents me from attending, I will notify chaperon and the CASE Summer Camp Coordinator.
+                                        </li><br/>
+                                        <li>I will not use foul and/or obscene language in public.
+                                        </li><br/>
+                                        <li>I will not engage in inappropriate or disruptive behavior in public, including Social Media.
+                                        </li><br/>
+                                        <li>I will strive to instill a sense of pride, ambition, and accomplishment in younger Cherokees, and will, to the best of my ability, pursue and promote Cherokee language, history and culture.
+                                        </li><br/>
+                                        <li>    
+                                            I will respect and abide by the Cherokee value of Family and not leave the CASE Summer Camp group at any time during the camp.
+                                        </li><br/>
+                                        <li>    
+                                            I will abide by all CASE Summer Camp Program requirements and adhere to the terms and conditions of this contract, and Cherokee Nation Policy and Procedures.
+                                        </li><br/>
+                                        <li>    
+                                            I agree to abide by all safety guidelines, and those that may arise even in a pandemic, including but not limited to: Executive Orders, Cherokee Nation Health and Safety Guidelines, CDC Guidelines, etc.
+                                        </li><br/>
+                                        <li>    
+                                            I agree that the CASE Summer Camp may be canceled at any moment due to the safety of the participants and staff.
+                                        </li><br/>
+                                        <li>    
+                                            I further agree that being selected as CASE Summer Camp participant is a privilege and not a right. If l do not abide by the terms of this contract, I may be removed and will have to give up all benefits, equipment and awards that I have received or been entitled                           
+                                        </li>  
+                                    </ol>
+                                </p>
+                                 <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndConsstu"
+                                             checked="{!v.iAcceptStu}" />
+                                <br/>
+                                <h6>To Be Completed by the Student’s Parent or Legal Guardian:</h6> 
+                                
+                                <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:10px; color:rgb(90,90,90);">
+                                    I certify that I am the parent or legal guardian of the student applying for CASE Summer Camp and agree to the following:
+                                    <br/>
+                                    <br/>
+                                    
+                                    I agree to hold harmless Cherokee Nation, its officers, directors, partners, representatives, agents, and employees from and against any and all claims, suits, liens, judgments, damages, losses, and expenses, including legal fees and all court costs and liability arising in whole or in part and in any manner from injury and/or death of any person or damage to or loss of any property resulting from the participation of my child/ward in the CASE Summer Camp Program and from any such activities and/or during travel with Cherokee Nation and/or Leadership/Education/Legal Departments during CASE Summer Camp Program.
+                                    <br/>
+                                    <br/>
+                                    
+                                    I agree that the provided medical history is correct to the best of my knowledge, and the child/ward herein described has permission to engage in all prescribed camp activities except as noted. In the event of an emergency, I hereby give permission for necessary related transportation and to the health care provider selected to secure and administer treatment, including hospitalization, for my child/ward as named above. I further authorize for any duly assigned Cherokee Nation staff to transport my child/ward to receive necessary medical treatment.
+                                    <br/>
+                                    <br/>
+                                    
+                                    I hereby allow the Cherokee Nation and/or its entities to use the image of my child/ward for non-commercial purposes, including publication and release to media outlets and websites. I release, discharge, and agree to save the Cherokee Nation and its entities from any liability for non-commercial use of the image of my child/ward
+                                    <br/>
+                                    <br/>
+                                    
+                                    I hereby represent that I am over the age of 18 years, and I have read this authorization and release prior to its execution. I have not been induced, other than by the consideration received, to execute the same by any representation or statement made by the Cherokee Nation.
+                                    <br/>
+                                    <br/>
+                                    
+                                    I give permission for Cherokee Nation and persons acting for or through them, the right to use, reproduce, assign and/or distribute photographs, films, video tapes and/or sound recordings of me or my child/ward for use in materials they may create for the purpose of promotion.
+                                    <br/>
+                                    <br/>
+                                    
+                                    I hereby acknowledge that my child/ward will be participating in camp activities that take place off of the Cherokee Nation Performing Arts Summer Camp site. I hereby acknowledge that my child/ward will ride in any vehicle designated, by the director, in whose care my child/ward has been entrusted while attending and participating in this camp, sponsored by the Cherokee Nation.
+                                    <br/>
+                                    <br/>
+                                    
+                                    The Cherokee Nation does not waive its sovereign immunity by way of this contract, and it gives the CASE participant no right for action against the Cherokee Nation. I have read the above contract and agree to the terms.                            </p>
+                                <aura:set attribute="else">
+                                    I acknowledge that if I am selected as a Participant for the CASE Summer Camp, in my role of a CASE Summer Camp Participant, I agree to the following terms:
+                                    <ol class="slds-list_ordered">
+                                        <br/>
+                                        <li>                              
+                                            I agree to represent the Cherokee Nation in a positive manner, l am aware that during my participation I will represent the Cherokee Nation at all times and should remember that, even when I am not wearing my CASE Camp shirt, I am still an Ambassador of the CASE Summer Camp and should act as such at all times. I am aware that others will look at me as a role model during my participation.
+                                        </li><br/><li>
+                                        I agree to attend all meetings, trainings and social events the CASE Summer Camp accepts. In the event that an emergency prevents me from attending, I will notify chaperon and the CASE Summer Camp Coordinator.
+                                        </li><br/><li>
+                                        I will not use foul and/or obscene language in public.
+                                        </li><br/><li>
+                                        I will not engage in inappropriate or disruptive behavior in public, including Social Media.
+                                        </li><br/><li>
+                                        I will strive to instill a sense of pride, ambition, and accomplishment in younger Cherokees, and will, to the best of my ability, pursue and promote Cherokee language, history and culture.
+                                        </li><br/><li>
+                                        I will respect and abide by the Cherokee value of Family and not leave the CASE Summer Camp group at any time during the camp.
+                                        </li><br/><li>
+                                        I will abide by all CASE Summer Camp Program requirements and adhere to the terms and conditions of this contract, and Cherokee Nation Policy and Procedures.
+                                        </li><br/><li>
+                                        I agree to abide by all safety guidelines, and those that may arise even in a pandemic, including but not limited to: Executive Orders, Cherokee Nation Health and Safety Guidelines, CDC Guidelines, etc.
+                                        </li><br/><li>
+                                        I agree that the CASE Summer Camp may be canceled at any moment due to the safety of the participants and staff.
+                                        </li></ol>
+                                    <br/>                 
+                                    I further agree that being selected as CASE Summer Camp participant is a privilege and not a right. If l do not abide by the terms of this contract, I may be removed and will have to give up all benefits, equipment and awards that I have received or been entitled.
+                                    <br/><br/>
+                                    I certify that I am at least 18 years old, am applying for CASE Summer Camp, and agree to the following:
+                                    <br/><br/>
+                                    I agree to hold harmless Cherokee Nation, its officers, directors, partners, representatives, agents, and employees from and against any and all claims, suits, liens, judgments, damages, losses, and expenses, including legal fees and all court costs and liability arising in whole or in part and in any manner from injury and/or death of any person or damage to or loss of any property resulting from the participation of myself in the CASE Summer Camp Program and from any such activities and/or during travel with Cherokee Nation and/or Leadership/Education/Legal Departments during CASE Summer Camp Program.
+                                    <br/><br/>
+                                    I agree that the provided medical history is correct to the best of my knowledge, and that I am capable of engaging in all prescribed camp activities except as noted. In the event of an emergency, I hereby give permission for necessary related transportation and to the health care provider selected to secure and administer treatment, including hospitalization, for myself. I further authorize for any duly assigned Cherokee Nation staff to transport me to receive necessary medical treatment.
+                                    <br/><br/>
+                                    I hereby allow the Cherokee Nation and/or its entities to use my image for non-commercial purposes, including publication and release to media outlets and websites. I release, discharge, and agree to save the Cherokee Nation and its entities from any liability for non-commercial use of my image. 
+                                    <br/><br/>
+                                    I hereby represent that I am over the age of 18 years, and I have read this authorization and release prior to its execution. I have not been induced, other than by the consideration received, to execute the same by any representation or statement made by the Cherokee Nation.
+                                    <br/><br/>
+                                    I give permission for Cherokee Nation and persons acting for or through them, the right to use, reproduce, assign and/or distribute photographs, films, video tapes and/or sound recordings of me for use in materials they may create for the purpose of promotion.
+                                    <br/><br/>
+                                    I hereby acknowledge that I will be participating in camp activities that take place off of the Cherokee Nation Performing Arts Summer Camp site. I hereby acknowledge that I will ride in any vehicle designated, by the director, while attending and participating in this camp, sponsored by the Cherokee Nation.
+                                    <br/><br/>
+                                    The Cherokee Nation does not waive its sovereign immunity by way of this contract, and it gives the CASE participant no right for action against the Cherokee Nation. I have read the above contract and agree to the terms.
+                                    <br/><br/>                       
+                                </aura:set>
+                            </aura:if> 
+                            <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndCons"
+                                             checked="{!v.iAccept}" />
+                        </div>
+                        
+                    </div>  
+                    <!--/Parent / Legal Guardian-->
+                    
+                    <div class=" text-center">
+                        <lightning:button label="Review Application"  class="btn sr-button " variant="brand" onclick="{!c.reviewInformation}"/>
+                        <div class="slds-is-relative"> 
+                            <lightning:spinner aura:id="saveSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                        </div>  
+                    </div> 
+                </div>
+            </div>
+        </div>
+        
+    </aura:if> 
+    <!--Clothing Assistance Form Div-->
+    
+    <!--Age Ristriction Message Div-->
+    <aura:if isTrue="{!v.showAgeResr}">  
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Thank you for your interest in the CASE Camp. If you are looking to apply for an eligible student in 7th-10th grade, you will first need to sign in with the student's Gadugi Portal account.
+                                
+                                </p> </strong> 
+                            
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+    <!--/Age Ristriction Message Div-->
+    
+    <!--Success Message Div-->
+    <aura:if isTrue="{!v.showSuccessMessage}">  
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                You have successfully submitted your CASE Camp Application.
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                            <div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                            </div> 
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                If you have any questions or concerns regarding your CASE Camp application, please contact Cherokee Nation at 918-453-5742 or by emailing education@cherokee.org. You can view your request by selecting "View Request" above.
+                            </p>
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Applicants will be notified of selection status by May 15th, 2022. Application processing will be completed after all information is verified in the application. Any inconsistent or missing data may delay processing, and further action by Cherokee Nation staff may take additional time before processing and selection is complete.
+                            </p>
+                            
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+    <!--/Success Message Div-->
+    
+    <!--Review Section-->
+    <aura:if isTrue="{!v.showReviewScreen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+            <div class="slds-modal__container">
+                <!--Modal Header-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          size="large"
+                                          variant="bare-inverse"
+                                          onclick="{! c.hideModal }"
+                                          alternativeText="Close" 
+                                          class="slds-modal__close" />
+                    <h2 id="modal-heading-01" class="mH">Review Information</h2>
+                </header>  <!--/Modal Header-->
+                
+                <!--Modal Body-->
+                <div class="slds-modal__content slds-p-around_small modal__padding" id="modal-content-id-1">
+                    
+                    <form class="slds-form--stacked" >               
+                        <div class="panel-head2" >  <h5 class="mainHeading text-center">Primary Contact</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4 "> 
+                                <lightning:input label="First Name" 
+                                                 value="{!v.CVCase.Primary_Contact_First_Name__c}"
+                                                 class="alignField modal__FontSize col_14" 
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Middle Name"
+                                                 value="{!v.Acnt.Middle_Name__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Last Name"
+                                                 value="{!v.CVCase.Primary_Contact_Last_Name__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Cherokee Nation Citizen Registry ID #"
+                                                 value="{!v.Acnt.Tribe_Id__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 type="text"
+                                                 disabled="true"/>
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Date of Birth"
+                                                 value="{!v.Acnt.Date_of_Birth__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled="true"/>               
+                            </div> 
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Email" 
+                                                 type="email"
+                                                 value="{!v.Acnt.Users[0].Email}"
+                                                 class=" alignField modal__FontSize col_14" 
+                                                 disabled="true"/>      
+                            </div>
+                            
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Mobile"
+                                                 value="{!v.CVCase.Ebt_Mobile_Phone__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled="true"
+                                                 />
+                            </div>
+                        </div>
+                        
+                        <!--Physical Address-->
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Physical Address</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Address Line1" 
+                                                 value="{!v.CVCase.Physical_Street__c}"
+                                                 class="alignField modal__FontSize col_14" 
+                                                 disabled = "true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Address Line2"
+                                                 value="{!v.CVCase.Physical_Address2__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Suite"
+                                                 value="{!v.CVCase.Physical_Suite__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="City"
+                                                 value="{!v.CVCase.Physical_City__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Country"
+                                                 value="{!v.CVCase.Physical_Countries__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <aura:if isTrue="{!v.showPhysicalState}">
+                                <div class=" col-sm-4">
+                                    <lightning:input label="State"
+                                                     value="{!v.CVCase.Physical_States__c}"
+                                                     class="alignField modal__FontSize col_14"
+                                                     disabled = "true"/>   
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.showPhysicalOtherState}">
+                                <div class=" col-sm-4">
+                                    <lightning:input label="Other State"
+                                                     value="{!v.CVCase.Other_Physical_State__c}"
+                                                     class="alignField modal__FontSize col_14"
+                                                     disabled = "true"/>   
+                                </div>
+                            </aura:if>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Zip Code"
+                                                 value="{!v.CVCase.Physical_ZipPostal_Code__c }"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                        </div>
+                        <!--/Physical Address-->
+                        
+                        
+                        <!--Show Primary Guardian Section -->
+                        <aura:if isTrue="{!v.showPrimaryGuardianSection}">     
+                            <div class="panel-head2">  <h5 class="mainHeading text-center">Primary Guardian</h5> </div>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <lightning:input label="First Name" 
+                                                     value="{!v.CVCase.PG_First_Name__c}"
+                                                     class="alignField modal__FontSize col_14" 
+                                                     disabled = "true"/>       
+                                </div>
+                                
+                                <div class=" col-sm-6"> 
+                                    <lightning:input label="Last Name"
+                                                     value="{!v.CVCase.PG_Last_Name__c}"
+                                                     class="alignField modal__FontSize col_14"
+                                                     disabled = "true"/>   
+                                </div>
+                                
+                                <div class=" col-sm-6">
+                                    <lightning:input label="Mobile"
+                                                     value="{!v.CVCase.PG_Mobile_Phone__c}"
+                                                     class="alignField modal__FontSize col_14"
+                                                     disabled = "true"/>   
+                                </div>
+                                <div class=" col-sm-6">
+                                    
+                                    <lightning:input label="Email"
+                                                     value="{!v.CVCase.PG_Email__c}"
+                                                     class="alignField modal__FontSize col_14"
+                                                     disabled = "true"/>
+                                </div>
+                                
+                            </div>
+                            
+                            
+                        </aura:if> 
+                        <!--/Show Primary Guardian Section-->   
+                        
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Emergency Contact</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-3"> 
+                                <lightning:input label="First Name" 
+                                                 value="{!v.CVCase.Sec_First_Name__c}"
+                                                 class="alignField modal__FontSize col_14" 
+                                                 type="text"
+                                                 disabled = "true" />       
+                            </div>
+                            
+                            <div class=" col-sm-3"> 
+                                <lightning:input label="Last Name"
+                                                 value="{!v.CVCase.Sec_Last_Name__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 type="text"
+                                                 disabled = "true"
+                                                 />   
+                            </div>
+                            
+                            <div class=" col-sm-3">
+                                <lightning:input label="Mobile"
+                                                 value="{!v.CVCase.Sec_Phone__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"
+                                                 />   
+                            </div>
+                            <div class=" col-sm-3">
+                                <lightning:input label="Relation to Student"
+                                                 value="{!v.CVCase.Relation__c}"
+                                                 class="alignField modal__FontSize col_14"
+                                                 disabled = "true"
+                                                 />  
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="panel-head2" ><h5 class="mainHeading text-center">Student Information</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-6">
+                                <lightning:input  class="alignField modal__FontSize col_14"
+                                                 value="{!v.CVCase.T_Shirt_Size__c}"
+                                                 label="T-Shirt Size"
+                                                 type="text"
+                                                 disabled = "true"/> 
+                                
+                            </div>
+                            <div class=" col-sm-6">
+                                <lightning:input    class="alignField modal__FontSize col_14"
+                                                 value="{!v.CVCase.High_School__c}"
+                                                 label="Name of School"  
+                                                 type="text"
+                                                 disabled = "true"/>
+                                
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class=" col-sm-6">
+                                <lightning:input  class="alignField modal__FontSize col_14"
+                                                 value="{!v.CVCase.Grade__c}"
+                                                 label="Grade"
+                                                 type="text"
+                                                 disabled = "true"/> 
+                                
+                                
+                            </div>
+                            <div class=" col-sm-6">
+                                <lightning:input    class="alignField modal__FontSize col_14"
+                                                 value="{!v.CVCase.GPA__c}"
+                                                 label="GPA"  
+                                                 type="text"
+                                                 disabled = "true"/>
+                                
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class=" col-sm-6">
+                                <lightning:textarea name="CollegeCareerGoalStatement"  class="alignField modal__FontSize col_14" value="{!v.CVCase.College_Career_Goal_Statement__c}" label="College And Career Goal Statement (Limitation: 1200 characters max)"  disabled = "true"/>
+                                
+                            </div>
+                            <div class=" col-sm-6">
+                                <lightning:textarea name="rolestitlesheld"  class="alignField modal__FontSize col_14" value="{!v.CVCase.Services_roles_titles__c}" label="School/Tribal/Church organizations or services, roles/titles held, etc.(Limitation: 1200 characters max)" disabled = "true"/>
+                                
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class=" col-sm-6">
+                                <lightning:textarea name="List_of_current_medical_issues"  class="alignField modal__FontSize col_14" value="{!v.CVCase.List_of_current_medical_issues__c}" label="List of current medical/health issues we should be aware of (Limitation: 1200 characters max)" disabled = "true" />
+                                
+                            </div>
+                            <div class=" col-sm-6">
+                                <lightning:textarea name="List_of_current_medications"  class="alignField modal__FontSize col_14" value="{!v.CVCase.List_of_current_medications__c}" label="List of current medications and medication routine (Limitation: 1200 characters max)" disabled = "true" />
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="row ">
+                            <!-- Income Files Section-->
+                            <div class=" col-sm-6">
+                                <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                    Letter of Recommendation from school teacher/counselor/principal:
+                                </p>
+                                <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                    <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                        <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill removeX" 
+                                                        name="{!file.Id}" label="{!file.Title}"
+                                                        onclick="{!c.previewFile}"
+                                                        >
+                                            <aura:set attribute="media">
+                                                <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                            </aura:set>
+                                        </lightning:pill>
+                                    </lightning:layoutItem>
+                                </aura:iteration>
+                            </div>
+                            
+                            <!--/End Income Files Section-->
+                            
+                            <!-- Custody Files Section-->
+                            <div class=" col-sm-6">
+                                <p style="margin-top:10px !important; margin-bottom:-7px !important; font-weight: 500;">Current Photo: 
+                                </p>
+                                <aura:iteration items="{!v.custodyUploadedFilesList}" var="file">
+                                    <lightning:layoutItem  class = "custom_pillLayout" size="6" mediumDeviceSize="3" padding="around-small">
+                                        <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill removeX" 
+                                                        name="{!file.Id}" label="{!file.Title}"
+                                                        onclick="{!c.previewFile}">
+                                            <aura:set attribute="media">
+                                                <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                            </aura:set>
+                                        </lightning:pill>
+                                    </lightning:layoutItem>
+                                </aura:iteration>                            
+                            </div>
+                            <!--/End Custody Files Section-->
+                        </div>
+                        
+                        
+                        
+                        <div class=" text-center">
+                            <lightning:button label="Edit" class="btn mBtn " variant="brand" onclick="{!c.hideModal}"/>     
+                            <lightning:button label="Submit" disabled="{!v.isActive2}" class="btn mBtn " variant="brand" onclick="{!c.save}"/>
+                        </div> 
+                        <lightning:spinner aura:id="Spinner2" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                    </form>
+                    
+                    
+                </div> <!--/Modal Body-->
+                
+            </div>
+        </section>
+        
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+    </aura:if> 
+    <!--/Review Section-->  
+</aura:component>

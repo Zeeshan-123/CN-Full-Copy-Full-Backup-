@@ -1,0 +1,141 @@
+.THIS .Olist {
+            padding: 10px;
+    }
+.THIS .btn-alignment{
+    text-align: right  !important;
+}
+
+.THIS .q2-img{
+    max-width: 50%;
+    height: auto;
+}
+.THIS .q2-para-align{
+    margin-top: -10px !important;
+    margin-bottom: 15px !important;
+}
+.THIS .c1{
+margin-right: -50px !important;
+}
+
+.THIS .dateFmt{
+    text-decoration: underline !important;
+    font-weight: 600 !important;
+    color: red !important;
+}
+.THIS .a-btn{
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin-top: 2%;
+}
+
+.THIS  .a-btn:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+.THIS .algn {
+    text-align: right;
+}
+.THIS p {
+    margin-top: 18px;
+    margin-bottom: 8px !important;
+    font-size: 15px;
+}
+
+.THIS .alignField{
+    padding: 2px; 
+    font-size: 12px; 
+}
+
+.THIS .m-box{
+	 margin:40px 80px;
+}
+
+.THIS .m-box-style{
+    padding:20px 65px 25px 65px;
+}
+
+.THIS abbr[title]{
+     cursor: none; 
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+
+.THIS .mHeading{
+    font-size: 17px;
+    color: #002286;
+    text-decoration: underline;
+}
+/*Mobile*/
+@media screen and (min-width:280px) and (max-width: 767px)
+{  
+    .THIS .Olist {
+        font-size:14px !important;
+    }
+    .THIS .sp{
+        margin-bottom: 13px !important;
+    }
+     .THIS .sm-img{
+        margin: 0px 8px 0px 0px;
+    }
+    .THIS .c1 {
+        margin-right: 10px !important;
+    }
+    
+    .THIS .btn-alignment{
+        text-align: center !important;
+    }
+    
+    .THIS .slds-form-element__label{
+        font-size: 12px !important;
+    }
+    
+    .THIS .m-box-style {
+        padding: 25px 25px;
+    }   
+    
+    .THIS .mHeading{
+        font-size: 15px;
+        
+    }
+    
+    .THIS p{
+        margin-top: 10px !important;
+        margin-bottom: 0px !important;
+        font-size: 14px; 
+        text-align: left;
+    }
+       
+    .THIS .m-box{
+        margin: 30px 20px 30px 20px;
+    } 
+}
+
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1024px)
+{
+    .THIS .m-box-style{
+        padding: 20px 50px 25px 50px;
+    }
+    
+    .THIS .m-box {
+        margin: 30px 30px;
+    }
+    
+    .THIS p{
+        font-size: 15px;
+    }
+    
+     .THIS .sm-img{
+        margin: 0px 8px 0px 0px;
+    }
+
+}

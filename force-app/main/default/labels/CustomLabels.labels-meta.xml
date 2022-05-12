@@ -1,0 +1,893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>About_Us_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>About_Us_Message</shortDescription>
+        <value>The Cherokee Nation Gadugi Portal is encrypted to keep your data secure. We may ask for driver’s license number as part of keeping current records for our tag office or hunting and fishing license, Cherokee Nation enrollment number for registration or social security number for essential programs such as Human Services Department or College Resources, for example. This data will not be distributed to any third-party and we take great measure to ensure our Gadugi Portal and citizen data is protected.</value>
+    </labels>
+    <labels>
+        <fullName>Admin</fullName>
+        <categories>Role Name</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Admin</shortDescription>
+        <value>Admin</value>
+    </labels>
+    <labels>
+        <fullName>CA_Citizen_id_Duplicate_error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CA Citizen id Duplicate error</shortDescription>
+        <value>This student has already been added to this request.</value>
+    </labels>
+    <labels>
+        <fullName>CNPH_Header</fullName>
+        <categories>CNPH</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CNPH Header</shortDescription>
+        <value>https://cn-publichealth--cnfullcopy--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0683t000008jlQ9&amp;operationContext=DELIVERY&amp;contentId=05T3t00000VYUwq&amp;page=0&amp;d=/a/3t000000DYlM/D.UFRyghy4gxUpvbjUpOEVxwSrFKVKhtQSmS_MHDEBY&amp;oid=00D7e00000GL6XU&amp;dpt=null&amp;viewId=</value>
+    </labels>
+    <labels>
+        <fullName>CNPH_Signature</fullName>
+        <categories>CNPH</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CNPH Signature</shortDescription>
+        <value>https://cn-publichealth--cnfullcopy--c.documentforce.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;versionId=0683t000008jlQE&amp;operationContext=DELIVERY&amp;contentId=05T3t00000VYUoG&amp;page=0&amp;d=/a/3t000000DYlH/hGkoU88qldpjnTMEmAzQz96oOJHS3pKRs0nuUYsYNqg&amp;oid=00D7e00000GL6XU&amp;dpt=null&amp;viewId=</value>
+    </labels>
+    <labels>
+        <fullName>CNPortal_Base_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CNPortal_Base_URL</shortDescription>
+        <value>https://cnfullcopy-hc-erm-tso-1738f968218-173dfa89645.cs193.force.com</value>
+    </labels>
+    <labels>
+        <fullName>CNPortal_LogoURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CNPortal_LogoURL</shortDescription>
+        <value>https://cn-publichealth--cnfullcopy--c.documentforce.com/servlet/servlet.ImageServer?id=0153t000003VF7Z&amp;oid=00D7e00000GL6XU&amp;lastMod=1612273394000</value>
+    </labels>
+    <labels>
+        <fullName>CN_HealthBaseURL</fullName>
+        <categories>Cherokee Nation Health Services</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CN_HealthBaseURL</shortDescription>
+        <value>https://cnfullcopy-hc-erm-tso-1738f968218-173dfa89645.cs193.force.com/cnhs</value>
+    </labels>
+    <labels>
+        <fullName>CQ_MrnAlreadyExist</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CQ_MrnAlreadyExist</shortDescription>
+        <value>A record with same MRN number already exists in Accounts.</value>
+    </labels>
+    <labels>
+        <fullName>CherokeeWarriors_WelcomeMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CherokeeWarriors_WelcomeMessage</shortDescription>
+        <value>The Cherokee Nation reveres its veterans and have launched a campaign to track our Cherokee Warriors across the globe. If you are a Cherokee Nation veteran please register in our Cherokee Warriors Database your name, updated address, years of military service, branch of service and other information so that we can offer you updated information on our Veterans services, invite you to veteran events or programs, such as our Warrior Flight, Warrior monument dedication or Medal of Patriotism Award. Having a complete count of Cherokee Nation veterans also helps the tribe apply for federal funding and grants to better serve you. 
+&lt;br/&gt;
+&lt;br/&gt;
+Thank you for your service to this country. We are proud of our Cherokee Warriors.</value>
+    </labels>
+    <labels>
+        <fullName>CommunityAnadisgoi</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityAnadisgoi</shortDescription>
+        <value>https://anadisgoi.com/</value>
+    </labels>
+    <labels>
+        <fullName>CommunityCNBusinesses</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityCNBusinesses</shortDescription>
+        <value>https://cherokeenationbusinesses.com/</value>
+    </labels>
+    <labels>
+        <fullName>CommunityCNPheonix</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityCNPheonix</shortDescription>
+        <value>https://www.cherokeephoenix.org/</value>
+    </labels>
+    <labels>
+        <fullName>CommunityFillRequiredFields</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityFillRequiredFields</shortDescription>
+        <value>Fill the required fields.</value>
+    </labels>
+    <labels>
+        <fullName>CommunityFilmOffice</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityFilmOffice</shortDescription>
+        <value>https://cherokee.film/</value>
+    </labels>
+    <labels>
+        <fullName>CommunityFishAndWildLife</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityFishAndWildLife</shortDescription>
+        <value>https://www.cherokeefishandwildlife.com/</value>
+    </labels>
+    <labels>
+        <fullName>CommunitySerivcesPageMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunitySerivcesPageMessage</shortDescription>
+        <value>The Gadugi Portal currently serves the following Services:</value>
+    </labels>
+    <labels>
+        <fullName>CommunityServicePageMessageTwo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityServicePageMessageTwo</shortDescription>
+        <value>The portal will continue to be expanded with more services coming on board to better serve citizens. Continue to watch for these exciting updates.</value>
+    </labels>
+    <labels>
+        <fullName>CommunityServicePageTRMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityServicePageTRMessage</shortDescription>
+        <value>Tribal Registration office processes CDIB, Dawes, and tribal citizenship applications and issues photo ID cards.</value>
+    </labels>
+    <labels>
+        <fullName>CommunityServicePageVAMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityServicePageVAMessage</shortDescription>
+        <value>The Cherokee Nation Veterans Center helps veterans access benefits and services from the Department of Veteran Affairs and other agencies both internal and external to the Cherokee Nation.</value>
+    </labels>
+    <labels>
+        <fullName>CommunityTribalRegistrationUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityTribalRegistrationUrl</shortDescription>
+        <value>https://cherokee.org/all-services/tribal-registration/</value>
+    </labels>
+    <labels>
+        <fullName>CommunityVeteranAffairsUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CommunityVeteranAffairsUrl</shortDescription>
+        <value>https://veterans.cherokee.org/</value>
+    </labels>
+    <labels>
+        <fullName>Community_AHIntroText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_AHIntroText</shortDescription>
+        <value>Cherokee Nation citizens can report deer, turkey, and paddlefish harvests here.</value>
+    </labels>
+    <labels>
+        <fullName>Community_AHURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_AHURL</shortDescription>
+        <value>/s/applications/wildlife-harvest-forms2</value>
+    </labels>
+    <labels>
+        <fullName>Community_CA2IntroText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CA2IntroText</shortDescription>
+        <value>The Cherokee Nation income-based 2021 student cost assistance program is now closed. Cherokee Nation Citizens were able to apply for this program up until the deadline of December 13, 2021.</value>
+    </labels>
+    <labels>
+        <fullName>Community_CA2URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CA2URL</shortDescription>
+        <value>/s/coat-assistance</value>
+    </labels>
+    <labels>
+        <fullName>Community_CAIntroText</fullName>
+        <categories>Introductory text for Clothing Assistance application</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CAIntroText</shortDescription>
+        <value>The Cherokee Nation 2021 clothing assistance program is now closed. Cherokee Nation citizens were able to apply for this program up until the deadline of August 20, 2021.</value>
+    </labels>
+    <labels>
+        <fullName>Community_CAMPCASEAPPLICATION</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CAMPCASEAPPLICATION</shortDescription>
+        <value>The Summer CASE Camp is now closed.  Cherokee Nation citizens were able to apply until the application deadline of 04/01/2022.</value>
+    </labels>
+    <labels>
+        <fullName>Community_CAURL</fullName>
+        <categories>This contains the URL for Clothing Assistance page.</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CAURL</shortDescription>
+        <value>/s/clothing</value>
+    </labels>
+    <labels>
+        <fullName>Community_CWarriorsURL</fullName>
+        <categories>This contains the URL for Cherokee Warriors page.</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CWarriorsURL</shortDescription>
+        <value>/s/cherokee-warriors</value>
+    </labels>
+    <labels>
+        <fullName>Community_CherokeePeopleUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community CherokeePeopleUrl</shortDescription>
+        <value>https://osiyo.tv/</value>
+    </labels>
+    <labels>
+        <fullName>Community_CitizenIMustBeNumericMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CitizenIMustBeNumericMessages</shortDescription>
+        <value>Citizen ID must be a numeric field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_CitizenIdRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CitizenIdRequiredMessages</shortDescription>
+        <value>Citizen ID is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_Community_CAMPCASEAPPLICATIONURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_Community_CAMPCASEAPPLICATIONURL</shortDescription>
+        <value>/s/case-camp-application</value>
+    </labels>
+    <labels>
+        <fullName>Community_CreatedRecordFormHeader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_CreatedRecordFormHeader</shortDescription>
+        <value>New Record</value>
+    </labels>
+    <labels>
+        <fullName>Community_DobRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_DobRequiredMessages</shortDescription>
+        <value>Date of Birth is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_EmailFooter</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community EmailFooter</shortDescription>
+        <value>https://cn-publichealth--cnfullcopy--c.documentforce.com/servlet/servlet.ImageServer?id=015050000000gpR&amp;oid=00D050000008mi7&amp;lastMod=1607163105000</value>
+    </labels>
+    <labels>
+        <fullName>Community_EmailHeader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community EmailHeader</shortDescription>
+        <value>https://cn-publichealth--cnfullcopy--c.documentforce.com/servlet/servlet.ImageServer?id=015050000000gpM&amp;oid=00D050000008mi7&amp;lastMod=1607162593000</value>
+    </labels>
+    <labels>
+        <fullName>Community_EmailRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_EmailRequiredMessages</shortDescription>
+        <value>Email Address is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_EmergencyAssistanceEvent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_EmergencyAssistanceEvent</shortDescription>
+        <value>Winter Storm</value>
+    </labels>
+    <labels>
+        <fullName>Community_EmergencyAssistanceEventDescription</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_EmergencyAssistanceEventDescription</shortDescription>
+        <value>This emergency application is for immediate emergency requests resulting from the impact of {name_of_event}.  Funding will be based on priority of needs and the availability of funding.</value>
+    </labels>
+    <labels>
+        <fullName>Community_FA21HousingIntro</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_FA21HousingIntro</shortDescription>
+        <value>​Cherokee Nation undergraduate, and graduate, scholarship college students can apply here for the Spring 2022 College Housing Assistance application until the application deadline of April 26, 2022.</value>
+    </labels>
+    <labels>
+        <fullName>Community_FA21HousingURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_FA21HousingURL</shortDescription>
+        <value>/s/housing-stipend</value>
+    </labels>
+    <labels>
+        <fullName>Community_FailedToRegister</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_FailedToRegister</shortDescription>
+        <value>We couldn’t find an exact match in our database. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>Community_FillinRequiredFields</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_FillinRequiredFields</shortDescription>
+        <value>Please fill in the required fields.</value>
+    </labels>
+    <labels>
+        <fullName>Community_FirstNameRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_FirstNameRequiredMessages</shortDescription>
+        <value>First Name is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_ForgotPasswordPageUrl</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_ForgotPasswordPageUrl</shortDescription>
+        <value>/s/forgot-your-password</value>
+    </labels>
+    <labels>
+        <fullName>Community_Forgot_Username</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_Forgot_Username</shortDescription>
+        <value>/s/forgot-username</value>
+    </labels>
+    <labels>
+        <fullName>Community_HuntDawIntroText</fullName>
+        <categories>Introductory text for Hunt Draw application</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_HuntDawIntroText</shortDescription>
+        <value>Cherokee Nation Controlled Hunt program is now closed. Cherokee Nation citizens were able to apply for this program up until the deadline of September 3, 2021.</value>
+    </labels>
+    <labels>
+        <fullName>Community_HuntDrawURL</fullName>
+        <categories>This contains the URL for Hunt Draw Application page.</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_HuntDrawURL</shortDescription>
+        <value>/s/hunting-draw-app</value>
+    </labels>
+    <labels>
+        <fullName>Community_InvalidEmailMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_InvalidEmailMessages</shortDescription>
+        <value>Please enter a valid email address.</value>
+    </labels>
+    <labels>
+        <fullName>Community_Job_Opportunity_Survey_IntroText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_Job_Opportunity_Survey_IntroText</shortDescription>
+        <value>Help us gather data on the likelihood of at-large Cherokee citizen relocation to the reservation for new job opportunities.  Survey closes [TBD].</value>
+    </labels>
+    <labels>
+        <fullName>Community_Job_Opportunity_Survey_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_Job_Opportunity_Survey_URL</shortDescription>
+        <value>/s/job-opportunity-survey</value>
+    </labels>
+    <labels>
+        <fullName>Community_LastNameRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_LastNameRequiredMessages</shortDescription>
+        <value>Last Name is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_MobileHotspotIntro</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_MobileHotspotIntro</shortDescription>
+        <value>Cherokee Nation citizens can apply here for the Mobile Hotspot Connectivity Assistance program.</value>
+    </labels>
+    <labels>
+        <fullName>Community_PaddleFishURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_PaddleFishURL</shortDescription>
+        <value>https</value>
+    </labels>
+    <labels>
+        <fullName>Community_PasswordRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_PasswordRequiredMessages</shortDescription>
+        <value>Password is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_PersonDeceased</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_PersonDeceased</shortDescription>
+        <value>We couldn&apos;t find an exact match in our database. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>Community_PublicHealthText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_PublicHealthText</shortDescription>
+        <value>Help us gather critical data by taking this short survey that will help the Cherokee Nation identify and prioritize physical wellness needs across the Cherokee Nation Reservation.</value>
+    </labels>
+    <labels>
+        <fullName>Community_PublicHealthURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_PublicHealthURL</shortDescription>
+        <value>/s/public-health-wellness-survey</value>
+    </labels>
+    <labels>
+        <fullName>Community_RRRIntroText</fullName>
+        <categories>Introductory text for Covid Assistance application</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RRRIntroText</shortDescription>
+        <value>Cherokee Nation citizens can apply here for the COVID-19 individual relief assistance payment of $2,000 through the tribe’s Respond, Recover and Rebuild COVID relief plan. The deadline to apply is June 1, 2022.</value>
+    </labels>
+    <labels>
+        <fullName>Community_RRRURL</fullName>
+        <categories>This contains the URL for COVID-19 Assistance page</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RRRURL</shortDescription>
+        <value>/s/covid19</value>
+    </labels>
+    <labels>
+        <fullName>Community_RRR_EligibleStatus</fullName>
+        <categories>Used in Community_RRRFormController class</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RRR_EligibleStatus</shortDescription>
+        <value>Chase Payment Pending</value>
+    </labels>
+    <labels>
+        <fullName>Community_RRR_Name_Not_fixed</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RRR_Name_Not_fixed</shortDescription>
+        <value>One or more household member/s name needs to be fixed.</value>
+    </labels>
+    <labels>
+        <fullName>Community_RecordCreatedSuccessMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RecordCreatedSuccessMessage</shortDescription>
+        <value>Record Created Successfully.</value>
+    </labels>
+    <labels>
+        <fullName>Community_RecordEditFormHeader</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RecordEditFormHeader</shortDescription>
+        <value>Update Record</value>
+    </labels>
+    <labels>
+        <fullName>Community_RecordUpdatedSuccessMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RecordUpdatedSuccessMessage</shortDescription>
+        <value>Record Updated Successfully.</value>
+    </labels>
+    <labels>
+        <fullName>Community_RequestCreatedMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_RequestCreatedMessage</shortDescription>
+        <value>Request Created Successfully.</value>
+    </labels>
+    <labels>
+        <fullName>Community_ScholarshipApplicationIntro</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_ScholarshipApplicationIntro</shortDescription>
+        <value>College scholarship opportunities are available to registered Cherokee Nation Citizens that are full and part-time students. Students must be pursuing a Higher Education Degree from an accredited U.S. post-secondary institution. Deadline is June 15, 2022 at 11:59pm CST.</value>
+    </labels>
+    <labels>
+        <fullName>Community_ScholarshipApplicationURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_ScholarshipApplicationURL</shortDescription>
+        <value>/s/scholarship-application</value>
+    </labels>
+    <labels>
+        <fullName>Community_ScholarshipDoc</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_ScholarshipDoc</shortDescription>
+        <value>https://cherokeenation--cnfullcopy.my.salesforce.com/sfc/p/7e00000GL6XU/a/7e0000009gXo/zyV6p0uPqmR362ii5YpzwvF4z8hvT2l_F3vpdDq15_w</value>
+    </labels>
+    <labels>
+        <fullName>Community_ScholarshpDistricts</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_ScholarshpDistricts</shortDescription>
+        <value>https://vmgis4.cherokee.org/portal/apps/webappviewer/index.html?id=00c79bcdcfa24b06b007aab3fbd141c2</value>
+    </labels>
+    <labels>
+        <fullName>Community_SurveyIntroText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_SurveyIntroText</shortDescription>
+        <value>Help us best determine the use of programs to help citizens respond to the impacts of COVID-19 with our funds by taking a short survey.</value>
+    </labels>
+    <labels>
+        <fullName>Community_Survey_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>This label is for Survey url</shortDescription>
+        <value>/s/survey-form</value>
+    </labels>
+    <labels>
+        <fullName>Community_TurkeyHarvestURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_TurkeyHarvestURL</shortDescription>
+        <value>/s/turkey-harvest-form</value>
+    </labels>
+    <labels>
+        <fullName>Community_UserAlreadyRegistered</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UserAlreadyRegistered</shortDescription>
+        <value>This Citizen ID has already been used to register on the Gadugi Portal. Please visit the Forgot Password page to reset your password. If you feel this is incorrect, please contact support by phone at 918-453-5058 or by email at support-gadugiportal@cherokee.org.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UserDeactivated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UserDeactivated</shortDescription>
+        <value>User associated with this username has been deactivated. If you believe this is incorrect, please email support-gadugiportal@cherokee.org or call 918-453-5058.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UserEmailAddress</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UserEmailAddress</shortDescription>
+        <value>This email address is already in use on an existing Portal Account. Please use a different email address. If you feel this is incorrect, please contact support by phone at 918-453-5058 or by email at support-gadugiportal@cherokee.org.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UserNotExistMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UserNotExistMessage</shortDescription>
+        <value>User does not exist.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UserNotfound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UserNotfound</shortDescription>
+        <value>No matching user found. Please revisit the entered information.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UsernameNotExistMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UsernameNotExistMessage</shortDescription>
+        <value>The provided Username does not exist.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UsernameRequiredMessages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UsernameRequiredMessages</shortDescription>
+        <value>Username is required field.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UtilityAssistanceText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UtilityAssistanceText</shortDescription>
+        <value>The Emergency Utility Assistance Program is to assist eligible Native American households affected by the COVID-19 pandemic and living within the Cherokee Nation Reservation Boundaries with utility payments. Applicants must live within the Cherokee Nation Reservation Boundaries. Assistance may be used to cover a portion of past due utility payments, current and future utility payments and utility deposits. Utilities we can assist with include natural gas, propane, water or electricity. Applications will only be accepted from May 6, 2022 to June 3, 2022.</value>
+    </labels>
+    <labels>
+        <fullName>Community_UtilityAssistanceURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_UtilityAssistanceURL</shortDescription>
+        <value>/s/utility-assistance</value>
+    </labels>
+    <labels>
+        <fullName>Community_VLIntroText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_VLIntroText</shortDescription>
+        <value>Cherokee Nation citizens can apply here for the Vaccine Lottery.</value>
+    </labels>
+    <labels>
+        <fullName>Community_VL_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>This label is for Vaccine Lottery app url</shortDescription>
+        <value>/s/vaccine-lottery</value>
+    </labels>
+    <labels>
+        <fullName>Community_VoidedUser</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_VoidedUser</shortDescription>
+        <value>We couldn&apos;t find an exact match in our database. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>Community_WDIntroText</fullName>
+        <categories>Introductory text for Warrior Database</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_WDIntroText</shortDescription>
+        <value>Cherokee Nation veterans can register here for the Cherokee Warriors Database. This database will help Cherokee Nation track Cherokee warriors around the globe and notify them of important veterans services, programs and events.</value>
+    </labels>
+    <labels>
+        <fullName>Community_WaterSurveyIntroText</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_WaterSurveyIntroText</shortDescription>
+        <value>Help us gather critical data by taking this short survey, which will allow the Cherokee Nation to identify and prioritize water quality needs across the Cherokee Nation Reservation.</value>
+    </labels>
+    <labels>
+        <fullName>Community_WaterSurveyURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_WaterSurveyURL</shortDescription>
+        <value>watersurvey2</value>
+    </labels>
+    <labels>
+        <fullName>Community_WhiteTailDeerURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_WhiteTailDeerURL</shortDescription>
+        <value>/s/whitetail-deer-harvest-form2</value>
+    </labels>
+    <labels>
+        <fullName>Community_WicsSummerProgramContent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>The content for Wics Program Application page.</shortDescription>
+        <value>The 2022 Cherokee Nation Women, Infant, and Children (WIC) program is now closed. Cherokee Nation citizens were able to apply for this program up until the deadline of April 15, 2022.</value>
+    </labels>
+    <labels>
+        <fullName>Community_WicsSummerProgramURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>This contains the URL for Wics Program Application page.</shortDescription>
+        <value>/s/wics-program</value>
+    </labels>
+    <labels>
+        <fullName>Community_hotspotURL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Community_hotspotURL</shortDescription>
+        <value>/s/mobile-hotspot-connectivity</value>
+    </labels>
+    <labels>
+        <fullName>EC_Ac_Creation_Fail_Error_Recipient</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EC_Ac_Creation_Fail_Error_Recipient</shortDescription>
+        <value>cherokeenation@gettectonic.com</value>
+    </labels>
+    <labels>
+        <fullName>EC_Ac_Creation_Fail_Error_Recipient2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EC_Ac_Creation_Fail_Error_Recipient2</shortDescription>
+        <value>zeeshan.tariq@gettectonic.com</value>
+    </labels>
+    <labels>
+        <fullName>EC_Ac_Creation_Fail_Error_Recipient3</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EC_Ac_Creation_Fail_Error_Recipient3</shortDescription>
+        <value>gibran.quadri@gettectonic.com</value>
+    </labels>
+    <labels>
+        <fullName>FluResult_Batch_Scheduler_CronExp</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Cron Expression for SL_Batch_UpdateFluTestResultLink</shortDescription>
+        <value>0 0 10 * * ?</value>
+    </labels>
+    <labels>
+        <fullName>ForgotPasswordScreen_SuccessMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ForgotPasswordScreen_SuccessMessage</shortDescription>
+        <value>Check the email account associated with your user name for instructions on resetting your password. Remember to look in your spam folder, where automated messages sometimes filter. If you still can&apos;t log in, please email: support-gadugiportal@cherokee.org</value>
+    </labels>
+    <labels>
+        <fullName>Grants_Team_Member</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Grants_Team_Member</shortDescription>
+        <value>Grants_MGMT_Team</value>
+    </labels>
+    <labels>
+        <fullName>HomePage_Welcome_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>HomePage_Welcome_Message</shortDescription>
+        <value>The Cherokee Nation believes in “Gadugi” working together. When we all work together we empower our citizens and better our tribe.
+&lt;br/&gt;
+&lt;br/&gt;
+The Cherokee Nation Gadugi Portal empowers tribal citizens to stay engaged and connected. Citizens are easily able to update their address and information, which is shared across our departments instead of individually updating by department. The portal allows citizens to connect directly to services they need opening requests that will be flagged and completed by the department. Citizens can check for request status updates and task completion. The portal will continue to be expanded with important updates and other ways we can serve citizens.
+&lt;br/&gt;
+&lt;br/&gt;
+Wado, thank you for working together to stay connected so we can better serve you.</value>
+    </labels>
+    <labels>
+        <fullName>IT_admin</fullName>
+        <categories>Role Name</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IT admin</shortDescription>
+        <value>it_admin</value>
+    </labels>
+    <labels>
+        <fullName>Lead_Case_Investigator</fullName>
+        <categories>Role Name</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Lead Case Investigator</shortDescription>
+        <value>Lead_Case_Investigator</value>
+    </labels>
+    <labels>
+        <fullName>RRR_CitID_same_as_App_p1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR CitID same as App p1</shortDescription>
+        <value>The Citizen ID:</value>
+    </labels>
+    <labels>
+        <fullName>RRR_CitID_same_as_App_p2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR CitID same as App p2</shortDescription>
+        <value>entered is the same as the applicant’s ID.</value>
+    </labels>
+    <labels>
+        <fullName>RRR_Citizen_id_Duplicate_error</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR Citizen id Duplicate error</shortDescription>
+        <value>A Request has already been submitted for this household member.</value>
+    </labels>
+    <labels>
+        <fullName>RRR_Deceased_p1</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR Deceased p1</shortDescription>
+        <value>The following Citizen ID:</value>
+    </labels>
+    <labels>
+        <fullName>RRR_Deceased_p2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR_Deceased_p2</shortDescription>
+        <value>, is marked as deceased in the Registration database.</value>
+    </labels>
+    <labels>
+        <fullName>RRR_HH_delete_error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR__HH_delete error</shortDescription>
+        <value>Household member record of the applicant on RRR request cannot be deleted.</value>
+    </labels>
+    <labels>
+        <fullName>RRR_female</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR_female</shortDescription>
+        <value>Female</value>
+    </labels>
+    <labels>
+        <fullName>RRR_invalid_citizen</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR_invalid citizen</shortDescription>
+        <value>The respective Household member is currently not a valid Citizen. Please instruct the citizen to contact Tribal Registration for more information.</value>
+    </labels>
+    <labels>
+        <fullName>RRR_no_Citizen_found</fullName>
+        <categories>error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RRR no Citizen found</shortDescription>
+        <value>Cannot find Citizen using the information provided.  Please verify the Citizen record exists and that the values entered match.</value>
+    </labels>
+    <labels>
+        <fullName>RegistrationScreen_SuccessMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RegistrationScreen_SuccessMessage</shortDescription>
+        <value>You will shortly receive an email to set your password. Remember to look in your spam folder, where automated messages sometimes filter.</value>
+    </labels>
+    <labels>
+        <fullName>Scho_Email_Header</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scho_Email_Header</shortDescription>
+        <value>https://cherokeenation--cnfullcopy--c.documentforce.com/servlet/servlet.ImageServer?id=0157e0000012UlN&amp;oid=00D7e00000GL6XU&amp;lastMod=1647607002000</value>
+    </labels>
+    <labels>
+        <fullName>Scholarship_Email_Header</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Scholarship_Email_Header</shortDescription>
+        <value>https://cherokeenation--cnfullcopy--c.documentforce.com/servlet/servlet.FileDownload?file=0157e0000012TV5</value>
+    </labels>
+    <labels>
+        <fullName>Survey_Link_Shorten</fullName>
+        <categories>Survey Link</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Survey Link Shorten</shortDescription>
+        <value>https://hc</value>
+    </labels>
+    <labels>
+        <fullName>Test</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Test</shortDescription>
+        <value>&lt;br/&gt;
+                    &lt;p&gt;The Respond, Recover and Rebuild initiatives were developed to combat the pandemic affecting Cherokee Nation citizens around the world. Cherokee Nation provides these assistance funds for COVID-19 impacted citizens. 
+                    All resources are to be used for Cherokee Nation citizens who have experienced hardship due to COVID-19.&lt;/p&gt;
+                    &lt;br/&gt;
+                    &lt;p&gt;This application is for the Respond Recover Rebuild $2,000 COVID Assistance Payment. 
+                        By completing this application you are requesting assistance due to the impacts of COVID-19, 
+                        and any financial assistance provided to you by the Cherokee Nation will be used to help meet your needs.&lt;/p&gt;
+                    &lt;br/&gt;
+                    &lt;p&gt;Please review the eligibility requirements listed below.&lt;/p&gt;</value>
+    </labels>
+    <labels>
+        <fullName>WIC_Letter_or_EBT</fullName>
+        <categories>WIC Confirmation</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WIC Letter or EBT</shortDescription>
+        <value>Households will receive a letter or EBT card in May. Please contact our office if you do not hear anything by May 18th.</value>
+    </labels>
+    <labels>
+        <fullName>WIC_Program_StartDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Enter MM/DD/YYYY date format</shortDescription>
+        <value>02/24/2022</value>
+    </labels>
+    <labels>
+        <fullName>WIC_Program_Under_Const_Msg</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Under construction message</shortDescription>
+        <value>The Cherokee Nation Summer Nutrition Project application will open March 1, 2022.  If you have any questions regarding the Summer Nutrition Project, please call us at 918-453-5257, Monday through Friday 8am-5pm.</value>
+    </labels>
+    <labels>
+        <fullName>WIC_Support_Email</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WIC_Support_Email</shortDescription>
+        <value>WICSEBTC@cherokee.org</value>
+    </labels>
+    <labels>
+        <fullName>WIC_Support_Phone</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WIC_Support_Phone</shortDescription>
+        <value>539-234-3265</value>
+    </labels>
+</CustomLabels>

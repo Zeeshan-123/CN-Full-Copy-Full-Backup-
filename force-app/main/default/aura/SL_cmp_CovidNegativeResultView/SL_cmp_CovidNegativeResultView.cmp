@@ -1,0 +1,265 @@
+<aura:component access="global">
+
+    <aura:attribute name="patientName" type="string"/>
+
+    <div class="main-container">
+        <div class="card m-box bg-white">
+            <img class="covidNeg-img slds-align_absolute-center slds-p-top_small" 
+                 src="{!$Resource.Test_Result_Header}" 
+                 alt=""/>
+            <div class="m-box-style">
+                <div class="row text-center">
+                    <div class=" col-sm-4"> 
+                        <p class="l2">Name: {!v.patientName}</p>
+                    </div>
+                </div>
+                <div class=" text-center">
+                    <h5 class="cnMainHeading">Negative COVID-19 Result: Next Steps</h5>
+                </div>
+                <p>
+                    If you need a copy of your test results, you can print them from the Patient Portal or call your nearest CNHS Medical Records Department.
+                </p>
+
+                <div class="slds-p-bottom_small">
+                    <div class="blockHead">
+                        <span class="blocktext">
+                            For NEGATIVE Results with <br/> Symptoms
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            Stay home, wear a mask and social distance from others (even family) until fever resolves and symptoms improve.
+                        </li>
+                        <li>
+                            Wear a mask when around others for a minimum of 10 days from onset of symptoms.
+                        </li>
+                        <li>
+                            If you are concerned that you may still have COVID-19, consider contacting your primary care 
+                            provider to rule out other possible causes for your symptoms.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="slds-p-bottom_small">
+                    <div class="blockHead">
+                        <span class="blocktext">
+                            For NEGATIVE Results with <br/> NO Symptoms
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            <span class="slds-text-title_bold">Known Exposure -</span> 
+                            See page 2 for "What to do if You Have Been Exposed to Someone with COVID-19"
+                        </li>
+                        <li>
+                            <span class="slds-text-title_bold">NO Known Exposure -</span> 
+                            Return to work/daily activities, follow strict precautions of wearing a mask whenaround others, 
+                            frequent hand washing and maintaining social distancing of 6 feet.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="slds-p-bottom_small">
+                    <div class="blockHead">
+                        <span class="blocktext">
+                            For Negative Results for re-testing <br/> at day 5-7 of QUARANTINE.
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            Release from quarantine the day following your negative test result.
+                        </li>
+                        <li>
+                            Wear a mask when around others for a minimum of 10 days.
+                        </li>
+                        <li>
+                            If you are concerned that you may still have COVID-19, consider contacting your 
+                            primary care provider to rule out other possible causes for your symptoms.
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="slds-p-bottom_small">
+                    <div class="blockHead">
+                        <span class="blocktext">
+                            For Negative Results for re-testing <br/> at day 5-7 of ISOLATION.
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            If no fever for 24 hours without fever reducing medication and other symptoms improving - Release from isolation.
+                        </li>
+                        <li>
+                            Wear a mask when around others for a minimum of 10 days from the onset of symptoms or the date of positive test.
+                        </li>
+                        <li>
+                            If you are unable to wear a mask, isolation should be for the full 10 days, even with a negative test.
+                        </li>
+                        <li>
+                            If you are still running a fever and/or symptoms have not improved by day 10 
+                            <span class="slds-text-title_bold"> OR </span>
+                            you are concernedthat you may still have COVID-19, contact your primary care provider.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="row slds-p-top_large">
+                    <div class="col-sm-6 col-md-5 col-lg-4"> 
+                        <div class="releaseFromSecBlockHead">
+                            <span class="blocktext">
+                                For Negative Results for re-testing <br/> at day 5-7 of ISOLATION.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-7"> 
+                        Any member of the public, regardless of where they live, isencouraged to receive the
+                        <span class="slds-text-title_bold">COVID-19 Vaccine.</span><br/>
+                        Appointments and walk-ins are welcome at all health center locations from 8am-4pm.<br/>
+                        <span class="slds-text-title_bold">For appointments, call 1-539-234-4099.</span>
+                    </div>
+                </div>
+
+                <!-- What to do -->
+                <div class="">
+                    <h5 class="cnMainHeading">
+                        What to do if You Have Been Exposed to Someone with COVID-19:
+                    </h5>
+                    <div class="">
+                        <h5 class="cnSubMainHeading" style="padding-left: 0px; font-size: 20px !important;">Close Contact Exposure</h5> 
+                        <span style="color: #a52a2a; font-weight: 500;">- Within 6 feet for greater than 15 minutes without a mask.</span>
+                    </div>
+                    <div class="">
+                        <h5 class="cnSubMainHeading slds-p-bottom_medium" style="padding-left: 0px; font-size: 20px !important; border-bottom: 0px;">Up to Date on Vaccinations</h5>
+                        <span style="color: #a52a2a; font-weight: 500;">- You received all recommended doses of a COVID-19 vaccine including booster(s) when eligible.</span>
+                    </div>
+                </div>
+
+                <!-- General Public Up to Date -->
+                <div class="slds-p-bottom_small">
+                    <div class="blockHead">
+                        <span class="blocktext">
+                            General Public<br/>Up to Date
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            You do not need to stay home and quarantine unless you develop symptoms.
+                        </li>
+                        <li>
+                            Strict masking when around others for 10 days after exposure.
+                        </li>
+                        <li>
+                            Get tested on day 5, 6 or 7 after exposure or when symptoms occur.
+                        </li>
+                        <li>
+                            If symptoms develop, get tested and stay home until a negative COVID-19 test confirms symptoms are not due to COVID-19.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Healthcare Personnel Up to Date -->
+                <div class="slds-p-bottom_small">
+                    <div class="releaseFromSecBlockHead" style="width: 30%;">
+                        <span class="blocktext">
+                            Healthcare Personnel<br/>Up to Date
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            You do not need to stay home and quarantine unless you develop symptoms.
+                        </li>
+                        <li>
+                            Strict masking when around others for 10 days after exposure.
+                        </li>
+                        <li>
+                            Get tested on day 5, 6 or 7 after exposure or when symptoms occur.
+                        </li>
+                        <li>
+                            If symptoms develop, get tested and stay home until a negative COVID-19 test confirms symptoms are not due to COVID-19.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Not Up to Date on Vaccinations -->
+                <div class="slds-p-bottom_medium">
+                    <div class="">
+                        <h5 class="cnSubMainHeading" style="padding-left: 0px; font-size: 20px !important; border-bottom: 0px;">
+                            Not Up to Date on Vaccinations -
+                        </h5>
+                        <span style="color: #a52a2a; font-weight: 500;">
+                            You have not received all recommended doses of a COVID-19 vaccine; 
+                            it has been more than 5 months since you received the second dose of an mRNA vaccine (Pfizer or Moderna) WITHOUT a booster, 
+                            or it has been more than 2 months since you received the Janssen vaccine WITHOUT a booster.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- General Public Not Up to Date -->
+                <div class="slds-p-bottom_small">
+                    <div class="blockHead">
+                        <span class="blocktext">
+                            General Public<br/>Not Up to Date
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            Stay home and quarantine for 5 days even if you are not having symptoms.
+                        </li>
+                        <li>
+                            Strict masking when around others for an additional 5 days after quarantine.
+                        </li>
+                        <li>
+                            Get tested on day 5 after exposure.
+                        </li>
+                        <li>
+                            If symptoms develop, get tested and stay home until a negative COVID-19 test confirms symptoms are not due to COVID-19.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Healthcare Personnel Not Up to Date -->
+                <div class="slds-p-bottom_small">
+                    <div class="releaseFromSecBlockHead" style="width: 30%;">
+                        <span class="blocktext">
+                            Healthcare Personnel<br/>Not Up to Date
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <ul class="slds-list_dotted sm-fnt" style="color: #002286;">
+                        <li>
+                            Stay home and quarantine for 7 days even if you are not having symptoms.
+                        </li>
+                        <li>
+                            Strict masking when around others for 10 days after exposure.
+                        </li>
+                        <li>
+                            Get tested immediately after exposure AND on day 5, 6 or 7 after exposure.
+                        </li>
+                        <li>
+                            If symptoms develop, get tested and stay home until a negative COVID-19 test confirms symptoms are not due to COVID-19.
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="text-center" style="font-size: 21px; color: #002286; font-weight: 700;">
+                    For questions related to COVID-19, please call 1-833-528-0063 or visit health.cherokee.org
+                </p>
+            </div>
+        </div>
+    </div>
+</aura:component>

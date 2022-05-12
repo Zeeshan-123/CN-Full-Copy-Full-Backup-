@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Employed/Self-Employed</fullName>
+        <default>false</default>
+        <label>Employed/Self-Employed</label>
+    </customValue>
+    <customValue>
+        <fullName>Unemployed</fullName>
+        <default>false</default>
+        <label>Unemployed</label>
+    </customValue>
+    <customValue>
+        <fullName>Unemployment Benefits</fullName>
+        <default>false</default>
+        <label>Unemployment Benefits</label>
+    </customValue>
+    <customValue>
+        <fullName>Social Security or Veteran&apos;s Benefits</fullName>
+        <default>false</default>
+        <label>Social Security or Veteran&apos;s Benefits</label>
+    </customValue>
+    <customValue>
+        <fullName>Disability Benefits</fullName>
+        <default>false</default>
+        <label>Disability Benefits</label>
+    </customValue>
+    <masterLabel>Employment Status</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,117 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" Controller="Community_AnimalHarvestController">
+    
+   <ltng:require styles="{!$Resource.CN_Boot}"/>
+   <aura:attribute name="radioOptions" type="List" default="[
+                                                            {'label': 'Yes', 'value': 'true'},
+                                                            {'label': 'No', 'value': 'false'}
+                                                            ]"/>
+    <aura:attribute name="radioValue" type="String" default="true"/>
+    <aura:attribute name="landTypeList" type="String[]"/>
+    <aura:attribute name="methodList" type="String[]"/>
+    <aura:attribute name="ageGroupList" type="String[]"/>
+    <aura:attribute name="countyList" type="String[]"/>
+    <aura:attribute name="CVCase" type="Case" 
+                    default="{ 'sobjectType': 'Case'
+                    }"/>
+    <aura:attribute name="harvestDateValue" type="String"/> 
+    <aura:attribute name="landTypeValue" type="String"/>
+    <aura:attribute name="methodValue" type="String"/>
+    <aura:attribute name="antlerStatusValue" type="Boolean"/>
+    <aura:attribute name="ageGroupValue" type="String"/> 
+    <aura:attribute name="pointsLeftValue" type="double"/>
+    <aura:attribute name="pointsRightValue" type="double"/>
+    <aura:attribute name="requestCreated" type="boolean" default="false"/>
+    <aura:attribute name="createRequest" type="boolean" default="true"/>
+    <aura:attribute name="requestNumber" type="string"/>
+      
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:if isTrue="{!v.createRequest}">
+    <div class="main-container">
+            <div class="card m-box">
+                <img src="{!$Resource.White_Tail_Deer_Header}" alt=""/>
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #d88e2d;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                                Whitetail Deer Harvest Form
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                    
+                </div>
+                
+        <div class="m-box-style">
+            <div class="row">
+                <div class="col-sm-6 setmargin">        
+                    <lightning:input aura:id="harvestDate" type="datetime" name="harvestDate" label="Date/Time of Harvest" required="true" value="{!v.harvestDateValue}" onchange="{!c.clearError}" dateStyle="Short" timeStyle="Short"></lightning:input>
+
+                </div>
+            </div>
+    	<lightning:select aura:id="countyHarvest" name="countyHarvest" label="County of Harvest" required="true" value="{!v.CVCase.County_of_Harvest__c}" onchange="{!c.clearError}">
+           <option value="">--None--</option>
+            <aura:iteration items="{!v.countyList}" var="county" indexVar="key" >
+                <option text="{!county.value}" value="{!county.key}"></option>
+            </aura:iteration>
+        </lightning:select>
+        <lightning:select aura:id="landType" name="landType" label="Land Type" required="true" value="{!v.CVCase.Land_Type__c}" onchange="{!c.clearError}">
+           <option value="">--None--</option>
+            <aura:iteration items="{!v.landTypeList}" var="lnd" indexVar="key" >
+                <option text="{!lnd.value}" value="{!lnd.key}"></option>
+            </aura:iteration>
+        </lightning:select>
+        <lightning:select aura:id="methodOfHarvest" name="methodOfHarvest" label="Method of Harvest" required="true" value="{!v.CVCase.Method_of_Harvest__c}" onchange="{!c.clearError}">
+            <option value="">--None--</option>
+            <aura:iteration items="{!v.methodList}" var="mthd" indexVar="key">
+                <option text="{!mthd.value}" value="{!mthd.key}"></option>
+            </aura:iteration>
+        </lightning:select>
+        <lightning:radioGroup aura:id="antlerStatus" name="antlerStatus" label="Is the Deer Antlered?" options="{!v.radioOptions}" value="{!v.radioValue}" type="radio" onchange="{!c.clearError}"></lightning:radioGroup> 
+    	<aura:if isTrue="{!v.radioValue}">
+        <lightning:input aura:id="pointsLeft" type="number" name="pointsLeft" label="Points Left" fieldLevelHelp="Value must be a whole number between 0 and 25" required="true" min="0" max="25" maxlength="2" onchange="{!c.formatNum}" value="{!v.CVCase.Points_Left__c}"></lightning:input>
+        <lightning:input aura:id="pointsRight" type="number" name="pointsRight" label="Points Right" fieldLevelHelp="Value must be a whole number between 0 and 25" required="true" min="0" max="25" maxlength="2" onchange="{!c.formatNum}" value="{!v.CVCase.Points_Right__c}"></lightning:input>  
+        </aura:if>
+
+         <lightning:select aura:id="ageGroup" value="{!v.CVCase.Age_Group_of_Deer__c}" label="Age Group of Deer" required="true" onchange="{!c.clearError}" >
+            <option value="">--None--</option>
+            <aura:iteration items="{!v.ageGroupList}" var="age" indexVar="key">
+                <option text="{!age.value}" value="{!age.key}"></option>
+            </aura:iteration>
+        </lightning:select>
+             <div class="text-center" style="margin-top:20px;" >
+                   <lightning:button label="Submit" title="Submit" variant="brand" onclick="{!c.save}"></lightning:button>
+
+                </div>
+            </div>
+               
+              
+        </div>
+          
+        
+
+    </div>
+        </aura:if>
+    <div>
+            <aura:if isTrue="{!v.requestCreated}">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-10 col-md-8 cl-lg-6">
+                            <div class="card sm-box">
+                                <div class="align-s-content">
+                                    <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Thank you for your submission. 
+                                
+                                </p> </strong>
+                                <p class="msgTextFont" ><strong>Confirmation Number: </strong> {!v.requestNumber}</p>
+
+                                      <p class="msgTextFont" >This confirmation number is to remain with the carcass to its destination, throughout processing, or storage at a commercial processing facility.</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </aura:if>
+        </div>
+        
+</aura:component>

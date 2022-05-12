@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Send updated account to parent component">
+	<aura:attribute name="Accnt" type="Object" /> 
+</aura:event>

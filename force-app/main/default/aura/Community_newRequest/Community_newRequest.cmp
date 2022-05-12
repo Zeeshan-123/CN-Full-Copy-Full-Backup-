@@ -1,0 +1,219 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_newCaseController">
+     <ltng:require styles="{!$Resource.CN_Boot}"/>
+     <!--Allow Multi Line Space in Toast Messages-->
+     <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        }
+    </aura:html>
+    
+    <aura:attribute name="iAccept" type="Boolean" default="false"/>
+    <!--Attributes for Request Reason Multi-select Picklist Used in lightning:dualListbox-->
+    <aura:attribute name="availableReasonList" type="String[]" description="Available Reason Picklist Values"/>
+    <aura:attribute name="selectedReasonList"  type="String[]"  description="Selected Reason Picklist Values"/>
+    
+    <aura:attribute name="options" type="List" default="[
+                                                        {'label': 'Duplicate CDIB', 'value': 'Duplicate CDIB'},
+                                                        {'label': 'Duplicate Citizen Card', 'value': 'Duplicate Citizen Card'},
+                                                        {'label': 'Indian Preference Letter', 'value': 'Indian Preference Letter'},                                                    
+                                                        {'label': 'Relinquishment', 'value': 'Relinquishment'},                                                    
+                                                        {'label': 'Other', 'value': 'Other'}                                                  
+                                                        ]"/>
+
+    <aura:attribute name="value" type="List" default=""/>
+    
+    <!--Attributes for Picklists-->
+    <aura:attribute name="isUnderEighteenList" type="String[]" />
+    <aura:attribute name="requestingPersonList" type="String[]" />
+    
+    <!--Attributes for file-->
+    <aura:attribute name="filetype" type="List" default="['.jpg', '.PNG', '.jpeg', '.pdf']"/>
+    <aura:attribute name="parentId" type="String"/>
+    <aura:attribute name="ShowFileModal" type="boolean" default="false"/>
+    
+    <!--Attributes for Required-->
+    <aura:attribute name="markNewEmailRequired" type="boolean" default="false"/>
+    <aura:attribute name="markOtherReasonRequired" type="boolean" default="false"/>
+          
+    <!--Attributes for spinner-->
+    <aura:attribute name="isActive" type="boolean" default="false"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <div class="main-container"> 
+        <div class="m-box ">
+            <div class="row">        
+                <div class="col-sm-12" >  
+                    <div class="panel-head" style="background-color: #B30707; margin-bottom:5px;"> 
+                        <h5 class="mainHeading text-center" style="color:#CBCBCB">
+                            Changes requested in this form will not be reflected on your account until the Tribal Registration department has processed them.
+                        </h5> </div>
+                </div>
+            </div>
+        </div>
+        <div class="card m-box ">
+            
+            <div class="row">        
+                <div class="col-sm-12" >  
+                    <div class="panel-head">  <h5 class="mainHeading text-center">New Request Form</h5> </div>
+                    <div class="m-Border "></div>
+                </div>
+            </div>
+            
+            <div class="m-box-style">
+                <!--Request Reason-->      
+                <h1 class="head ">Request Reason:</h1> 
+                <div class="row ">        
+                    <div class="col" >  
+                        <div class=" multiSelect">
+                                           <lightning:checkboxGroup aura:id="selectReason"
+                                                     required="true"
+                                                     label="Select Reason/s"
+                                                     options="{!v.options}"
+                                                     value="{!v.value}"
+                                                     onchange="{!c.handleReasonChange}"
+                                                     onblur="{!c.clearError}"/>
+                        </div>
+                    </div>
+                </div>
+                <!--/Request Reason-->  
+                
+                <!--Other-->
+                <aura:if isTrue="{!v.markOtherReasonRequired}">
+                    <h1 class="head">Other:</h1> 
+                    <div class="row ">           
+                        <div class="col-sm-6 " >  
+                            <lightning:textarea aura:id="otherReason"
+                                                required="{!v.markOtherReasonRequired}" 
+                                                label="Other Reason"
+                                                class="alignField inputField"/>                
+                        </div>
+                    </div>
+                </aura:if>
+                <!--/Other-->
+                
+                <!-- Update Contact Information Section-->
+                <aura:if isTrue="{!v.markNewEmailRequired}">
+                    <h1 class="head">Update Contact Information:</h1> 
+                    <div class="row "> 
+                            <div class="col-sm-6 " >  
+                               <lightning:input type="text"
+                                                required="{!v.markNewEmailRequired}"
+                                                aura:id="newEmail"
+                                                label="New Email" 
+                                                class="alignField inputField"
+                                                placeholder="New Email"
+                                                maxlength="30"/>                
+                            </div>
+                    </div>
+                </aura:if>
+                <!-- /Update Contact Information Section-->
+                
+                <!--Important-->     
+                <h1 class="head ">IMPORTANT:</h1>   
+                <div class="row">    
+                    
+                    <div class="col-sm-6" style=" text-align:justify;">   
+                        <lightning:select 	 label="If the applicant is under 18, 
+                                                    is he/she listed on any Court appointed record,
+                                                    such as guardianship, divorce custody. etc.?"
+                                          class="alignField inputField"
+                                          aura:id="yN" > 
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.isUnderEighteenList}" var="val" >   
+                                <option text="{!val.value}" value="{!val.key}"/>
+                            </aura:iteration>
+                        </lightning:select>  
+                    </div>
+                    
+                </div>
+                
+                <div class="row">        
+                    <div class="col-sm-6 " >  
+                        <lightning:select 	class="alignField inputField"
+                                          label="Requesting Person"
+                                          aura:id="requestingPerson"
+                                          required="true"
+                                          onblur="{!c.clearError}"
+                                          > 
+                            
+                            <option value="">--None--</option>
+                            <aura:iteration items="{!v.requestingPersonList}" var="val" >   
+                                <option text="{!val.value}" value="{!val.key}"/>
+                            </aura:iteration>
+                        </lightning:select> 
+                    </div>
+                    
+                </div>         
+                
+                <div class="row ">        
+                    <div class="col-sm-12" >  
+                        <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:3px; color:rgb(90,90,90);">
+                            I certify that the information contained in this form is correct to the best of my knowledge. 
+                            I understand that by checking the “I accept” box I authorize Cherokee Nation to update 
+                            the Cherokee Citizenship Registration
+                            database with the information I have provided herein.
+                            By checking this box I acknowledge and give consent to Registration
+                            to store and share my mailing and physical address with other Cherokee Nation 
+                            departments through which I have applied for or am currently receiving assistance.</p>
+                        <lightning:input type="checkbox"  required="true"
+                                         label="I Accept"
+                                         aura:id="acceptCheckBox" 
+                                         checked="{!v.iAccept}" 
+                                         onblur="{!c.clearError}"/>
+                    </div>
+                    
+                </div>  
+                <!--/Important--> 
+                
+                <div class=" text-center">
+                    <lightning:button label="Submit" disabled="{!v.isActive}" class="btn submit-button " variant="brand" onclick="{!c.submitForm}"/>
+                    <div class="slds-is-relative">
+                        <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                    </div>
+                </div> 
+                
+                <!--File Modal-->   
+                <aura:if isTrue="{!v.ShowFileModal}">
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+                        <div class="slds-modal__container">
+                            <!--Modal Header-->
+                            <header class="slds-modal__header">
+                                
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Do you want to attach files with this request? or press finish to end.</h2>
+                            </header>  <!--/Modal Header-->
+                            
+                            <!--Modal Body-->
+                            <div class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+                                
+                                <form class="slds-form--stacked" >               
+                                    <!--Upload Attachment-->
+                                    <lightning:fileUpload label="Upload Files"
+                                                          name="fileUploader"
+                                                          multiple="true"
+                                                          accept="{!v.filetype}"
+                                                          recordId="{!v.parentId}"
+                                                          onuploadfinished="{!c.addFiles}"                      
+                                                          />
+                                    <!--/Upload Attachment-->
+                                    
+                                    <div class=" text-center">
+                                        <lightning:button label="Finish" class="btn submit-button " variant="brand"  onclick="{!c.endRequestWithOutFiles}"/>
+                                    </div> 
+                                </form>
+                                
+                                
+                            </div> <!--/Modal Body-->
+                            
+                        </div>
+                    </section>
+                    
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                    
+                </aura:if> 
+                <!--/File Modal-->   
+            </div>
+        </div>
+    </div>
+</aura:component>

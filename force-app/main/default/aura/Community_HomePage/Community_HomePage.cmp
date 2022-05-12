@@ -1,0 +1,274 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global" controller="Community_Home">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <!--Attributes--> 
+    <aura:attribute name="accId" type="String"/> 
+    <aura:attribute name="userName" type="String"/> 
+    <aura:attribute name="userTribeId" type="String"/> 
+    <aura:attribute name="Phone" type="String"/> 
+    <aura:attribute name="Email" type="String"/> 
+    <aura:attribute name="street" type="String"/> 
+    <aura:attribute name="state" type="String"/> 
+    <aura:attribute name="city" type="String"/> 
+    <aura:attribute name="country" type="String"/> 
+    <aura:attribute name="add" type="String"/> 
+    <aura:attribute name="caseList" type="object[]"/>
+     <aura:attribute name="accnt" type="object"/>
+    <aura:attribute name="CloneAccnt" type="object"/>
+    <aura:attribute name="IsInterestedInSurvey" type="Boolean"/>
+    <aura:attribute name="showMyInfoModel" type="Boolean"/>
+    <aura:attribute name="showCommModal" type="Boolean"/>
+    <aura:attribute name="firstOptIn" type="boolean"/>
+    <aura:attribute name="isLoading" type="boolean"/>
+    
+   
+    <!--Handler -->
+  <aura:attribute name="showHideBanner" type="boolean" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:handler name="render" value="{!this}" action="{!c.doRender}"/>
+    <aura:handler name="ModalCloseEvent" event="c:ModalCloseEvt" action="{!c.closeAction}"/>
+    <aura:handler name="ReturnAccountObj" event="c:Community_ReturnAccount" action="{!c.updateAccount}" />
+    
+    <aura:attribute name="showSurveyPopup" type="Boolean"/>
+     <aura:if isTrue="{!v.isLoading}">
+            <lightning:spinner aura:id="mySpinner" variant="brand" />
+        </aura:if>
+    <div class="main-container"> 
+        <div class="card m-box">
+            <!--Headlines-->          
+           <aura:if isTrue="{!v.showHideBanner}"> 
+                <div class="row">        
+                    <div class="col-sm-12" style='margin-bottom:10px;'> 
+                        <div class="marquee">
+                               <a onclick="{!c.rrrApp}">
+                                <p class="mainHeading text-center" style="color:#CBCBCB">
+                                   Apply for the COVID Assistance program NOW
+                                </p>
+                            </a>
+                        </div>          
+                    </div>
+                </div>
+            </aura:if>
+
+             <!--/Headlines-->
+             <!--Contact Us-->
+            <div class="card-body">
+                <div class="panel-head">  <h5 class="mainHeading">Cherokee Nation Contact Information</h5> </div>
+                <div class="m-Border "></div>
+                
+                <p class="l-para" style="text-align: initial;">
+                    For questions or issues regarding the Gadugi Portal please email:
+                    support-gadugiportal@cherokee.org</p>
+                
+                <div class="row no-gutters">
+                    <lightning:icon class="icn" iconName="utility:call" size="small"/>
+                    <div class="col">
+                        <h3 class="head-2"> 
+                            For technical assistance with the portal or problems with access please call 918-453-5058.
+                        </h3>
+                    </div>
+                </div>
+                <p class="l-para">Unless otherwise specified hours of operation are Monday–Friday 8 a.m. to 5 p.m.</p>
+                 <!--/Contact Us-->
+                <div class="row ">
+                    <div class="col-sm-6 vid" >      
+                        <div class="panel-head"> <h5 class="mainHeading " >Welcome, {!v.userName}</h5> </div>    
+                        <div class="m-Border "></div>
+                        <p style="margin-bottom: 1.5%;">  <aura:unescapedHtml value="{!$Label.c.HomePage_Welcome_Message}"/>  </p>
+                        <!--Embed Video-->        
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe  class="embed-responsive-item " name="frm" ></iframe>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">              
+                        <div class="panel-head">  <h5 class="mainHeading">My Profile</h5> </div>
+                        <div class="m-Border "></div>
+                        <div class="row  ">  
+                            <div class="col-6">                           
+                                <h1 class="subHeading r1-l1" >Name</h1>
+                                <div class="detail-subBorder"></div>
+                                <p class="detail-data">  {!v.userName}</p>
+                            </div>
+                            <div class="col-6 ">    
+                                <h1 class="subHeading r1-l2 " >Citizen ID</h1> 
+                                <div class="detail-subBorder"></div>
+                                <p class="detail-data">  {!v.userTribeId} </p>
+                            </div>     
+                        </div>        
+                        
+                        <div class="row ">      
+                            <div class="col-6 ">                            
+                                <h1 class="subHeading">Email</h1>
+                                <div class="detail-subBorder"></div>
+                                <p class="detail-data">  {!v.Email}</p>
+                            </div>
+                            <div class="col-6 ">    
+                                <h1 class="subHeading">Phone</h1> 
+                                <div class="detail-subBorder"></div>
+                                <p class="detail-data">  {!v.Phone} </p>
+                            </div>     
+                        </div>        
+                        <div class="row "> 
+                            <div class="col-6">                             
+                                <h1 class="subHeading">Address</h1>
+                                <div class="detail-subBorder"></div>
+                                <p class="detail-data"> 
+                                    <lightning:formattedAddress street="{!v.street}" 
+                                                                province="{!v.state}" 
+                                                                city="{!v.city}" 
+                                                                country="{!v.country}" 
+                                                                disabled="true"/>
+                                </p>
+                            </div>
+                            <div class="col-6">  
+                            </div>    
+                            <a href="/s/new-request" style="padding-left: 15px; margin-top: 20px;"> 
+                                Click Here to Update your Information
+                            </a>   
+                        </div>   
+                        <!-- Communication Preferences -->
+                <!--  <div class="panel-head"> 
+                            <div class="row  ">
+                                <div class="col">    
+                                    <h5 class="mainHeading">Communication Preferences</h5>
+                                </div>
+                                <div class="col">  
+                                    <lightning:button label="Edit" class=" btn rec-button " variant="brand"  onclick="{!c.onCommPrefEdit}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-Border "></div>
+                        <div class="row  ">  
+                            <div class="col-6">                           
+                                <h1 class="subHeading r1-l1 " >Opt In To Email</h1>
+                                <input class="detail-data" type="checkbox" checked="{!v.accnt.Opt_In_to_Email__c}" disabled="true">  </input>
+                            </div>
+                        
+                            <div class="col-6 ">                            
+                                <h1 class="subHeading r1-l1 ">Opt In To SMS</h1>
+                                <input class="detail-data" type="checkbox" checked="{!v.accnt.Opt_In_to_SMS__c}" disabled="true">  </input>
+                            </div>
+                            
+                             
+                            
+                            
+                            
+                             
+                        
+                         
+                           
+                        
+                        </div> -->
+                    </div>
+                    
+                    
+                </div>
+
+                
+                <!--Cases-->
+                <h5 class="caseHeading" id="openCase" style="margin-top:2rem;">My Requests</h5>
+                <div class="cse-Border " ></div>
+                <div id="tbl">   
+                    <div class="table-responsive-sm">            
+                        <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col">Request Number</th>
+                                    <th scope="col">Request Reason</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Created Date</th>
+                                    <th scope="col">View Request</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <aura:iteration items="{!v.caseList}" var="case" >   
+                                    <tr>
+                                        <aura:if isTrue="{!case.EBT_Confirmation_Number__c==null}"> 
+                                            <td scope="row">{!case.CaseNumber}</td>
+                                            <aura:set attribute="else">
+                                                <td scope="row">{!case.EBT_Confirmation_Number__c}</td>
+                                            </aura:set>
+                                        </aura:if>
+                                        <td scope="row">{!case.Request_Reason__c}</td>
+                                        <td scope="row">{!case.Status}</td>
+                                        <td scope="row"><lightning:formattedDateTime value="{!case.CreatedDate}"/></td>
+                                        <td scope="row">
+                                            <a href="{!case.url}" target="_blank"  >
+                                                View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    
+                                </aura:iteration>     
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="crds">
+                    <table class="table table-borderless requestsTable clsSmallScreen">
+                        
+                        <tbody>
+                            <aura:iteration items="{!v.caseList}" var="case" >   
+                                <tr>
+                                    <td data-th="Status" class="clsSmallScreentatus">
+                                        <span class="clsSmallStatus">{!case.Status}</span>
+                                        <span class="clsIconContainer">
+                                            <lightning:icon iconName="action:new_case" size="x-small" alternativeText="Request" title="Request" />    
+                                        </span>
+                                    </td>
+                                    <aura:if isTrue="{!case.EBT_Confirmation_Number__c==null}"> 
+                                        <td scope="row">{!case.CaseNumber}</td>
+                                        <aura:set attribute="else">
+                                            <td scope="row">{!case.EBT_Confirmation_Number__c}</td>
+                                        </aura:set>
+                                    </aura:if>
+                                    <td  data-th="Request Reason">{!case.Request_Reason__c}</td>
+                                    <td  data-th="Created Date"><lightning:formattedDateTime value="{!case.CreatedDate}"/></td>
+                                    <td  data-th="View Request">
+                                        <a href="{!case.url}" target="_blank"  >
+                                            View Details
+                                        </a>
+                                    </td>
+                                </tr>
+                            </aura:iteration>     
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--<aura:if isTrue="{!v.showMyInfoModel}">
+                <c:Community_UpdateUserInfo OrigEmail="{!v.accnt.Users[0].Email}"
+                                            Accnt="{!v.accnt}"
+                                            getPickListMap="{!v.getPickListMap}"
+                                            isFromPage="Home" 
+                                            onclick="{!c.closeInfoEdit}" 
+                                            StatesWithStateCodes="{!v.StatesWithStateCodes}"/>
+            </aura:if>-->
+                    <!-- Communication Preferences Window -->
+                    <!--
+            <aura:if isTrue="{!v.showCommModal}">
+                <c:Community_UpdateCommPreferences OrigEmail="{!v.accnt.Users[0].Email}"
+                                            Accnt="{!v.accnt}"
+                                            getPickListMap="{!v.getPickListMap}"
+                                            isFromPage="Home" 
+                                            onclick="{!c.closeCommEdit}"
+                                            close="{!c.hideCommPref}"
+                                            StatesWithStateCodes="{!v.StatesWithStateCodes}"/>
+            </aura:if>-->
+        </div>
+    </div>
+            <!--Initial Communication Opt In-->
+  <!--   <aura:if isTrue="{!(!v.firstOptIn)}">
+         <c:Community_OptInPopUp close="{!c.hideOptIn}" 
+                           Accnt="{!v.accnt}" />
+</aura:if> -->
+  <!--commented for the closure of Surveys  
+   <aura:if isTrue="{!v.IsInterestedInSurvey}">
+       <c:Community_Survey close="{!c.hideModal}" 
+                           accntId="{!v.accnt.Id}" />
+</aura:if> 
+-->
+    
+</aura:component>

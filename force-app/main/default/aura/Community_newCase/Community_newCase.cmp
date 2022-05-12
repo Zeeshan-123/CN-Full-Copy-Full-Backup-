@@ -1,0 +1,360 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_newCaseController">
+
+    <aura:attribute name="iAccept" type="Boolean" default="false"/>
+    <!--Attributes for Request Reason Multi-select Picklist Used in lightning:dualListbox-->
+    <aura:attribute name="availableReasonList" type="String[]" description="Available Reason Picklist Values"/>
+    <aura:attribute name="selectedReasonList"  type="String[]"  description="Selected Reason Picklist Values"/>
+    
+	<!--Attributes for Picklists-->
+    <aura:attribute name="isUnderEighteenList" type="String[]" />
+    <aura:attribute name="requestingPersonList" type="String[]" />
+    
+     <!--Attributes for Physical Address Map-->
+    <aura:attribute name="mapMarkersForPhysicalAddress" type="Object" default="" />
+    <aura:attribute name="zoomLevelForPhysicalAddress" type="Integer" default="13"  />
+    <aura:attribute name="listForPhysicalAddress" type="Object[]" default="[]" />
+    <aura:attribute name="mapCenterForPhysicalAddress" type="Object"/>
+    
+    <!--Attributes for Mailing Address Map-->
+    <aura:attribute name="mapMarkersForMailingAddress" type="Object" default="" />
+    <aura:attribute name="zoomLevelForMailingAddress" type="Integer" default="13"  />
+    <aura:attribute name="listForMailingAddress" type="Object[]" default="[]" />
+    <aura:attribute name="mapCenterForMailingAddress" type="Object"/>
+    
+     <!--Attributes for file-->
+    <aura:attribute name="filetype" type="List" default="['.jpg', '.PNG', '.jpeg', '.pdf']"/>
+    <aura:attribute name="parentId" type="String"/>
+    <aura:attribute name="ShowFileModal" type="boolean" default="false"/>
+    
+     <!--Attributes for Required-->
+    <aura:attribute name="physicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="mailingAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="markNewLastNameRequired" type="boolean" default="false"/>
+    <aura:attribute name="markNewEmailRequired" type="boolean" default="false"/>
+    <aura:attribute name="markPhoneFieldsRequired" type="boolean" default="false"/>
+    <aura:attribute name="markOtherReasonRequired" type="boolean" default="false"/>
+    
+    <!--Attributes for Physical and Mailing State/Country Picklists-->
+     <aura:attribute name="getParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getChildList" type="list" default="[]"/>
+    <aura:attribute name="getPickListMap" type="map"/>
+    <aura:attribute name="getDisabledChildField" type="boolean" default="true"/>
+    
+    <aura:attribute name="getObjectName" type="string" default="Case"/>
+    <aura:attribute name="getParentFieldAPI" type="string" default="Physical_Countries__c"/>
+    <aura:attribute name="getChildFieldAPI" type="string" default="Physical_States__c"/>
+    <aura:attribute name="getPhysicalParentValue" type="string" default=""/>
+    <aura:attribute name="getPhysicalChildValue" type="string" default=""/>
+    
+    
+    <aura:attribute name="getMailingParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getMailingChildList" type="list" default="[]"/>
+    <aura:attribute name="getMailingParentValue" type="string" default=""/>
+    <aura:attribute name="getMailingChildValue" type="string" default=""/>
+    <aura:attribute name="getMailingDisabledChildField" type="boolean" default="true"/>
+    
+    <!--Attributes for spinner-->
+    <aura:attribute name="isSpinner" type="boolean" default="false"/>
+    <aura:attribute name="isActive" type="boolean" default="false"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+      
+    <div class="main-container"> 
+      <div class="card m-box ">
+         
+      	 <div class="row">        
+            <div class="col-sm-12" >  
+                <div class="panel-head">  <h5 class="mainHeading text-center">New Request Form</h5> </div>
+              <div class="m-Border "></div>
+           </div>
+         </div>
+          
+     <div class="m-box-style">
+        <!--Request Reason-->      
+        <h1 class="head ">Request Reason:</h1> 
+         <div class="row ">        
+            <div class="col" >  
+                <lightning:dualListbox aura:id="selectReason"
+                               disableReordering="true"
+                               required="true"        
+                               name="Reason"
+                               label="Select Reason"
+                               sourceLabel="Available"
+                               selectedLabel="Selected"
+                               options="{!v.availableReasonList}"
+                               value="{!v.selectedReasonList}"
+                               onchange="{!c.handleReasonChange}"
+                               />
+     	</div>
+         </div>
+         <!--/Request Reason-->  
+         
+    	 <!--Other-->
+         <h1 class="head">Other:</h1> 
+         <div class="row ">           
+          <div class="col-sm-6 " >  
+          <lightning:textarea aura:id="otherReason" required="{!v.markOtherReasonRequired}"  label="Other Reason" class="alignField inputField"/>                
+         </div>
+          </div>
+         <!--/Other-->
+         
+         <!-- Update Contact Information Section-->
+         <h1 class="head">Update Contact Information:</h1> 
+         <div class="row "> 
+             
+         <div class="col-sm-6 " >  
+          <lightning:input  type="text" required="{!v.markNewLastNameRequired}" aura:id="newName" label="New Last Name" class="alignField inputField" placeholder="New Last Name"/>                
+         </div>
+             
+          <div class="col-sm-6 " >  
+          <lightning:input  type="text" required="{!v.markNewEmailRequired}" aura:id="newEmail" label="New Email" class="alignField inputField" placeholder="New Email"/>                
+          </div>
+             
+          <div class="col-sm-6 " >  
+          <lightning:input  type="text"  aura:id="newHomePhone" label="New Home Phone" class="alignField inputField" placeholder="New Home Phone"/>                
+          </div>
+             
+         <div class="col-sm-6 " >  
+          <lightning:input  type="text"  aura:id="newMobilePhone" label="New Mobile Phone" class="alignField inputField" placeholder="New Mobile Phone"/>                
+          </div>
+             
+          </div>
+         <!-- /Update Contact Information Section-->
+      
+       <!--Physical Address-->    
+      <h1 class="head">Physical Address:</h1>  
+      <div class="row "> 
+          
+         <div class="col-sm-6 " >  
+		 <lightning:input aura:id="PhysicalStreetInput" 
+                  class="alignField inputField"
+                  placeholder="Physical Address"
+                  label="Street: " 
+                  required="{!v.physicalAddressRequired}"/>
+          </div>
+           
+          <div class="col-sm-6 ">
+           <lightning:input aura:id="PhysicalCityInput" 
+                  class="alignField inputField"
+                  placeholder="Physical City"
+                  label="City: " 
+                  required="{!v.physicalAddressRequired}"/>
+          </div>
+          
+         <div class="col-sm-6 "> 
+         <lightning:select 	  class="alignField inputField"
+                           	  aura:id="PhysicalStateInput"
+                              name="childField"
+                              value="{!v.getPhysicalChildValue}"
+                              label="State"
+                              disabled="{!v.getDisabledChildField}"
+                              required="{!v.physicalAddressRequired}"         >
+             
+        <aura:iteration items="{!v.getChildList}" var="value">
+                <option value="{!value}">{!value}</option>
+        </aura:iteration>
+                    </lightning:select>
+          </div>
+          
+          <div class="col-sm-6" >  
+              <lightning:select 	  class="alignField inputField"
+                                	  name="parentField"
+                                	  aura:id="PhysicalCountryInput"
+                                      value="{!v.getPhysicalParentValue}"
+                                      label="Country"
+                                      onchange="{!c.ObjFieldByPhysicalParent}"
+                                 	  required="{!v.physicalAddressRequired}">
+                  
+                        <aura:iteration items="{!v.getParentList}" var="value">
+                            <option value="{!value}">{!value}</option>
+                        </aura:iteration>
+              </lightning:select>   
+          </div>  
+          
+       <div class="col-sm-6 " >  
+             <lightning:input  type="text" aura:id="physicalCounty" label="County" class="alignField inputField" placeholder="Physical County"/>                			                           
+          </div>
+          
+         <div class="col-sm-6 " >  
+         <lightning:input aura:id="PhysicalzipInput" 
+                        class="alignField inputField"  
+                        placeholder="Physical Zip"   
+                  		label="Zip Code: " 
+                  		required="{!v.physicalAddressRequired}"/>  
+          </div>
+
+        </div>
+         <!--/Physical Address-->    
+ 
+         
+       <!--Mailing Address-->    
+       <h1 class="head">Mailing Address:</h1>  
+         <div class="row">      
+         
+         <div class="col-sm-6 " >  
+		 <lightning:input 	aura:id="MailingStreetInput" 
+                  			class="alignField inputField" 
+                			placeholder="Mailing Address"     
+                			label="Street: " 
+                  			required="{!v.mailingAddressRequired}"/>
+             
+          </div>
+           
+          <div class="col-sm-6 " >  
+           <lightning:input	aura:id="MailingCityInput" 
+                  			class="alignField inputField"
+                  			placeholder="Mailing City"       
+                  			label="City: " 
+                 			required="{!v.mailingAddressRequired}"/>
+          </div>
+          
+         <div class="col-sm-6" > 
+         <lightning:select 	class="alignField inputField"
+                           	aura:id="MailingStateInput"
+                            name="childField"
+                            value="{!v.getMailingChildValue}"
+                            label="State"
+                            disabled="{!v.getMailingDisabledChildField}"
+            			    required="{!v.mailingAddressRequired}">
+             
+         <aura:iteration items="{!v.getMailingChildList}" var="value">
+                        <option value="{!value}">{!value}</option>
+        </aura:iteration>
+                    </lightning:select>    
+          </div>
+             
+        <div class="col-sm-6" >
+               <lightning:select	class="alignField inputField"
+                          		name="mailingParentField"
+                          		aura:id="MailingCountryInput"
+                          		value="{!v.getMailingParentValue}"
+                          		label="Country"
+                          		onchange="{!c.ObjFieldByMailingParent}"
+                           		required="{!v.mailingAddressRequired}">
+            
+       <aura:iteration items="{!v.getMailingParentList}" var="value">
+                  <option value="{!value}">{!value}</option>
+       </aura:iteration>
+                    </lightning:select>    
+        </div>  
+          
+         <div class="col-sm-6" >  
+         <lightning:input  type="text" aura:id="mailingCounty" label="County" class="alignField inputField" placeholder="Mailing County"/>             
+          </div>
+          
+         <div class="col-sm-6" >               
+               <lightning:input	aura:id="MailingzipInput" 
+                  				class="alignField inputField"
+                 				placeholder="Mailing Zip"       
+                 				label="Zip Code: " 
+                 				required="{!v.mailingAddressRequired}"/>
+          </div>
+             
+              </div>
+         <!--/Mailing Address-->     
+         
+            <!--Important-->     
+   		 <h1 class="head ">IMPORTANT:</h1>   
+           <div class="row">    
+               
+          <div class="col-sm-6" style=" text-align:justify;">   
+          <lightning:select 	 label="If the applicant is under 18, 
+             is he/she listed on any Court appointed record,
+             such as guardianship, divorce custody. etc.?"
+                           class="alignField inputField"
+                           aura:id="yN" > 
+              <option value="">--None--</option>
+              <aura:iteration items="{!v.isUnderEighteenList}" var="val" >   
+                  <option text="{!val.value}" value="{!val.value}"/>
+             </aura:iteration>
+            </lightning:select>  
+               </div>
+          
+         </div>
+         
+        <div class="row">        
+            <div class="col-sm-6 " >  
+			  <lightning:select 	class="alignField inputField"
+                                	label="Requesting Person"
+                            		aura:id="requestingPerson"
+                                    required="true"
+                                > 
+                                   
+                              <option value="">--None--</option>
+                                  <aura:iteration items="{!v.requestingPersonList}" var="val" >   
+                                      <option text="{!val.value}" value="{!val.value}"/>
+                                 </aura:iteration>
+            </lightning:select> 
+                </div>
+           
+         </div>         
+
+         <div class="row ">        
+            <div class="col-sm-12" >  
+                <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:3px; color:rgb(90,90,90);">
+                    I certify that the information contained in this form is correct to the best of my knowledge. 
+                    I understand that by checking the “I accept” box I authorize Cherokee Nation to update 
+                    the Cherokee Citizenship Registration
+                    database with the information I have provided herein.
+                    By checking this box I acknowledge and give consent to Registration
+                    to store and share my mailing and physical address with other Cherokee Nation 
+                    departments through which I have applied for or am currently receiving assistance.</p>
+		   <lightning:input type="checkbox"  required="true"
+                            label="I Accept"
+                            aura:id="acceptCheckBox" checked="{!v.iAccept}" />
+                </div>
+           
+         </div>  
+         <!--/Important--> 
+         
+      <div class=" text-center">
+      <lightning:button label="Submit" disabled="{!v.isActive}" class="btn submit-button " variant="brand" onclick="{!c.submitForm}"/>
+      <div class="slds-is-relative">
+          <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+            </div>
+         </div> 
+         
+          <!--File Modal-->   
+         <aura:if isTrue="{!v.ShowFileModal}">
+                 <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+                <div class="slds-modal__container">
+                    <!--Modal Header-->
+                    <header class="slds-modal__header">
+       
+         <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Do you want to attach files with this request? or press finish to end.</h2>
+         </header>  <!--/Modal Header-->
+                    
+                    <!--Modal Body-->
+        <div class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+                
+        <form class="slds-form--stacked" >               
+              <!--Upload Attachment-->
+                    <lightning:fileUpload label="Upload Files"
+                    name="fileUploader"
+                    multiple="true"
+                    accept="{!v.filetype}"
+                    recordId="{!v.parentId}"
+                    onuploadfinished="{!c.addFiles}"                      
+                     />
+                        <!--/Upload Attachment-->
+            
+             <div class=" text-center">
+      <lightning:button label="Finish" class="btn submit-button " variant="brand"  onclick="{!c.endRequestWithOutFiles}"/>
+            </div> 
+        </form>
+                        
+		                     
+                    </div> <!--/Modal Body-->
+                    
+                            </div>
+            </section>
+    
+   <div class="slds-backdrop slds-backdrop_open"></div>
+
+            </aura:if> 
+         <!--/File Modal-->   
+              </div>
+         </div>
+    </div>
+</aura:component>

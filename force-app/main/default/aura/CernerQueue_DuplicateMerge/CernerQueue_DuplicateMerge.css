@@ -1,0 +1,44 @@
+.THIS .slds-radio {
+    display: inline-block !important;
+    width: 40%;
+}
+.THIS .slds-radio__label{
+    padding-left: 0px;
+}
+.THIS .customRadioCls.slds-form-element{
+    padding-bottom: 5px;
+}
+.THIS .slds-form-element__control{
+    padding-left: 32%;
+}
+.THIS .slds-form-element__label{
+    margin-bottom: -20px;
+}
+.THIS .hr{
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.THIS .customRadioClsHeader.slds-form-element{
+    font-weight:bold;
+}
+.THIS .success{
+    text-align: center;
+    font-size:15px;
+}
+.THIS .Header{
+    width: 100%;
+    padding: 10px;
+}
+.THIS .one {
+    font-size:15px;
+  	margin-left: 32%;
+    float: left;
+    width: 20%;
+}
+.THIS .two {
+    font-size:15px;
+    padding-left: 60%;
+}
+.THIS .slds-text-heading_small{
+    font-weight:700;
+}

@@ -1,0 +1,26 @@
+.THIS .footer {
+ 
+    padding: 50px 0px 50px 0px;
+	display: block;
+    background-color: #2b2d31;
+    border-top: 8px solid #1f4b72;
+}
+
+.THIS .footer-img {
+	max-width: 135px;
+  
+    }
+
+.THIS  .alignment{
+    margin: 10px 15px 0 10px;
+    text-align: center;
+}
+
+.THIS .footer-para {
+    text-align: center;
+    color: #6b7079;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: lighter;
+    padding: 20px 20px 20px 20px;
+    font-size: 14px;
+}

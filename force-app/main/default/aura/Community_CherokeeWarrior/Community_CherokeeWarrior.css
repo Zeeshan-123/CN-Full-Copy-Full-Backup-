@@ -1,0 +1,400 @@
+.THIS p {
+    margin-top: 0;
+    margin-bottom: 0rem; 
+}
+
+.THIS .card-body {
+
+     padding: 0px; 
+}
+
+.THIS .p-intro {
+    text-align: justify;
+    margin-bottom:3%;   
+}
+.THIS .panel-head
+{
+    background-color:#343a40;  
+    padding: 12px;
+}
+
+.THIS .mainHeading{
+    color: #fff;
+    margin-bottom:0px !important;
+}
+
+.THIS .m-Border {
+    border:2px solid rgb(37, 116, 169);
+    margin-bottom:20px;
+}
+
+.THIS .m-box {
+ 	margin:30px 35px;
+    border:0px;
+ 
+}
+
+
+.THIS .subHeading {
+  font-family: 'Open Sans Condensed',sans-serif;
+    font-size: 15px;
+    line-height: 1.2;
+    color: #878a92;
+    margin-top: 25px;
+    
+} 
+
+
+.THIS .detail-subBorder {
+    border-bottom:1px solid #878a92;;
+    margin-bottom:15px;
+    width:68%;
+}
+
+.THIS .detail-data {
+	font-size: 14px;  
+    color: black;
+    font-family: sans-serif;
+}
+
+
+.THIS .rec-button {
+    color:White;
+    cursor: pointer;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+     float: right;
+}
+
+.THIS  .rec-button:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+.THIS .vidBox {
+   height:382px;  
+   width: 100%;
+}
+
+.THIS .m-div {
+  display: flex;
+  width: 100%;
+}
+
+.THIS .s-div{
+  flex: 1;
+  
+  
+}
+
+/*mobile devices*/
+.THIS .requestsTable
+{
+	color: #a29898;
+}
+
+@media screen and (min-width:280px) and (max-width: 767px) and (orientation: portrait)
+{
+    /*Tables into cards*/
+    	.THIS #tbl 
+    {
+       	 display: none;
+      }
+
+        .THIS .clsIconContainer
+        {
+            float: right;
+        }		
+                        
+        .THIS	.clsSmallScreentatus 
+        {
+            display: block;
+           }				
+                        
+		.THIS		.clsSmallStatus 
+				{
+					font-size: 16px;
+					font-weight: 600;
+					color: rgb(37 116 169);
+				}
+				
+		.THIS		table.clsSmallScreen 
+				{
+					word-wrap:break-word !important;
+				}
+				
+				
+		.THIS		table.clsSmallScreen td 
+				{
+					display:block;
+				/*	float:left; 
+					width:100%;
+					clear:both; */
+        			font-size: 13px;
+					padding:8px 10px;
+					-moz-box-sizing:border-box;
+					-webkit-box-sizing:border-box;
+					box-sizing:border-box;
+				}
+				
+		.THIS		table.clsSmallScreen tr 
+				{
+					border:1px solid #e6dcdc;
+					border-top: 11px solid rgb(37, 116, 169);
+				}				
+				
+		.THIS		table.clsSmallScreen tbody, .THIS	 table.clsSmallScreen tr 
+				{
+					display:block  !important;
+				}
+				
+			.THIS	.clsSmallScreen td:before 
+				{
+					content:attr(data-th);
+					display:block;
+					font-weight:bold;
+					margin:0 0 2px;
+					color: black;
+					font-size: 14px; /*th*/
+					font-family: Trebuchet MS;
+				}
+				
+			.THIS	.clsSmallScreen tbody tr 
+				{
+					float:left;
+        			width:100%;
+					margin-bottom:11px;
+				}
+				
+    
+        .THIS	.slds-icon-action-new-case {
+        background-color: rgb(37, 116, 169);
+  			   }
+				/* End Tables into cards*/
+    /*Content*/
+    
+	    .THIS .vidBox {
+   		height:auto; 
+        width:100%;
+}
+    
+    .THIS p{
+        font-size:14px;
+    }
+    
+     .THIS a{
+        font-size:13px;
+    }
+    
+    
+	  .THIS .panel-head {
+   		padding: 10px;
+    
+}
+    .THIS .mainHeading{
+        color: #fff;
+      	font-size: 16px;
+}
+    .THIS .caseHeading{
+   		color: rgb(37, 116, 169);
+   		line-height: 1.2;
+        font-size: 16px;
+
+}
+    
+    .THIS .m-box {
+ 	margin:10px 0px 0px 0px;
+    border:0px;
+ 
+}
+    .THIS .subHeading {
+    font-size: 14px;    
+    margin-bottom:5px;
+    margin-top: 15px;
+} 
+    .THIS .detail-subBorder {
+    margin-bottom:8px;
+}
+    
+.THIS .detail-data {
+	font-size: 13px;  
+
+}
+     .THIS .rec-button {
+        font-size: 12px;
+}
+}
+
+@media screen and (min-width:280px) and (max-width: 767px) and (orientation: landscape)
+{
+    /*Tables into cards*/
+    	.THIS #tbl 
+    {
+       	 display: none;
+      }
+
+        .THIS .clsIconContainer
+        {
+            float: right;
+        }		
+                        
+        .THIS	.clsSmallScreentatus 
+        {
+            display: block;
+           }				
+                        
+		.THIS		.clsSmallStatus 
+				{
+					font-size: 16px;
+					font-weight: 600;
+					color: rgb(37 116 169);
+				}
+				
+		.THIS		table.clsSmallScreen 
+				{
+					word-wrap:break-word !important;
+				}
+				
+				
+		.THIS		table.clsSmallScreen td 
+				{
+					display:block;
+				/*	float:left; 
+					width:100%;
+					clear:both; */
+        			font-size: 13px;
+					padding:8px 10px;
+					-moz-box-sizing:border-box;
+					-webkit-box-sizing:border-box;
+					box-sizing:border-box;
+				}
+				
+		.THIS		table.clsSmallScreen tr 
+				{
+					border:1px solid #e6dcdc;
+					border-top: 11px solid rgb(37, 116, 169);
+				}				
+				
+		.THIS		table.clsSmallScreen tbody, .THIS	 table.clsSmallScreen tr 
+				{
+					display:block  !important;
+				}
+				
+			.THIS	.clsSmallScreen td:before 
+				{
+					content:attr(data-th);
+					display:block;
+					font-weight:bold;
+					margin:0 0 2px;
+					color: black;
+					font-size: 14px; /*th*/
+					font-family: Trebuchet MS;
+				}
+				
+			.THIS	.clsSmallScreen tbody tr 
+				{
+					float:left;
+        			width:100%;
+					margin-bottom:11px;
+				}
+				
+    
+        .THIS	.slds-icon-action-new-case {
+        background-color: rgb(37, 116, 169);
+  			   }
+				/* End Tables into cards*/
+    /*Content*/
+    
+	    .THIS .vidBox {
+        width:100%;
+   		height:250px;  
+}
+    
+    .THIS p{
+        font-size:14px;
+    }
+    
+     .THIS a{
+        font-size:13px;
+    }
+    
+    
+	  .THIS .panel-head {
+   		padding: 10px;
+    
+}
+    .THIS .mainHeading{
+        color: #fff;
+      	font-size: 16px;
+}
+    .THIS .caseHeading{
+   		color: rgb(37, 116, 169);
+   		line-height: 1.2;
+        font-size: 16px;
+
+}
+    
+    .THIS .m-box {
+ 	margin:10px 0px 0px 0px;
+    border:0px;
+ 
+}
+    .THIS .subHeading {
+    font-size: 14px;    
+    margin-bottom:5px;
+    margin-top: 15px;
+} 
+    .THIS .detail-subBorder {
+    margin-bottom:8px;
+}
+    
+.THIS .detail-data {
+	font-size: 13px;  
+
+}
+     .THIS .rec-button {
+        font-size: 12px;
+}
+    
+}
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1024px)
+{ 
+        .THIS #crds {
+        display: none;
+      }
+       
+        .THIS .m-box {
+        margin:10px 10px;
+        border:0px;
+    }
+    
+     .THIS .mainHeading{
+
+      	font-size: 18px;
+		}
+        
+        .THIS p {
+        font-size: 14px;
+    }
+    
+    
+    .THIS .table-bordered td, .THIS .table-bordered th {
+    font-size: 14px;
+}
+}
+
+
+/*desktop*/
+@media screen and (min-width: 1025px)
+{ 
+        .THIS #crds {
+        display: none;
+      }
+}

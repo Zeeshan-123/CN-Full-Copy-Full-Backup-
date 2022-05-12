@@ -1,0 +1,49 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="SL_cmp_VerifyTestResults_Cntrl">
+
+    <aura:attribute name="patientName" type="string" default=""/>
+    <aura:attribute name="testResult" type="String" default=""/>
+    <aura:attribute name="testDate" type="String" default=""/>
+    <aura:attribute name="pId" type="string" default=""/>
+    <aura:attribute name="ehrId" type="string" default=""/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    
+    <div class="main-container ">
+        <div class="card m-box bg-white">
+            <!-- <lightning:button class="slds-size_1-of-1" label="Download" iconName="utility:download" variant="brand" onclick="{!c.handleResultDownload}" /> -->
+
+            <!-- Show Cherokee Nation Image -->
+            <img class="covidNeg-img slds-align_absolute-center slds-p-top_small" src="{!$Resource.Test_Result_Header}" alt="" />
+
+            <aura:if isTrue="{!v.patientName}">
+                <div class="slds-grid slds-wrap" style="font-weight: 600;">
+                    <div class="m-box-style slds-align_absolute-center slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-3">
+                        <div class="row text-center">
+                            <div class="slds-size_1-of-1">
+                                <p class="l2" style="font-size: 20px !important;">Name: {!v.patientName}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-box-style slds-align_absolute-center slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-3">
+                        <div class="row text-center">
+                            <div class="slds-size_1-of-1">
+                                <p class="l2" style="font-size: 20px !important;">Result Date: {!v.testDate}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.testResult}">
+                        <div class="m-box-style slds-align_absolute-center slds-small-size_1-of-1 slds-medium-size_1-of-3 slds-large-size_1-of-3">
+                            <div class="row text-center">
+                                <div class="slds-size_1-of-1">
+                                    <p class="l2" style="font-size: 20px !important;">Test Result: <span style="color:red !important;">{!v.testResult}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </aura:if>
+                </div>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

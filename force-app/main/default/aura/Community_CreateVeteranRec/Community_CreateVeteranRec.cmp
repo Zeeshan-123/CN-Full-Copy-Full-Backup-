@@ -1,0 +1,147 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global" controller="Community_CreateVeterenRecord">
+
+       <aura:attribute name="ShowModule" type="boolean" default="true"/>
+       <aura:attribute name="parentId" type="Id" />
+       <aura:attribute name="branchServiceList" type="String[]" />
+ 	   <aura:attribute name="EnlistmentYearPicklist" type="String[]" />
+       <aura:attribute name="EnlistmentMonthPicklist" type="String[]" />
+       <aura:attribute name="NumOfServiceYearsPicklist" type="String[]" />
+       <aura:attribute name="NumOfServiceMonthsPicklist" type="String[]" />
+ 	   <aura:attribute name="isCombatVet" type="Boolean" default="false"/>
+       <!--Attributes for spinner-->
+       <aura:attribute name="isSpinner" type="boolean" default="false"/>
+
+    
+    	<!--Handler-->
+      <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+  <aura:if isTrue="{!v.ShowModule}">    
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+                <div class="slds-modal__container">
+                    <!--Modal Header-->
+                    <header class="slds-modal__header">
+                        
+                        <lightning:buttonIcon iconName="utility:close"
+                                              size="large"
+                                              variant="bare-inverse"
+                                              onclick="{! c.HideMe }"
+                                              alternativeText="Close" 
+                                              class="slds-modal__close" />
+                        
+                        
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Community_CreatedRecordFormHeader}</h2>
+                    </header>  <!--/Modal Header-->
+                    
+                    <!--Modal Body-->
+                    <div class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+              
+
+  
+        <!--  New Veteran Record Form  -->
+        <form class="slds-form--stacked" >               
+                        
+          
+		<div class="fields-div">   
+    
+          	 	
+            <lightning:select 	class="alignField "
+                                label="Service Branch"
+                            	aura:id="serviceBranch"
+                             	required="true"
+                              > 
+                                   
+                              <option value="">--None--</option>
+                                  <aura:iteration items="{!v.branchServiceList}" var="val" >   
+                                      <option text="{!val}" value="{!val}"/>
+                                 </aura:iteration>
+            </lightning:select>   
+       <!--Start of service-->
+          <p> Start of Draft/Enlistment</p>
+          <div class="row">        
+               <div class="col" >     
+         <lightning:select 	class="alignField"
+                                	label="Year"
+                            		aura:id="yearPl"
+                           			required="true"
+                                    > 
+                                   
+                              <option value="">--None--</option>
+                                  <aura:iteration items="{!v.EnlistmentYearPicklist}" var="val" >   
+                                      <option text="{!val}" value="{!val}"/>
+                                 </aura:iteration>
+            </lightning:select> 
+              </div> 
+              <div class="col" > 
+              <lightning:select 	class="alignField"
+                                	label="Month"
+                            		aura:id="monthPl"
+                                	required="true"
+                                    > 
+                                   
+                              <option value="">--None--</option>
+                                  <aura:iteration items="{!v.EnlistmentMonthPicklist}" var="val" >   
+                                      <option text="{!val}" value="{!val}"/>
+                                 </aura:iteration>
+            </lightning:select> 
+ 					</div>  
+            </div> 
+            <!--/Start of service-->
+            
+            <!--Duration-->
+             <p> Service Period</p>
+          <div class="row" style="margin-bottom:13px;">        
+ 
+              <div class="col" > 
+                    <lightning:select 	class="alignField"
+                                	label="Year"
+                            		aura:id="yearDuration"
+                                    required="true"
+                                   > 
+                                   
+                              <option value="">--None--</option>
+                                  <aura:iteration items="{!v.NumOfServiceYearsPicklist}" var="val" >   
+                                      <option text="{!val}" value="{!val}"/>
+                                 </aura:iteration>
+            </lightning:select> 
+ 					</div>  
+              
+                             <div class="col" >     
+         <lightning:select 	class="alignField"
+                                	label="Month"
+                            		aura:id="monthDuration"
+                                    > 
+                                   
+                              <option value="">--None--</option>
+                                  <aura:iteration items="{!v.NumOfServiceMonthsPicklist}" var="val" >   
+                                      <option text="{!val}" value="{!val}"/>
+                                 </aura:iteration>
+            </lightning:select> 
+              </div>
+            </div> 
+            <!--/Duration-->
+            
+            <p>Combat Veteran</p>
+            <lightning:input type="checkbox" class="alignField" label="" aura:id="combatVeteran" checked="{!v.isCombatVet}" />
+            
+           <div class="slds-text-align_center">
+               <lightning:button class="btn submit-button"  label="Submit" onclick="{!c.createVetRecord}"/>
+           </div>
+           <div class="slds-is-relative">
+          <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+            </div>
+            </div>
+                
+            
+        </form>
+            <!--  /New Veteran Record Form -->
+                        
+                        
+                    </div> <!--/Modal Body-->
+                    
+                            </div>
+            </section>
+    
+   <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>    
+    
+</aura:component>

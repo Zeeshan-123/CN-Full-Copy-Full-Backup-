@@ -1,0 +1,427 @@
+/* survey popup*/
+.THIS .not-interested-button{
+    background-color: crimson;
+    border-radius: 4;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+}
+
+.THIS .not-interested-button:hover 
+  {
+      background-color:white;
+      border-color:crimson;
+      color:crimson;
+      cursor:pointer;
+  }
+
+
+.THIS .submit-button{
+    background-color: rgb(39, 180, 34);
+    border-radius: 4;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+}
+
+.THIS  .submit-button:hover 
+  {
+      background-color:white;
+      border-color:rgb(39, 180, 34);
+      color:rgb(39, 180, 34);
+      cursor:pointer;
+  }
+
+/* contact us section*/
+
+.THIS .l-para
+{
+	margin-bottom:18px;
+}
+.THIS .head-2
+{
+
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: bold;
+    font-size:18px;
+    color: #585d65;
+    margin-bottom: 16px;
+    
+}
+.THIS .icn svg
+{ 
+    margin-bottom:5px !important; 
+    margin-right: 5px;
+    height: 20px;
+    fill:#585d65;
+}
+/*end contact us section*/
+.THIS .marquee {
+	line-height: 50px;
+	background-color: #B30707;;
+	color: #CBCBCB;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.THIS .marquee p {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+    0%   { transform: translate(0, 0); }
+    100% { transform: translate(-100%, 0); }
+}
+
+.THIS {
+    /*background-color: #fff;*/
+}
+
+.THIS .vid
+ {
+  flex: 1;
+}
+
+.THIS .link {
+    padding-left: 0px;
+    padding-top: 10px;
+}
+
+.THIS p {
+    margin-top: 0;
+    margin-bottom: 0rem; 
+    text-align: justify;
+}
+
+.THIS .r1-l1 {
+    margin-top: 0px  !important;
+     
+}
+
+.THIS .r1-l2{
+    margin-top: 0px  !important;
+     
+}
+
+.THIS .card-body {
+
+     padding: 0px; 
+}
+
+
+.THIS .panel-head
+{
+    background-color:#343a40;  
+     padding: 12px;
+
+}
+
+
+.THIS .mainHeading{
+    color: #fff;
+    margin-bottom:0px !important;
+}
+
+.THIS .m-Border {
+    border:2px solid rgb(37, 116, 169);
+    margin-bottom:20px;
+}
+
+.THIS .caseHeading{
+    color: rgb(37, 116, 169);
+    line-height: 1.2;
+
+}
+.THIS .subHeading {
+  font-family: 'Open Sans Condensed',sans-serif;
+    font-size: 15px;
+    line-height: 1.2;
+    color: #878a92;
+    margin-top: 25px;
+    
+} 
+
+.THIS .cse-Border {
+    border:1px solid rgb(37, 116, 169);
+    margin-bottom:25px;
+}
+
+.THIS .detail-subBorder {
+    border-bottom:1px solid #878a92;
+    margin-bottom:15px;
+  /*  width:68%; */
+}
+
+.THIS .detail-data {
+	font-size: 14px;  
+    font-family: sans-serif;
+}
+
+ /* 
+.THIS .paragraph {
+	font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #585d65;
+    font-size: 16px;
+}
+*/
+
+
+.THIS .m-box {
+ 	margin:30px 35px;
+    border:0px;
+ 
+}
+
+.THIS .requestsTable
+{
+	color: #a29898;
+}
+
+.THIS .rec-button {
+    color:White;
+    cursor: pointer;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 12.5px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+     float: right;
+    margin: -5px !important;
+}
+
+.THIS  .rec-button:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+}
+    
+@media screen and (min-width:280px) and (max-width: 767px)
+{
+    .THIS .rec-button {
+        font-size: 12px;
+    }
+    
+    .THIS .submit-button{
+        background-color: rgb(39, 180, 34);
+        border-radius: 4;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: sans-serif,tahoma;
+        color: #fff;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }   
+    .THIS .not-interested-button{
+        background-color: crimson;
+        border-radius: 4;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: sans-serif,tahoma;
+        color: #fff;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+    
+    /* contact us section*/
+    .THIS p {
+        font-size: 14px;
+    }
+    .THIS .icn svg
+    { 
+        margin-bottom:5px !important; 
+        margin-right: 5px;
+        height: 17px;
+        fill:#585d65;
+    }
+    .THIS .head-2 {
+        font-size: 14px !important;
+    }
+    /*end contact us section*/
+    /*Tables into cards*/
+    	.THIS #tbl 
+    {
+       	 display: none;
+      }
+
+        .THIS .clsIconContainer
+        {
+            float: right;
+        }		
+                        
+        .THIS	.clsSmallScreentatus 
+        {
+            display: block;
+           }				
+                        
+		.THIS		.clsSmallStatus 
+				{
+					font-size: 16px;
+					font-weight: 600;
+					color: rgb(37 116 169);
+				}
+				
+		.THIS		table.clsSmallScreen 
+				{
+					word-wrap:break-word !important;
+				}
+				
+				
+		.THIS		table.clsSmallScreen td 
+				{
+					display:block;
+				/*	float:left; 
+					width:100%;
+					clear:both; */
+        			font-size: 13px;
+					padding:8px 10px;
+					-moz-box-sizing:border-box;
+					-webkit-box-sizing:border-box;
+					box-sizing:border-box;
+				}
+				
+		.THIS		table.clsSmallScreen tr 
+				{
+					border:1px solid #e6dcdc;
+					border-top: 11px solid rgb(37, 116, 169);
+				}				
+				
+		.THIS		table.clsSmallScreen tbody, .THIS	 table.clsSmallScreen tr 
+				{
+					display:block  !important;
+				}
+				
+			.THIS	.clsSmallScreen td:before 
+				{
+					content:attr(data-th);
+					display:block;
+					font-weight:bold;
+					margin:0 0 2px;
+					color: black;
+					font-size: 14px; /*th*/
+					font-family: Trebuchet MS;
+				}
+				
+			.THIS	.clsSmallScreen tbody tr 
+				{
+					float:left;
+        			width:100%;
+					margin-bottom:11px;
+				}
+				
+    
+        .THIS	.slds-icon-action-new-case {
+        background-color: rgb(37, 116, 169);
+  			   }
+				/* End Tables into cards*/
+    /*Content*/
+	   .THIS .vid{
+        margin-bottom: 5%;
+    }
+    
+    .THIS p{
+        font-size:14px;
+    }
+    
+     .THIS a{
+        font-size:13px;
+    }
+    
+    
+	  .THIS .panel-head {
+   		padding: 10px;
+    
+}
+    .THIS .mainHeading{
+        color: #fff;
+        margin:0px !important;
+      	font-size: 16px;
+}
+    .THIS .caseHeading{
+   		color: rgb(37, 116, 169);
+   		line-height: 1.2;
+        font-size: 16px;
+
+}
+    
+    .THIS .m-box {
+ 	margin:10px 0px 0px 0px;
+    border:0px;
+ 
+}
+    .THIS .subHeading {
+    font-size: 14px;    
+    margin-bottom:5px;
+    margin-top: 15px;
+} 
+    .THIS .detail-subBorder {
+    margin-bottom:8px;
+}
+    
+.THIS .detail-data {
+	font-size: 13px;  
+
+}
+
+}
+		
+
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1024px)
+{ 
+      .THIS .head-2 {
+        font-size: 14px;
+    }
+        .THIS #crds {
+        display: none;
+      }
+       
+        .THIS .m-box {
+        margin:10px 10px;
+        border:0px;
+    }
+    
+     .THIS .mainHeading{
+
+      	font-size: 18px;
+		}
+        
+        .THIS p {
+        font-size: 14px;
+    }
+    
+       .THIS .subHeading {
+        font-size: 14px;    
+    
+    } 
+    
+        .THIS .detail-data {
+        font-size: 13px;  
+    }
+    
+    .THIS .table-bordered td, .THIS .table-bordered th {
+    font-size: 14px;
+}
+}
+
+
+/*desktop*/
+@media screen and (min-width: 1025px)
+{ 
+        .THIS #crds {
+        display: none;
+      }
+}
+/*
+@media screen and (min-width: 768px)  and (max-width: 1024px) and (orientation: landscape)
+{ 
+        .THIS #crds {
+        display: none;
+      }
+}*/

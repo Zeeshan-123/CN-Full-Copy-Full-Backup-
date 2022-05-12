@@ -1,0 +1,99 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_profileSettingsController">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    
+    <aura:attribute name="changePasswordModal" type="boolean" default="false"/>
+    <aura:attribute name="changeEmailModal" type="boolean" default="false"/>
+    <aura:attribute name="changeUsernameModal" type="boolean" default="false"/>
+    
+    
+    <!--Attributes for Picklists-->
+    <aura:attribute name="languageList" type="List" />
+    <aura:attribute name="localeList" type="String[]" />
+    <aura:attribute name="timeZoneList" type="String[]" />
+    
+    <!--Attributes for Picklists Default Values-->
+    <aura:attribute name="language" type="String" />
+    <aura:attribute name="locale" type="String" />
+    <aura:attribute name="timeZone" type="String" />
+    
+    <!--Attributes for spinner-->
+    <aura:attribute name="isActive" type="boolean" default="false"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <div class="main-container">
+        <div class=" m-box ">
+            <div class="card">
+                <div class="panel-head">  <h5 class="m-ht">Profile Settings</h5> </div>
+                <div class="m-br" ></div>
+                <div class="card-body">
+                    <div class="alignment-s1">
+                        <p>Account Information</p>
+                        <div class="row align-content-1">
+                            <div class=" col-sm-4 anchr">
+                                <a  class="anchr" onclick="{!c.showChangePasswordModal}">Change Password</a>
+                            </div>
+                            <div class=" col-sm-4 anchr">
+                                <a  class="anchr" onclick="{!c.showChangeEmailModal}"> Change Email</a>   
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alignment-s2">           
+                        <p>Location</p>
+                        <div class="row  align-content-2">
+                            <div class=" col-sm-5">
+                                <lightning:select 	class="alignField inputField"
+                                                  label="Language"
+                                                  aura:id="LanguageLst"
+                                                  disabled="true"> 
+                                    <aura:iteration items="{!v.languageList}" var="lang" indexVar="key" >   
+                                        <option text="{!lang.value}" value="{!lang.key}" />
+                                    </aura:iteration>
+                                </lightning:select> 
+                            </div>
+                            <div class=" col-sm-5">
+                                <lightning:select 		class="alignField inputField"
+                                                  label="Locale"
+                                                  aura:id="LocaleLst"
+                                                  required="true"> 
+                                    <aura:iteration items="{!v.localeList}" var="lo" indexVar="key">   
+                                        <option text="{!lo.value}" value="{!lo.key}"/>
+                                    </aura:iteration>
+                                </lightning:select> 
+                            </div>
+                            <div class=" col-sm-5">
+                                <lightning:select 		class="alignField inputField"
+                                                  label="Time Zone"
+                                                  aura:id="timeZoneLst"
+                                                  required="true"> 
+                                    <aura:iteration items="{!v.timeZoneList}" var="tZ" indexVar="key">   
+                                        <option text="{!tZ.value}" value="{!tZ.key}"/>
+                                    </aura:iteration>
+                                </lightning:select> 
+                            </div>
+                            <div class=" col-sm-5">
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="slds-text-align_center">
+                            <lightning:button class="btn submit-button" disabled="{!v.isActive}" name="update" label="Update" onclick="{!c.save}"/>
+                            <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                        </div>
+                    </div>
+                </div>
+                
+                <aura:if isTrue="{!v.changePasswordModal}">
+                    <c:Community_changePassword/>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.changeEmailModal}">
+                    <c:Community_changeEmail/>
+                </aura:if>
+            
+            </div>
+        </div>
+    </div>
+</aura:component>

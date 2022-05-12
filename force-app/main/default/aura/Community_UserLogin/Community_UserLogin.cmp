@@ -1,0 +1,95 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" 
+                access="global" 
+                controller="LoginController">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="userName" type="string" default=""/>
+    <aura:attribute name="password" type="string" default=""/>
+    <aura:attribute name="visible" type="Boolean" default="false" />
+    <aura:attribute name="error1" type="String" />
+    <aura:attribute name="error2" type="String" />
+    <aura:attribute name="autoOff" type="String" />
+    <aura:attribute name="isActive" type="boolean" default="false"/>
+    <aura:attribute name="showLoginWindow" type="Boolean" default="false" /> 
+    <aura:attribute name="showpassword" type="Boolean" default="false"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <div>
+        <!-- error message div -->
+        <aura:if isTrue="{!v.visible}">
+            <div class="alert alert-warning alert-dismissible fade show" 
+                 role="alert" 
+                 style="background-color:rgb(197,57,52,1); color:white; border:0px;">
+                
+                {!v.error1}{!v.error2}
+                <button type="button" class="close closet" data-dismiss="alert" aria-label="Close" onclick="{!c.closeAlert}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </aura:if>
+        <!-- /error message div -->
+        
+        <aura:if isTrue="{!v.showLoginWindow}"> 
+            <!-- Title message div -->
+            <div >
+                <p class="m-title"> Empowering Cherokee Citizens </p>
+            </div>
+            <!-- /Title message div -->
+            
+            <div class="card" >
+                <img class="img-size" src="/resource/1604483450000/Login_Banner"/>
+                <div class="fields-div">
+                    <lightning:input onfocus="{!c.turnOffAutocomplete}" 
+                                     class="inputField" 
+                                     name="usrEmail" 
+                                     type="text" 
+                                     placeholder="Username"  
+                                     value="{!v.userName}" 
+                                     />  
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right"
+                         style="margin-bottom: -15px;">   
+                        <lightning:input class="inputField"
+                                         name="userPassword"
+                                         type="{!v.showpassword ? 'text':'password'}"  
+                                         placeholder="Password" 
+                                         value="{!v.password}" 
+                                         /> 
+                        <div class="mpI"
+                             aura:id="npswrd"> 
+                            <lightning:buttonIcon class="slds-button slds-input__icon slds-text-color--default" 
+                                                  iconName="{!v.showpassword ? 'utility:hide':'utility:preview'}" 
+                                                  alternativeText="{!v.coborrowerSSNCB ? 'Hide':'Show'}" 
+                                                  onclick="{!c.togglePassword}"/>
+                        </div>
+                    </div>
+                    
+                    <p class="b-text">Connect. Update. Engage.</p>
+                    <br/>
+                    
+                    <a href="{!$Label.c.Community_ForgotPasswordPageUrl}" class="fpLink "> Forgot Password?</a>
+                    <br/>
+                    
+                    <a href="{!$Label.c.Community_Forgot_Username}" class="fpLink"> Forgot Username?</a>
+                    <lightning:button label="Log In" 
+                                      disabled="{!v.isActive}" 
+                                      class="btn signin-button slds-float_right" 
+                                      onclick="{!c.signin}"/>
+                </div>
+            </div>
+            
+            <div class="register-div">
+                <div class="slds-grid slds-align_absolute-center" >
+                    <div class="slds-col  ">
+                        <p class="para" style="color:rgb(45, 138, 204);">Don't have a portal account?</p>
+                    </div>
+                    
+                    <div class="slds-col ">
+                        <lightning:button label="Register"  class="btn register-button" onclick="{!c.register}"/>
+                    </div>
+                </div>
+            </div>
+        </aura:if>
+    </div>
+    
+</aura:component>

@@ -1,0 +1,251 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_myProfileDetailsController">
+	 <ltng:require styles="{!$Resource.CN_Boot}"/>
+       <!--Attributes--> 
+    <aura:attribute name="accnt" type="object"/> 
+    <aura:attribute name="activeSections" type="List" default="['A', 'B', 'C']" />
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+	<aura:attribute name="ShowModule" type="boolean" default="false"/>
+    <!--Handler 	-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <div class="main-container">
+        
+      <div class=" m-box ">
+	<!--Account Information-->
+		<div class="card">
+             <div class="panel-head">    <h5 class="m-ht">ACCOUNT INFORMATION</h5>  </div>
+            <div class="m-br" ></div>
+  			<div class="card-body">
+               
+                  
+             <div class="row">
+                <div class="col">
+			 <div class="row">
+     			 <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                          <p class="p-t">    Suffix </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">   {!v.accnt.Suffix__c} </p>
+                      </div>
+                  </div>
+                 </div>
+                <div class="col-12 col-sm-6 ">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                          <p class="p-t">   Citizen ID </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">    {!v.accnt.Tribe_Id__c} </p>
+                      </div>
+                  </div>
+                 </div>
+                    </div>        
+                </div>
+             </div>    
+           
+            
+           <div class="row">
+             <div class="col">
+			 <div class="row">
+     			 <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                           <p class="p-t">  Prefix </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                           <p class="p-t">   {!v.accnt.Prefix__c} </p>
+                      </div>
+                  </div>
+                 </div>
+                <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                          <p class="p-t">   Date of Birth </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                           <p class="p-t">   {!v.accnt.Date_of_Birth__c}  </p>
+                      </div>
+                  </div>
+                 </div>
+                    </div>        
+                </div> 
+  			</div>
+                
+                
+           <div class="row">
+             <div class="col">
+			 <div class="row">
+     			 <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                         <p class="p-t">    Name  </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">    {!v.accnt.Name}  </p>
+                      </div>
+                  </div>
+                 </div>
+                <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                         <p class="p-t">     Gender  </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">       {!v.accnt.HealthCloudGA__Gender__pc} </p>
+                      </div>
+                  </div>
+                 </div>
+                    </div>        
+                </div> 
+  			</div>
+                
+           <div class="row">
+             <div class="col">
+               <div class="row">
+     			 <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                         <p class="p-t">    Maiden Name  </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">    {!v.accnt.Maiden_Name__c}  </p>
+                      </div>
+                  </div>
+                 </div>
+                <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                         <p class="p-t">     Email  </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                         <p class="p-t">     {!v.accnt.Users[0].Email}  </p>
+                      </div>
+                  </div>
+                 </div>
+                    </div>        
+                 
+                 
+               <div class="row">
+     			 <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                         <p class="p-t">    Mobile  </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">       {!v.accnt.PersonMobilePhone}   </p>
+                      </div>
+                  </div>
+                 </div>
+                <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                         <p class="p-t">     Home  </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">        {!v.accnt.Phone}  </p>
+                      </div>
+                  </div>
+                 </div>
+                   
+                   <div class="col-12 col-sm-6">
+                       <div class="row">
+                           <div class="col-5 col-sm-6 mrgn">
+                               <p class="p-t">  Driver License  </p>
+                           </div>
+                           <div class="col-7 col-sm-6 mrgn">
+                               <p class="p-t">   {!v.accnt.Driver_License__c}  </p>
+                           </div>
+                       </div>
+                   </div>
+                 </div>             
+                                   
+                </div> 
+  			</div>
+                
+       </div>
+    </div> 
+<!--Account Information-->
+          
+
+            <!--Second Section-->   
+           <div class="row " >             
+               <!--Address Details-->
+              <div class="col-sm-6 m-tp">
+                   <div class="equal">
+			       <div class="card " style="border: 0px;">
+                         <div class="panel-head">    <h5 class="m-ht"> PHYSICAL ADDRESS DETAILS</h5>  </div>
+                       <div class="m-br" ></div>
+  						<div class="card-body">
+                    	   
+                            <div class="row">
+                                  <div class="col-5 col-sm-6 mrgn">
+                                      <p class="p-t">  Physical Address  </p>
+                                  </div>
+                                  <div class="col-7 col-sm-6 mrgn">
+                                        <p class="p-t">
+                                         <lightning:formattedAddress street="{!v.accnt.PersonOtherStreet}" 
+                                           province="{!v.accnt.PersonOtherState}" 
+                                           city="{!v.accnt.PersonOtherCity}" 
+                                           country="{!v.accnt.PersonOtherCountry}" 
+                                           disabled="false"/>
+                                        </p>
+                                  </div>
+                              </div>
+                             <div class="row">
+                                  <div class="col-5 col-sm-6 mrgn">
+                                      <p class="p-t">  Physical Suite  </p>
+                                  </div>
+                                  <div class="col-7 col-sm-6 mrgn">
+                                      <p class="p-t">   {!v.accnt.Physical_Suite__c}  </p>
+                                  </div>
+                              </div> 
+                            
+                       </div>
+                	</div>
+                  </div> 
+       			</div>
+               <!--/Address Details-->
+               
+            <!--Additional Details-->   
+                <div class="col-sm-6 dwn m-tp">
+                    <div class="equal">
+			       <div class="card" style="border: 0px;">
+                       <div class="panel-head">    <h5 class="m-ht"> MAILING ADDRESS DETAILS</h5>  </div>
+                       <div class="m-br" ></div>
+  						<div class="card-body">
+        			   
+                             <div class="row">
+                                  <div class="col-5 col-sm-6 mrgn">
+                                      <p class="p-t">  Mailing Address  </p>
+                                  </div>
+                                  <div class="col-7 col-sm-6 mrgn">
+                                        <p class="p-t">
+                                         <lightning:formattedAddress street="{!v.accnt.PersonMailingStreet}" 
+                                           province="{!v.accnt.PersonMailingState}" 
+                                           city="{!v.accnt.PersonMailingCity}" 
+                                           country="{!v.accnt.PersonMailingCountry}" 
+                                           disabled="false"/>
+                                      </p>
+                                  </div>
+                              </div>
+                            <div class="row">
+                                  <div class="col-5 col-sm-6 mrgn">
+                                     <p class="p-t">   Mailing Suite  </p>
+                                  </div>
+                                  <div class="col-7 col-sm-6 mrgn">
+                                     <p class="p-t">    {!v.accnt.Mailing_Suite__c}  </p>
+                                  </div>
+                              </div>
+                       </div>
+                 </div>  
+                    </div>   
+       			</div>
+               <!--/Additional Details-->     
+   		 </div> 
+          
+          
+       </div>
+    </div>      
+</aura:component>

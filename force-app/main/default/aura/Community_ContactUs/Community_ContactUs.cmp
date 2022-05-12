@@ -1,0 +1,107 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">	
+    <ltng:require styles="{!$Resource.CN_Boot}"/> 
+    
+    <div class="main-container ">
+        
+    <div class="card m-box">
+        <div class="card-body">
+            <!--CN Contact Info-->
+            <c:Community_CNContactInfo/>
+            <!--/CN Contact Info-->
+    <div class="row c-alignment">
+          <div class="col-sm-12 col-xl-4 crd-block">
+            <h3 class="head-2"> General Mailing Address</h3>
+              <p class="c-para">
+                  <lightning:icon class="icn" iconName="utility:info" size="small"/>
+                  Attn: (Department Name)
+              </p>
+              <p class="c-para">
+                  <lightning:icon class="icn" iconName="utility:identity" size="small"/>
+                  P. O. Box 948 Tahlequah, OK 74465
+              </p>
+        </div>
+        
+          <div class="col-sm-12 col-xl-4 crd-block">
+			<h3 class="head-2"> Physical Address</h3>
+            <p class="c-para">
+                  <lightning:icon class="icn" iconName="utility:info" size="small"/>
+                W.W. Keeler Tribal Complex
+              </p>
+            <p class="c-para">
+                  <lightning:icon class="icn" iconName="utility:checkin" size="small"/>
+                17675 S. Muskogee Ave. Tahlequah, OK 74464
+              </p>
+        </div>
+        
+        
+          <div class="col-sm-12  col-xl-4 crd-block">
+			<h3 class="head-2">Shipping Address</h3>
+            <p class="c-para">
+                  <lightning:icon class="icn" iconName="utility:info" size="small"/>
+                Attn: (Department Name)
+              </p>
+            <p class="c-para">
+                  <lightning:icon class="icn" iconName="utility:checkin" size="small"/>
+                22361 Bald Hill Road Tahlequah, OK 74464
+              </p>
+        </div>
+	</div>
+        
+     <div class="panel-head">  <h5 class="mainHeading">Directory</h5> </div>
+              <div class="m-Border "></div>
+        
+    <div class="d-row">   
+         <div class="row no-gutters">                  
+                 
+     <div class="col-sm-6 d-Box">     
+    <h3 class="head-2">Office of Veteran Affairs</h3>    
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:email" size="small"/>
+            <span class="c-link">    veterans@cherokee.org </span> 
+        </p>
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:call" size="small"/>
+                    918-772-4166
+            </p>
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:checkin" size="small"/>
+                   17725 South Muskogee Ave. Tahlequah, OK  74464
+        </p>
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:identity" size="small"/>
+                    Cherokee Nation Attn: Office of Veteran Affairs P.O. Box 948 Tahlequah, OK 74465
+            </p>
+             </div>
+        
+        
+                 
+          <div class="col-sm-6 d-Box">     
+    <h3 class="head-2">Tribal Registration</h3>    
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:email" size="small"/>
+            <span class="c-link">   registration@cherokee.org  </span>
+        </p>
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:call" size="small"/>
+                    918-458-6980
+            </p>
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:checkin" size="small"/>
+                    17675 S. Muskogee Ave. Tahlequah, OK 74464
+        </p>
+        <p class="c-para">
+            <lightning:icon class="icn" iconName="utility:identity" size="small"/>
+                  Cherokee Nation Attn: Tribal Registration P.O. Box 948 Tahlequah, OK 74465
+            </p>
+    </div>
+                </div>
+
+        </div>  
+        
+        
+  
+            </div>
+   
+    </div>
+    </div>
+</aura:component>

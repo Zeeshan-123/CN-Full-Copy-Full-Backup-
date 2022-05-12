@@ -1,0 +1,136 @@
+<!--
+  @fileName        : SL_cmp_VerifyTestResults
+  @description     : This component will be used to show the test results to the community user through a public page
+  @author          : Vikash Agarwal
+  @createdOn       : 7th Jan 2022
+  @lastModifiedBy  : Vikash Agarwal
+  @lastModifiedOn  : 7th Jan 2022
+  Modifications Log
+  Ver   Date         Author   Modification
+  1.0   01-07-2022      Initial Version
+-->
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="SL_cmp_VerifyTestResults_Cntrl">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="Dob" type="string" default=""/>
+    <aura:attribute name="formatedDate" type="string" default=""/>
+    <aura:attribute name="acnt" type="Object" default=""/>
+    <aura:attribute name="pId" type="string" default=""/>
+    <aura:attribute name="ehrId" type="string" default=""/>
+    <aura:attribute name="PersonContactId" type="string" default=""/>
+    <aura:attribute name="isActive" type="Boolean" default="false"/>
+    <aura:attribute name="diseaseCommPageUrl" type="string" default=""/>
+    
+    <!--Attributes for Show/Hide Screens-->
+    <aura:attribute name="showInputS" type="Boolean" default="false"/>
+    <aura:attribute name="showDob" type="Boolean" default="true"/>
+    <aura:attribute name="isShowDuplicatePatients" type="Boolean" default="false"/>
+    <aura:attribute name="duplicatePatientOpts" type="List" default="[]"/>
+    <aura:attribute name="selectedDuplicatePatient" type="String" default=""/>
+    <aura:attribute name="patientEncodedIdMapping" type="Map" default="{}"/>
+
+    <aura:attribute name="isDisableCheckResult" type="Boolean" default="false"/>
+
+    <aura:attribute name="isFluPage" type="Boolean" default="false"/>
+    <aura:attribute name="isShowFluPositiveResult" type="Boolean" default="false"/>
+    <aura:attribute name="isCNPage" type="Boolean" default="false"/>
+    <aura:attribute name="isShowCovidNegative" type="Boolean" default="false"/>
+    <aura:attribute name="resultType" type="String" default=""/>
+    
+    <!--Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+
+    <lightning:spinner aura:id="bSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>
+    
+    <!-- DOB Input Starts -->
+    <aura:if isTrue="{!v.showInputS}">
+        <div class=" main-container">
+            <div class="row justify-content-center" style="margin-right: 0px !important; margin-left: 0px !important;">
+                <div class=" col-sm-7 col-md-7 col-lg-6"> 
+                    <div class="card dob-s">
+                        <div class="card-body ">
+                            <aura:if isTrue="{!v.showDob}">
+                                <p>Enter Your Date of Birth:</p>
+                                <lightning:input aura:id="DateOfBirth"
+                                                label="Date Of Birth" 
+                                                placeholder="MM/DD/YYYY" 
+                                                class="alignField"
+                                                value="{!v.Dob}" 
+                                                required="true"
+                                                maxlength="10" 
+                                                onchange="{!c.validateAndReplace}"
+                                                pattern="(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d"
+                                                messageWhenPatternMismatch="Invalid date format, correct one is MM/DD/YYYY."
+                                                messageWhenValueMissing="Date of Birth required."
+                                                onblur="{!c.clearError}"/>
+                                <br/>
+                                <div class="text-right">
+                                    <lightning:button   label="Next" 
+                                                        disabled="{!v.isActive}" 
+                                                        onclick="{!c.validateUser}" 
+                                                        class="btn s-button " 
+                                                        variant="brand"/>
+                                </div>
+                                <aura:set attribute="else">
+                                    <p style="color:red;"> 
+                                        You have exhausted all attempts to enter Date of Birth. Please refresh the page and try again.
+                                    </p>
+                                </aura:set>
+                            </aura:if>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- DOB Input Ends -->
+
+
+    <!-- Duplicate Patients Selection -->
+    <aura:if isTrue="{!v.isShowDuplicatePatients}">
+        <div class=" main-container">
+            <div class="row justify-content-center" style="margin-right: 0px !important; margin-left: 0px !important;">
+                <div class=" col-sm-7 col-md-7 col-lg-6"> 
+                    <div class="card dob-s">
+                        <div class="card-body ">
+                            <lightning:radioGroup   name="duplicatePatientSelection"
+                                                    label="Patients"
+                                                    options="{!v.duplicatePatientOpts}"
+                                                    onchange="{!c.handlePatientSelectionChange}"
+                                                    value="{!v.selectedDuplicatePatient}"
+                                                    type="radio"
+                                                    required="true"/>
+                            <br/>
+                            <div class="text-right">
+                                <lightning:button   label="Check Result" 
+                                                    disabled="{!v.isDisableCheckResult}" 
+                                                    onclick="{!c.handlePatientResult}" 
+                                                    class="btn s-button " 
+                                                    variant="brand"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aura:if>
+
+    
+    <!-- Test Results using Individual Custom Components -->
+    <!-- <div id="homeBanner" data-e2e="banner" class="homeBannerSec"> -->
+        <!-- Flu Positive Result View -->
+        <!-- <aura:if isTrue="{!v.isShowFluPositiveResult}">
+            <c:SL_cmp_FluPositiveResultView patientName="{!v.acnt.Name}" personContactId="{!v.PersonContactId}"/>
+        </aura:if> -->
+
+        <!-- Covid Negative Test Results -->
+        <!-- <aura:if isTrue="{!v.isShowCovidNegative}">
+            <c:SL_cmp_CovidNegativeResultView patientName="{!v.acnt.Name}"/>
+        </aura:if>
+    </div> -->
+
+    <!-- Approach To show test result using the Community page HTML editor -->
+    <!-- <div id="homeBanner" data-e2e="banner" class="homeBannerSec">
+
+    </div> -->
+</aura:component>

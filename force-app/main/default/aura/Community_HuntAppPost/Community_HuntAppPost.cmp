@@ -1,0 +1,168 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_HuntingDrawAppController" >
+	
+    <aura:attribute name="showDeadLineMessage" type="boolean" default="false"/>
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false"/>
+    <aura:attribute name="showSelectedMessage" type="boolean" default="false"/>
+    <aura:attribute name="showNotSelectedMessage" type="boolean" default="false"/>
+    <aura:attribute name="caseId" type="String"/>
+    <aura:attribute name="requestNumber" type="String"/>
+    <aura:attribute name="winningEvent" type="String"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+        
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                            <!--Success Message-->
+                            <aura:if isTrue="{!v.showSuccessMessage}">  
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                You have successfully submitted your Controlled Hunt Application.
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                            <div class=" text-center" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                                <!-- <aura:if isTrue="{!v.showEditBtn}">  
+                                <lightning:button class="btn s-button" label="Edit Request" onclick="{!c.editRequestModal}" />
+                                </aura:if> -->
+                            </div>  
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                If you have any questions or concerns regarding your Controlled Hunt application, 
+                                please contact Cherokee Nation at <b>918-453-5058</b> or by email <b>support-gadugiportal@cherokee.org</b>.
+                            </p>
+                                   </aura:if>
+                            <!--Deadline Message-->
+                            <aura:if isTrue="{!v.showDeadLineMessage}"> 
+                                <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: red">
+                                    Alert!  </p> </strong> 
+                                <p>   {!$Label.c.Community_HuntDawIntroText}</p>
+                            </aura:if>
+                             <!--Selected Selected Message Div-->
+     <aura:if isTrue="{!v.showSelectedMessage}">  
+     
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                You’ve been selected to participate in Cherokee Nation’s 2021 Controlled Hunt. Specifically, the "{!v.winningEvent}".  Cherokee Nation will contact you soon with more details.
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                             <div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                                 <!-- <aura:if isTrue="{!v.showEditBtn}">  
+                                <lightning:button class="btn s-button" label="Edit Request" onclick="{!c.editRequestModal}" />
+                                </aura:if> -->
+                            </div>  
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                If you have any questions or are no longer interested in participating in this hunt, 
+                                please contact the Wildlife Conservation department by calling <b>918-453-5000</b>, ext. <b>5333</b>.
+                               
+                                   <!-- <aura:if isTrue="{!v.showEditBtn}">  
+                                            You can view/edit* your request by clicking "View Request" or "Edit Request" above.
+                                            <aura:set attribute="else">
+                                             You can view your request by clicking "View Request" above.
+                                            </aura:set>
+                                        </aura:if> -->
+                            </p>
+                            
+                             <!-- <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                            * The request will be available to edit for 2 business days, at which point it will be locked for processing.
+                            </p>
+                            
+                             <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                            	Payment processing will be completed after all information is verified in the application. 
+                                 Payments may be made electronically or by paper check. Any inconsistent or missing data may delay processing, 
+                                 and further action by Cherokee Nation staff may take additional time before processing and payment is complete.
+                           
+                            </p> -->
+                            
+                       
+    </aura:if>
+    <!--/Selected/Not Selected Message Div-->
+
+     <!--Not Selected Message Div-->
+     <aura:if isTrue="{!v.showNotSelectedMessage}">  
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Thank You!
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                Thank you for applying for Cherokee Nation’s inaugural Controlled Hunt program. Unfortunately, you were not selected to participate in a controlled hunt this year.
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                             <div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                                 <!-- <aura:if isTrue="{!v.showEditBtn}">  
+                                <lightning:button class="btn s-button" label="Edit Request" onclick="{!c.editRequestModal}" />
+                                </aura:if> -->
+                            </div>  
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                As Cherokee citizens, we are blessed with access to thousands of acres, on which to freely hunt, 
+                                fish and gather. The following is a link to the map of properties, within the Cherokee reservation, 
+                                open and available for these activities, WALK IN ONLY. 
+                                <a href="https://vmgis4.cherokee.org/portal/apps/webappviewer/index.html?id=707cf27cd5ba4c4c9929deb289899014">(Click Here to view Hunting and Fishing Lands)</a>  
+                                Please enjoy these properties while waiting for next year’s Controlled Hunt application.
+                                
+                                
+                               
+                                   <!-- <aura:if isTrue="{!v.showEditBtn}">  
+                                            You can view/edit* your request by clicking "View Request" or "Edit Request" above.
+                                            <aura:set attribute="else">
+                                             You can view your request by clicking "View Request" above.
+                                            </aura:set>
+                                        </aura:if> -->
+                            </p>
+         					<p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+         					If you have any questions, please contact the Wildlife Conservation department by calling <b>918-453-5000</b>, ext. <b>5333</b>.
+         					</p>                            
+                             <!-- <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                            * The request will be available to edit for 2 business days, at which point it will be locked for processing.
+                            </p>
+                            
+                             <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                            	Payment processing will be completed after all information is verified in the application. 
+                                 Payments may be made electronically or by paper check. Any inconsistent or missing data may delay processing, 
+                                 and further action by Cherokee Nation staff may take additional time before processing and payment is complete.
+                           
+                            </p> -->
+                       
+    </aura:if>
+    <!--/Not Selected Message Div-->
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div> 
+   
+</aura:component>

@@ -1,0 +1,100 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" Controller="Community_AnimalHarvestController">
+    
+   <ltng:require styles="{!$Resource.CN_Boot}"/>
+   <aura:attribute name="radioOptions" type="List" default="[
+                                                            {'label': 'Yes', 'value': 'true'},
+                                                            {'label': 'No', 'value': 'false'}
+                                                            ]"/>
+    <aura:attribute name="radioValue" type="String" default="true"/>
+    <aura:attribute name="riverSystemList" type="String[]"/>
+    <aura:attribute name="CVCase" type="Case" 
+                    default="{ 'sobjectType': 'Case'
+                    }"/>
+    <aura:attribute name="harvestDateValue" type="String"/> 
+    <aura:attribute name="riverSystemValue" type="String"/>
+    <aura:attribute name="usResidentValue" type="String" default="true"/>
+   	<aura:attribute name="metalBandValue" type="String" default="true"/>
+    <aura:attribute name="checkBandValue" type="String" default="true"/>
+    <aura:attribute name="requestCreated" type="boolean" default="false"/>
+    <aura:attribute name="createRequest" type="boolean" default="true"/>
+    <aura:attribute name="requestNumber" type="string"/>
+      
+<aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:if isTrue="{!v.createRequest}">
+    <div class="main-container">
+            <div class="card m-box">
+                <img src="{!$Resource.White_Tail_Deer_Header}" alt=""/>
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #d88e2d;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                                Paddlefish Harvest Form
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                    
+                </div>
+                
+        <div class="m-box-style">
+            <div class="row">
+                <div class="col-sm-6 setmargin">        
+                    <lightning:input aura:id="harvestDate" type="datetime" name="harvestDate" label="Date/Time of Catch" required="true" value="{!v.harvestDateValue}" onchange="{!c.clearError}" dateStyle="Short" timeStyle="Short"></lightning:input>
+
+                </div>
+            </div>
+           <lightning:radioGroup aura:id="usResident" name="usResident" label="Are you a resident of the US?" options="{!v.radioOptions}" value="{!v.usResidentValue}" type="radio" onchange="{!c.clearError}"></lightning:radioGroup> 
+
+    	<lightning:select aura:id="riverSystem" name="riverSystem" label="Select a River System" required="true" value="{!v.CVCase.River_System__c}" onchange="{!c.clearError}">
+           <option value="">--None--</option>
+            <aura:iteration items="{!v.riverSystemList}" var="river" indexVar="key" >
+                <option text="{!river.value}" value="{!river.key}"></option>
+            </aura:iteration>
+        </lightning:select>
+        <lightning:radioGroup aura:id="checkPaddlefish" name="checkPaddlefish" label="Did you check your paddlefish at the ODWC Paddlefish Research Center in Miami, OK?" options="{!v.radioOptions}" value="{!v.checkBandValue}" type="radio" onchange="{!c.clearError}"></lightning:radioGroup> 
+        <lightning:radioGroup aura:id="metalBand" name="metalBand" label="Did your paddlefish have a metal band on its jaw?" options="{!v.radioOptions}" value="{!v.metalBandValue}" type="radio" onchange="{!c.clearError}"></lightning:radioGroup> 
+
+        
+    	<aura:if isTrue="{!v.metalBandValue}">
+        <lightning:input aura:id="metalBandNum" type="number" name="metalBandNum" label="Please provide the metal band's number" fieldLevelHelp="Value must be a whole number" required="true" onchange="{!c.formatNum}" value="{!v.CVCase.Metal_Band_Number__c}"></lightning:input>
+        </aura:if>
+
+         
+ 
+             <div class="text-center" style="margin-top:20px;" >
+                   <lightning:button label="Submit" title="Submit" variant="brand" onclick="{!c.save}"></lightning:button>
+
+                </div>
+            </div>
+               
+              
+        </div>
+          
+        
+
+    </div>
+        </aura:if>
+    <div>
+            <aura:if isTrue="{!v.requestCreated}">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-10 col-md-8 cl-lg-6">
+                            <div class="card sm-box">
+                                <div class="align-s-content">
+                                    <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Thank you for your submission. 
+                                
+                                </p> </strong>
+                                <p class="msgTextFont" ><strong>Confirmation Number: </strong> {!v.requestNumber}</p>
+
+                                      <p class="msgTextFont" >Please retain this confirmation number for your records.</p>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </aura:if>
+        </div>
+        
+</aura:component>

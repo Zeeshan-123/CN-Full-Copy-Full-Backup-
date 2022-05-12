@@ -1,0 +1,90 @@
+<aura:component  implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" controller="CernerQueue_ShowDuplicateCountController" access="global" >
+    <aura:attribute name="DuplicateCount" type="Integer" />
+    <aura:attribute name="ShowModal" type="boolean" default="false"/>
+    <aura:attribute name="ShowFirstScenarioFeatures" type="boolean" default="true"/>
+    <aura:attribute name="ShowSecondcenarioFeatures" type="boolean" default="false"/>
+    <aura:attribute name="accnt" type="object"/> 
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="listViewId" type="String" />
+    <aura:attribute name="isSpinner" type="boolean" default="false"/>
+    <aura:attribute name="showMergeComp" type="boolean" default="false"/>
+	<lightning:workspaceAPI aura:id="workspace"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <div class="slds-box slds-theme_default">
+            <lightning:card variant="Narrow">
+                <p class="slds-p-horizontal_small">
+                    {!v.DuplicateCount} match/es found.
+                </p>
+            </lightning:card>
+        
+        <br/>
+ 	<lightning:button class="slds-float_left"  variant="brand" label="Create Account" onclick="{!c.ShowModalBox}"/> 
+	<lightning:button class="slds-float_right" variant="brand" label="View All" onclick="{!c.callMergeComponent}"/>    
+      
+    <br/> <br/>
+    </div>
+
+    <!--Show Record Editing Template-->
+        <aura:if isTrue="{!v.ShowModal}">  
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+                <div class="slds-modal__container">
+                    <!--Modal Header-->
+                    <header class="slds-modal__header" style="border-bottom:0px !important;">
+            <aura:if isTrue="{!v.ShowFirstScenarioFeatures}">     
+                <lightning:buttonIcon iconName="utility:close"
+                                              size="large"
+                                              variant="bare-inverse"
+                                              onclick="{!c.HideModalBox}"
+                                              alternativeText="Close" 
+                                              class="slds-modal__close" />
+                        
+                       
+           <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-m-top_small">
+               Are you sure you want to create an account?</h2>
+              </aura:if>
+                        
+             <aura:if isTrue="{!v.ShowSecondcenarioFeatures}"> 
+                  <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate slds-m-top_small">
+               Account Created Successfully </h2>
+              </aura:if>
+            	 </header> 
+                        <!--/Modal Header-->
+                    
+            <!--Modal Body-->
+            <div class="slds-modal__content" id="modal-content-id-1">
+                
+           <div class="slds-text-align_center slds-m-bottom_small">
+               
+              <!--Show Create Account/Yes and Cancel Buttons--> 
+               <aura:if isTrue="{!v.ShowFirstScenarioFeatures}">
+               <lightning:button class=" slds-m-bottom_medium" variant="brand" name="Yes" label="Yes" onclick="{!c.CreateNewAccount}"/>
+               <lightning:button class=" slds-m-bottom_medium"  name="Cancel" label="Cancel" onclick="{!c.HideModalBox}"/>
+               </aura:if>
+             <!--/Show Create Account/Yes and Cancel Buttons-->
+               
+              <!--Show Navigate to Account and Finish Button--> 
+               <aura:if isTrue="{!v.ShowSecondcenarioFeatures}">
+                   <lightning:button class=" slds-m-bottom_medium" variant="brand"  onclick="{!c.NavToCreatedAccnt}"> View {!v.accnt.FirstName}&nbsp;{!v.accnt.LastName} Account </lightning:button>
+               <lightning:button class=" slds-m-bottom_medium"  name="Close" label="Close" onclick="{!c.endProcess}"/>
+               </aura:if>
+             <!--/Show Navigate to Account and Finish Buttons-->
+           </div>
+       <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                     
+                    </div> <!--/Modal Body-->
+                    
+                            </div>
+            </section>
+    
+   <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>     
+    <!--/Show Record Editing Template-->
+    
+      <!--Call Merge Component-->
+     <aura:if isTrue="{!v.showMergeComp}">
+         <c:CernerQueue_DuplicateMerge recordId="{!v.recordId}"/>
+    </aura:if>
+	
+    
+</aura:component>

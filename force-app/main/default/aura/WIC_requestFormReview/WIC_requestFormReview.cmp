@@ -1,0 +1,520 @@
+<aura:component>
+
+    <aura:attribute name="parentComponent" type="Aura.Component"/>
+
+    <!-- Attributes to be passed from Parent Component -->
+    <aura:attribute name="isCNCitizen" type="Boolean" default="false"/>
+    <aura:attribute name="objSelectedVals" type="object" default="{}"/>
+    <aura:attribute name="accountList" type="Account[]" />
+
+    <!-- Picklist Attributes from paren cmp -->
+    <aura:attribute name="genderList" type="String[]" />
+    <aura:attribute name="ethnicityList" type="String[]" />
+    <aura:attribute name="tribList" type="String[]" />
+    <aura:attribute name="lactoseOptionList" type="String[]" />
+    <aura:attribute name="gradeList" type="String[]" />
+    <aura:attribute name="schoolList" type="String[]" />
+    <aura:attribute name="fosterChildList" type="String[]" />
+    <aura:attribute name="migrantList" type="String[]" />
+
+    <aura:attribute name="isShowSpinner" type="Boolean" default="false"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:if isTrue="{!v.isShowSpinner}">
+      <lightning:spinner alternativeText="Loading" />
+    </aura:if>
+    
+    <div class="slds-form main-container">
+        <div class="card m-box ">  
+          <div class="m-box-style">
+            <p>
+              Please review you entered details before submission, click on edit if you wan to edit again or Accept and Submit.
+            </p>
+    
+            <div class="panel-head2">
+              <h5 class="mainHeading text-center">Household Information</h5>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">How many school-age children are you applying for?</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" value="{!v.objSelectedVals.selectedChildCount}" disabled="true"/>
+              </div>
+            </div>
+
+
+            <!--table-->
+            <div id="tbl" class="tableParentDiv slds-p-top_medium">
+              <div class="slde-show table-responsive-sm">
+                <table class="table table-bordered">
+                  <thead class="thead-dark">
+                    <tr>
+                      <th scope="col">  First Name                    </th>
+                      <th scope="col">  Middle Name                   </th>
+                      <th scope="col">  Last Name                     </th>
+                      <th scope="col">  Suffix                        </th>
+                      <th scope="col">  Gender                        </th>
+                      <th scope="col">  Ethnicity                     </th>
+                      <th scope="col">  Tribe                         </th>
+                      <th scope="col">  Low-Lactose Option Required?  </th>
+                      <th scope="col">  Date of Birth                 </th>
+                      <th scope="col">  Grade                         </th>
+                      <th scope="col">  School                        </th>
+                      <th scope="col">  Foster Child                  </th>
+                      <th scope="col">  Migrant                       </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <aura:iteration items="{!v.accountList}" var="acc" indexVar="index">
+                      <tr scope="row">
+                        <td>
+                          <lightning:input name="fistName" type="text" value="{!acc.FirstName}" disabled="true" required="true"/>
+                        </td>
+  
+                        <td>
+                          <lightning:input class="mar-top-10" name="middleName" type="text" value="{!acc.Middle_Name__c}" disabled="true"/>
+                        </td>
+  
+                        <td>
+                          <lightning:input name="lastName" type="text" value="{!acc.LastName}" disabled="true" required="true"/>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="suffix" value="{!acc.Suffix__c}" class="pl-val" disabled="true">
+                            <option value="">           </option>
+                            <option value="Jr.">  Jr.   </option>
+                            <option value="Sr.">  Sr.   </option>
+                            <option value="II">   II    </option>
+                            <option value="III">  III   </option>
+                            <option value="IV">   IV    </option>
+                            <option value="V">    V     </option>
+                            <option value="VI">   VI    </option>
+                            <option value="VII">  VII   </option>
+                          </lightning:select>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="gender" value="{!acc.HealthCloudGA__Gender__pc}" disabled="true" required="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.genderList}" var="gl" indexVar="key">
+                              <option text="{!gl.value}" value="{!gl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+  
+                        <td>
+                          <lightning:select class="mar-top-10" aura:id="ethnicity" value="{!acc.Ethnicity__c}" disabled="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.ethnicityList}" var="el" indexVar="key">
+                              <option text="{!el.value}" value="{!el.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="tribe" value="{!acc.Tribe__c}" class="pl-val" disabled="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.tribList}" var="tl" indexVar="key">
+                              <option text="{!tl.value}" value="{!tl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+  
+                        <td data-th="lowLactose" class="clsSmallScreentatus">
+                          <div class="slds-form-element">
+                            <lightning:select aura:id="lowLactose" value="{!acc.Low_Lactose_Option_Required__c}" class="pl-val" disabled="true">
+                              <option value=""></option>
+                              <aura:iteration items="{!v.lactoseOptionList}" var="tl" indexVar="key">
+                                <option text="{!tl.value}" value="{!tl.key}" />
+                              </aura:iteration>
+                            </lightning:select>
+                          </div>
+                        </td>
+  
+                        <td>
+                          <lightning:input value="{!acc.Date_of_Birth__c}" maxlength="10"
+                            onchange="{!c.validateAndReplace}" placeholder="MM/DD/YYYY" disabled="true" required="true"/>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="grade" value="{!acc.Grade__c}" disabled="true" required="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.gradeList}" var="grl" indexVar="key">
+                              <option text="{!grl.value}" value="{!grl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="school" value="{!acc.School__c}" disabled="true" onchange="{!c.check}" required="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.schoolList}" var="scl" indexVar="key">
+                              <option text="{!scl.value}" value="{!scl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="fosterChild" value="{!acc.Foster_Child__c}" class="pl-val" disabled="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.fosterChildList}" var="fcl" indexVar="key">
+                              <option text="{!fcl.value}" value="{!fcl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+  
+                        <td>
+                          <lightning:select aura:id="migrant" value="{!acc.Migrant__c}" class="pl-val" disabled="true">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.migrantList}" var="ml" indexVar="key">
+                              <option text="{!ml.value}" value="{!ml.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </td>
+                      </tr>
+  
+                    </aura:iteration>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--/table-->
+    
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Language spoken in the home</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedSpokenHomeLanguage}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Other Language</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedOtherLanguage}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Which program does any household member participate in?</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedPrograms}" disabled="true"/>
+              </div>
+            </div>
+  
+
+            <!--Household Income Information-->
+            <div class="panel-head2">
+              <h5 class="mainHeading text-center">Household Income Information</h5>
+            </div>
+  
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Current Household Income - USD</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedHouseholdIncome}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Income Frequency (how often)</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedIncomeFrequency}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Income Frequency (how often)</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedIncomeFrequency}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Household Size</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedHouseholdSize}" disabled="true"/>
+              </div>
+            </div>
+  
+
+            <!--  Parent / Legal Guardian : Primary Contact-->
+            <div class="panel-head2">
+              <h5 class="mainHeading text-center">Parent / Legal Guardian</h5>
+            </div>
+  
+            <h1 class="head">Primary Contact:</h1>
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">First Name</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConFirstName}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Middle Name</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConMiddleName}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Last Name</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConLastName}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Suffix</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConSuffix}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Email</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConEmail}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Date of Birth</label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConDob}" disabled="true"/>
+              </div>
+            </div>
+            
+
+            <!--Cherokee Nation Citizen-->
+            <aura:if isTrue="{!!v.isCNCitizen}">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <label class="slds-form-element__label" for="horizontal-input-id-01">
+                  If you are Cherokee Nation Citizen, please specify your Citizenship Number:
+                </label>
+                <div class="slds-form-element__control">
+                  <input type="text" class="slds-input" 
+                          value="{!v.objSelectedVals.selectedpriConCitizenshipNumber}" disabled="true"/>
+                </div>
+              </div>
+            </aura:if>
+            
+
+            <!--Cherokee Nation Citizen-->
+            <!--Mailing Address-->
+            <h1 class="head">Mailing Address:</h1>
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Street: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedMailingStreetInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">City: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedMailingCityInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Country: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedMailingCountryInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">State: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedMailingStateInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Zip Code: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedMailingzipInput}" disabled="true"/>
+              </div>
+            </div>
+            
+
+            <!--Physical Address-->
+            <div class="row ">
+              <div class="col">
+                <h1 class="head">Physical Address: </h1>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Street: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedPhysicalStreetInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">City: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedPhysicalCityInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Country: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedPhysicalCountryInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">State: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedPhysicalStateInput}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Zip Code: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedPhysicalzipInput}" disabled="true"/>
+              </div>
+            </div>
+            
+  
+            <!--Phone-->
+            <h1 class="head">Phone:</h1>
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Mobile: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConCellPhone}" disabled="true"/>
+              </div>
+            </div>
+            
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Home: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConHomePhone}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Work: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedpriConWorkPhone}" disabled="true"/>
+              </div>
+            </div>
+  
+  
+            <!--Secondary Contact-->
+            <h1 class="head">Secondary Contact:</h1>
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">First Name: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedsecConFirstName}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Last Name: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedsecConLastName}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Phone: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedsecConPhone}" disabled="true"/>
+              </div>
+            </div>
+
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <label class="slds-form-element__label" for="horizontal-input-id-01">Email: </label>
+              <div class="slds-form-element__control">
+                <input type="text" class="slds-input" 
+                        value="{!v.objSelectedVals.selectedsecConEmail}" disabled="true"/>
+              </div>
+            </div>
+  
+            <!-- Abt Associates Consent Checkbox -->
+            <div class="row ">
+              <div class="col-sm-12">
+                <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:20px; color:rgb(90,90,90);">
+                  Abt Associates, will randomly contact families in the Cherokee Nation demonstration area to do a survey in the summer months. 
+                  Information provided by you and collected during the survey as well as any records obtained will be kept confidential as 
+                  allowed by law and will be used only for this study. Your participation in the survey and agreement to release your child’s 
+                  records is voluntary, and helps reporting and requesting  grant funding.  If you do not agree to these terms, conditions or 
+                  wish to be contacted, please uncheck the box.
+                </p>
+                <lightning:input  aura:id="abtAssociateConsentCheckBox"
+                                  disabled="true"
+                                  type="checkbox"
+                                  label="Abt Associates Consent"
+                                  checked="{!v.objSelectedVals.abtAssociateConsent}"
+                />
+              </div>
+            </div>
+
+            <!-- I Accept Checkbox -->
+            <div class="row ">
+              <div class="col-sm-12">
+                <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:20px; color:rgb(90,90,90);">
+                  By checking this box you are giving permission to receive text/messages from Cherokee Nation. In
+                  addition, Cherokee Nation may also confirm the following details from student records for each child:
+                  age, grade, gender, school attended, race/ethnicity, free or reduced lunch and language.
+                </p>
+                <lightning:input type="checkbox" required="true" label="I Accept" aura:id="acceptCheckBox"
+                                 checked="{!v.objSelectedVals.iAccept}"/>
+              </div>
+            </div>
+
+
+            <!-- Submit Button -->
+            <div class=" text-center">
+                <lightning:button   label="Edit" 
+                                    class="btn submit-button " 
+                                    variant="brand"
+                                    onclick="{!c.handleFormEditAgain}" />
+                <lightning:button   label="Submit" 
+                                    disabled="{!v.isActive}" 
+                                    class="btn submit-button " 
+                                    variant="brand"
+                                    onclick="{!c.handleFormSubmit}" />
+            </div>
+          </div>
+  
+        </div>
+    </div>  
+
+</aura:component>

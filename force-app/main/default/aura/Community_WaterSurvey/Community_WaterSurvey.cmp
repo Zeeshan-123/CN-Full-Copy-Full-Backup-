@@ -1,0 +1,158 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global"
+                controller="Community_SurveyFormController">
+    <ltng:require styles="{!$Resource.CN_Boot}" />
+    <!--Allow Multi Line Space in Toast Messages-->
+    <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        }
+    </aura:html>
+    
+    <!--Handler-->
+    <aura:attribute name="options" type="List" default="[
+                                                                        {'label': 'Ross', 'value': 'option1'},
+                                                                        {'label': 'Rachel', 'value': 'option2'}
+                                                                        ]"/>
+                    <aura:attribute name="value" type="List" default="option1"/>
+    <aura:attribute name="caseId" type="String" />
+    <aura:attribute name="requestNumber" type="String" />
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false" />
+    
+    <aura:attribute name="surveyForm" type="boolean" default="true" />
+    <aura:attribute name="accObj" type="Object" />
+    <aura:attribute name="exceptionMsg" type="String" />
+    
+    
+    
+    <aura:attribute name="value1" type="String" default="0" />
+    <aura:attribute name="value2" type="String" default="0" />
+    <aura:attribute name="value3" type="String" default="0" />
+    <aura:attribute name="value4" type="String" default="0" />
+    <aura:attribute name="value5" type="String" default="0" />
+    <aura:attribute name="value6" type="String" default="0" />
+    <aura:attribute name="value7" type="String" default="0" />
+    <aura:attribute name="value8" type="String" default="0" />
+    <aura:attribute name="value9" type="String" default="0" />
+    <aura:attribute name="value10" type="String" default="0" />
+    <aura:attribute name="value11" type="String" default="0" />
+    <aura:attribute name="value12" type="String" default="0" />
+    <aura:attribute name="value13" type="String" default="0" />
+    
+    <!-- Survey Form -->
+    <aura:if isTrue="{! v.surveyForm}">
+        <div class="main-container">
+            <div class="card m-box ">
+                <!-- <img src="{!$Resource.Hunt_App_Header}" alt=""/> -->
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #d88e2d;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                                Water Survey
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                </div>
+                <div class="m-box-style">
+                    <div style="text-align: justify">
+                        <br/>
+                        <p class="header-text">We're are currently assessing the water quality of our citizens. We'd love to hear from you about what types of conditions you are experiencing. The survey should only take 5 minutes, and your responses are completely anonymous.</p>
+                        <br/>
+                        <p class="header-text">If you have any questions about the survey, please email us: support-gadugiportal@cherokee.org</p>
+                        <br/>
+                        <p class="header-text">We really appreciate your input!</p>
+                        <br/>
+                        
+                    </div>
+                    <!-- Survey Information -->
+                    
+                    <lightning:select name="select1" label="Do you live inside the Cherokee Reservation?" required="true">
+                        <option value="">choose one...</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </lightning:select>
+                    
+                    <lightning:select name="select1" label="What type of water supply do you have?" required="true">
+                        <option value="">choose one...</option>
+                        <option value="true">Rural Water/Public Water Supply</option>
+                        <option value="false">Well Water</option>
+                        <option value="false">Other water source (cistern, spring, pong, stream, etc)</option>
+                    </lightning:select>
+                    
+                    <lightning:textarea aura:id="commentBox" name="commentBox" required="false" value=""
+                                        placeholder="type here..." label="Please enter the name of the water system that supplies water to your home." maxlength="900"
+                                        messageWhenTooLong="A maximum of 900 characters are allowed in a tweet."
+                                        messageWhenValueMissing="An empty feedback cannot be posted." />
+                    
+                    <lightning:select name="select1" label="Do you have any issues with the quality of your water?" required="true">
+                        <option value="">choose one...</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </lightning:select>
+                    
+                    
+                    
+                    <lightning:checkboxGroup name="Checkbox Group"
+                                             label="Please indicate all the water quality problems that you currently have? (select all that apply)"
+                                             options="{! v.options }"
+                                             value="{! v.value }"
+                                             onchange="{! c.handleChange }"/>
+                    
+                    <lightning:select name="select1" label="Would you like to have your water tested at no cost to you?" required="true">
+                        <option value="">choose one...</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </lightning:select>
+                    
+                    <lightning:textarea aura:id="commentBox" name="commentBox" required="false" value=""
+                                        placeholder="type here..." label="What is the best time to make contact to set up a water test?" maxlength="900"
+                                        messageWhenTooLong="A maximum of 900 characters are allowed in a tweet."
+                                        messageWhenValueMissing="An empty feedback cannot be posted." />
+                    
+                    <!-- Survey Information -->
+                    
+                    
+                    <div class=" text-center">
+                        <lightning:button variant="neutral" class="btn cancel-button "
+                                          label="Cancel" title="Cancel" onclick="{! c.takeMeHome }" />
+                        <lightning:button label="Submit" disabled="false" class="btn submit-button " variant="brand"
+                                          onclick="{!c.submitForm}" />
+                    </div>
+                    <lightning:spinner aura:id="Spinner2" alternativeText="Processing.." title="Processing.."
+                                       variant="brand" size="large" class="slds-hide" />
+                    
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- /Survey Form -->
+    
+    <!--Success Message Div-->
+    <aura:if isTrue="{!v.showSuccessMessage}">
+        <div class=" container" style='padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <div class="card sm-box">
+                        <div class="align-s-content">
+                            <strong>
+                                <p class="msgTextFont m2" style="font-size: 30px; color: #7684e4;">
+                                    Wado!
+                                    
+                                </p>
+                            </strong>
+                            <p class="msgTextFont " style="text-align: center; padding-bottom: 10px;">
+                                You have successfully shared your feedback on Cherokee Nation’s response to the impacts of COVID-19.
+                            </p>
+                            
+                            <div style="text-align: center;">
+                                <lightning:button variant="brand" class="btn submit-button " label="Return Home"
+                                                  title="Return Home" onclick="{! c.takeMeHome }" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!--/Success Message Div-->
+</aura:component>

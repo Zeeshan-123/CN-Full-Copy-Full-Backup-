@@ -1,0 +1,153 @@
+.THIS .img-size
+{
+	width: 100%;
+   
+}
+
+.THIS .inputField{
+  border-radius: 2px;
+  font-size: 12px;
+  
+    
+     
+}
+
+.THIS ::placeholder {
+    color: #e6dbdb;
+    font-family: sans-serif,tahoma;
+}
+
+
+
+
+.THIS .title 
+{
+  text-align: center;
+  font-size: 25px;
+  padding-top: 21px; 
+}
+
+.THIS .alignField
+{
+   /*  margin-bottom:10px; */
+    padding: 2px; 
+   
+}
+
+.THIS .signUp-button {
+    color:White;
+    cursor: pointer;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin-top: 20px;
+
+}
+
+.THIS  .signUp-button:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+     
+.THIS .fields-div {
+padding: 0px 30px 35px 35px;
+}
+
+/*Message Box Css*/
+.THIS .pM
+{
+    margin-bottom: .7rem;
+}
+
+.THIS .msgTextFont 
+{
+    text-align: center;
+    font-size:16px;
+    font-family: sans-serif;
+}
+    
+.THIS .align-s-content
+{
+    margin:30px 40px 30px 40px;
+} 
+
+.THIS .sm-box {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+/*Override Bootstrap Css*/
+.THIS abbr[title] {
+     cursor: none; 
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+
+/*Mobile devices*/
+@media  screen and (min-width:280px) and (max-width: 767px) {
+    .THIS .align-s-content
+{
+    margin:30px 15px 30px 15px;
+} 
+    .THIS .fields-div 
+    {
+	padding: 0 20px 30px 20px;
+}
+    
+    .THIS .title
+    {
+    text-align: center;
+    font-size: 21px;
+    padding-top: 20px;
+}
+    .THIS .signUp-button 
+    {
+    font-size: 14px;
+    }
+    
+    .THIS .slds-form-element__label
+    {
+         font-size: 12px;
+    }
+    
+    .THIS .inputField
+    {
+	  font-size: 12px; 
+}
+     .THIS  .msgTextFont {
+    font-size: 13px;
+    }
+    
+}
+
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1024px)
+{ 
+     .THIS .fields-div 
+    {
+	padding: 0 22px 32px 22px;
+}
+    
+        .THIS .title
+    {
+    text-align: center;
+    font-size: 23px;
+    padding-top: 20px;
+}
+    .THIS .align-s-content
+{
+    margin:30px 20px 30px 20px;
+}
+    .THIS .sm-box {
+    margin-top: 50%;
+    margin-bottom: 50%;
+}
+}

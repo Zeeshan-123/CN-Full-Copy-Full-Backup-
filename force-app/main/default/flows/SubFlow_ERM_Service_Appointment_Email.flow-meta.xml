@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>CANCELLATION_EMAIL</name>
+        <label>CANCELLATION_EMAIL</label>
+        <locationX>364</locationX>
+        <locationY>496</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>APPOINTMENT_CANCELLED_EMAIL_TEMPLATE</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>GET_LEAD.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>APPOINTMENT_CANCELLED_SUBJECT</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>CONFIRMATION_EMAIL</name>
+        <label>CONFIRMATION_EMAIL</label>
+        <locationX>595</locationX>
+        <locationY>501</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>APPOINTMENT_SCHED_EMAIL_TEMPLATE</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>GET_LEAD.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>APPOINTMENT_SCHED_SUBJECT</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <name>Email_Exist</name>
+        <label>Email Exist</label>
+        <locationX>473</locationX>
+        <locationY>170</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Does_email_exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LEAD_EMAIL</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>IS_CANCELLED</targetReference>
+            </connector>
+            <label>Does email exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IS_CANCELLED</name>
+        <label>IS CANCELLED</label>
+        <locationX>475</locationX>
+        <locationY>343</locationY>
+        <defaultConnector>
+            <targetReference>CONFIRMATION_EMAIL</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>IS_SERVICE_APPOINTMENT_CANCELLED</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_SERVICE_APPOINTMENT.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CANCELLATION_EMAIL</targetReference>
+            </connector>
+            <label>IS SERVICE APPOINTMENT CANCELLED</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Lead_Exist</name>
+        <label>Is Lead Exist</label>
+        <locationX>556</locationX>
+        <locationY>48</locationY>
+        <defaultConnector>
+            <targetReference>GET_LEAD</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Lead</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_SERVICE_APPOINTMENT.ParentRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GET_SERVICE_APPOINTMENT.ParentRecordId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <label>Is Lead</label>
+        </rules>
+    </decisions>
+    <description>SubFlow : ERM Service Appointment Email</description>
+    <interviewLabel>SubFlow : ERM Service Appointment Email {!$Flow.CurrentDateTime}</interviewLabel>
+    <isTemplate>true</isTemplate>
+    <label>SubFlow : ERM Service Appointment Email</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GET_LEAD</name>
+        <label>GET LEAD</label>
+        <locationX>854</locationX>
+        <locationY>96</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Email_Exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GET_SERVICE_APPOINTMENT.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Lead</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GET_SERVICE_APPOINTMENT</name>
+        <label>GET SERVICE APPOINTMENT</label>
+        <locationX>343</locationX>
+        <locationY>28</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Lead_Exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Service_Appointment_Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ParentRecordType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Lead</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>188</locationX>
+        <locationY>28</locationY>
+        <connector>
+            <targetReference>GET_SERVICE_APPOINTMENT</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>APPOINTMENT_CANCELLED_EMAIL_TEMPLATE</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Hi {!GET_LEAD.FirstName} {!GET_LEAD.LastName},
+Your appointment has been cancelled. Please find details below:
+
+When:	         {!GET_SERVICE_APPOINTMENT.SchedStartTime}
+Where:	         {!GET_SERVICE_APPOINTMENT.City} {!GET_SERVICE_APPOINTMENT.State}{!GET_SERVICE_APPOINTMENT.PostalCode} {!GET_SERVICE_APPOINTMENT.Country}
+Reason:           {!GET_SERVICE_APPOINTMENT.CancellationReason}
+
+Thanks,
+Care Coordinator</text>
+    </textTemplates>
+    <textTemplates>
+        <name>APPOINTMENT_SCHED_EMAIL_TEMPLATE</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>Hello {!GET_LEAD.FirstName} {!GET_LEAD.LastName},
+You have an appointment scheduled. Here are the details: 
+
+When:	         {!GET_SERVICE_APPOINTMENT.SchedStartTime}
+Where:	         {!GET_SERVICE_APPOINTMENT.City} {!GET_SERVICE_APPOINTMENT.State} {!GET_SERVICE_APPOINTMENT.PostalCode} {!GET_SERVICE_APPOINTMENT.Country}
+
+Thanks,
+Care Coordinator</text>
+    </textTemplates>
+    <variables>
+        <name>APPOINTMENT_CANCELLED_SUBJECT</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Appointment cancellation</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>APPOINTMENT_SCHED_SUBJECT</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Appointment confirmation</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>LEAD_EMAIL</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>LEAD_NAME</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Service_Appointment_Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

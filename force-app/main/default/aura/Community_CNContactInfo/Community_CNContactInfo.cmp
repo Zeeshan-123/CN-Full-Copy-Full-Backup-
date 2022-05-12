@@ -1,0 +1,23 @@
+<aura:component  implements="forceCommunity:availableForAllPageTypes"  access="global" >
+	  <div class="main-container"> 
+                 <!--Contact Us-->
+                <div class="info-panel-head">  <h5 class="mainHeading">Cherokee Nation Contact Information</h5> </div>
+                <div class="m-Border "></div>
+                
+                <p class="l-para" style="text-align: initial;">
+                    For questions or issues regarding the Gadugi Portal please email:
+                    support-gadugiportal@cherokee.org</p>
+                
+                <div class="row no-gutters">
+                    <lightning:icon class="icn" iconName="utility:call" size="small"/>
+                    <div class="col">
+                        <h3 class="head-2"> 
+                            For technical assistance with the portal or problems with access please call 918-453-5058.
+                        </h3>
+                    </div>
+                </div>
+                <p class="l-para">Unless otherwise specified hours of operation are Monday–Friday 8 a.m. to 5 p.m.</p>
+                 <!--/Contact Us-->
+           
+    </div>
+</aura:component>

@@ -1,0 +1,14 @@
+.THIS .marquee {
+	height: 64px;
+	background-color: #8e3134 ;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.THIS .sm-img {
+    max-width: 100%;
+    height: 50px;
+    background-color: #8e3134;
+    margin: 8px;
+}

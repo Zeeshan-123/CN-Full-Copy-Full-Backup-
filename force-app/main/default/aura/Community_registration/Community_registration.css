@@ -1,0 +1,355 @@
+.THIS .mpI
+{
+    padding-bottom:20px !important;
+}
+
+.THIS .slds-form-element__icon
+{
+    vertical-align: text-bottom;
+}
+
+.THIS .img-size
+{
+	width: 100%;
+}
+
+.THIS .inputField
+{
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.THIS ::placeholder 
+{
+    color: #e6dbdb;
+    font-family: sans-serif,tahoma;
+}
+
+
+.THIS .title 
+{
+  text-align: center;
+  font-size: 25px;
+  padding-top: 21px; 
+}
+
+.THIS .alignField
+{
+    padding: 2px; 
+}
+
+.THIS .signUp-button
+{
+    color:White;
+    cursor: pointer;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin-top: 20px;
+
+}
+
+.THIS  .signUp-button:hover
+{
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+     
+.THIS .fields-div 
+{
+padding: 0px 30px 35px 35px;
+}
+
+.THIS .otp-b
+{
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+/*Message Box Css*/
+.THIS .pM
+{
+    margin-bottom: .7rem;
+}
+
+.THIS .msgTextFont 
+{
+    text-align: center;
+    font-size:16px;
+    font-family: sans-serif;
+}
+    
+.THIS .align-s-content
+{
+    margin:30px 40px 30px 40px;
+} 
+
+.THIS .sm-box {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+/*Override Bootstrap Css*/
+.THIS abbr[title] {
+     cursor: none; 
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+/*Reset Password Css*/
+
+.THIS p-r
+{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.THIS .m-r-box
+{
+    margin-top: 3%;
+    margin-bottom: 10%;
+}
+
+
+.THIS .align-content-r
+{
+    margin:30px 40px 30px 40px;
+}
+ 
+
+.THIS .btn-div-r
+{
+    margin-top: 25px;
+}
+
+.THIS .resetButton-r
+{  
+	
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color:White;
+    cursor: pointer;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    border: 1px solid rgb(37, 116, 169);
+}
+
+
+.THIS  .resetButton-r:hover 
+{
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+
+.THIS .inputField-r
+{
+  background-color: white;
+  border-radius: 2px;
+  font-size: 16px;
+     
+}
+
+.THIS ::placeholder-r 
+{
+    color: #e6dbdb;
+    font-family: sans-serif,tahoma;
+}
+
+.THIS .pM-r
+{
+    margin-bottom: .7rem;
+}
+
+.THIS .textFont-r 
+{
+    font-size:16px;
+    font-family: sans-serif;
+}
+    
+
+.THIS .mainHeading-r
+{
+    margin-top: 4%;
+    font-size:26px;
+    font-weight:600;
+    font-family: sans-serif;
+}
+
+
+/*Mobile devices*/
+@media  screen and (min-width:280px) and (max-width: 767px) {
+  
+    .THIS .align-s-content
+{
+    margin:30px 15px 30px 15px;
+} 
+    .THIS .fields-div 
+    {
+	padding: 0 20px 30px 20px;
+}
+    
+    .THIS .title
+    {
+    text-align: center;
+    font-size: 21px;
+    padding-top: 20px;
+}
+    .THIS .signUp-button 
+    {
+    font-size: 14px;
+    }
+    
+    .THIS .slds-form-element__label
+    {
+         font-size: 12px;
+    }
+    
+    .THIS .inputField
+    {
+	  font-size: 12px; 
+}
+     .THIS  .msgTextFont {
+    font-size: 13px;
+    }
+    
+    /*RP Css*/
+    
+     .THIS .resetButton-r
+{  
+	
+    font-size: 13px;
+    
+}
+
+
+    .THIS .btn-div-r
+{
+    margin-top: 25px;
+}
+    
+   .THIS .align-content-r {
+    margin: 30px 20px 30px 20px;
+}
+    
+    .THIS  .mainHeading-r {
+   
+     margin-top: 20px;
+     font-size: 20px;    
+}
+    .THIS .align-s-content-r
+{
+    margin:30px 20px 30px 20px;
+} 
+    .THIS .textFont-r 
+{
+    font-size:14px;
+}
+
+    .THIS  .msgTextFont-r {
+    text-align: left;
+    font-size: 14px;
+    }
+    
+.THIS .inputField-r
+{
+
+  font-size: 14px;
+     
+}
+    
+}
+
+/*ipad devices portrait mode*/
+@media screen and (min-width: 768px)  and (max-width: 1024px) and (orientation: portrait)
+{ 
+     .THIS .fields-div 
+    {
+	padding: 0 22px 32px 22px;
+}
+    
+        .THIS .title
+    {
+    text-align: center;
+    font-size: 23px;
+    padding-top: 20px;
+}
+    .THIS .align-s-content
+{
+    margin:30px 20px 30px 20px;
+}
+    .THIS .sm-box {
+    margin-top: 20%;
+}    
+    .THIS .btn-div-r
+{
+    margin-top: 20px;
+}
+}
+
+/*ipad devices Landscape mode*/
+@media screen and (min-width: 768px)  and (max-width: 1024px) and (orientation: Landscape)
+{ 
+      .THIS .fields-div 
+    {
+	padding: 0 22px 32px 22px;
+}
+    
+        .THIS .title
+    {
+    text-align: center;
+    font-size: 23px;
+    padding-top: 20px;
+}
+    .THIS .align-s-content
+{
+    margin:30px 20px 30px 20px;
+}
+    .THIS .sm-box {
+    margin-top: 50px  !important;
+    margin-bottom: 50px !important;
+}    
+    .THIS .btn-div-r
+{
+    margin-top: 20px;
+}
+}
+
+/*RP Css*/
+/*only ipad pro */
+@media screen and (min-width: 1024px) and (max-width: 1025px) and (orientation: portrait)
+{ 
+   
+    
+.THIS .mainHeading-r 
+{
+    margin-top: 60px;
+    font-size:26px;
+    font-weight:600;
+    font-family: sans-serif;
+}
+    
+    .THIS .m-box-r
+{
+    margin-top: 3%;
+    margin-bottom: 0px;
+}
+    
+    .THIS .btn-div-r
+{
+    margin-top: 20px;
+}
+    
+    .THIS .sm-box {
+    margin-top: 30%;
+}
+}

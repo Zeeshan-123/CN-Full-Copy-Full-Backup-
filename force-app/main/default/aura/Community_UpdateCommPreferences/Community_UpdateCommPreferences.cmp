@@ -1,0 +1,124 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_UpdateCommPreferencesCntrl">
+    <!--Allow Multi Line Space in Toast Messages -->
+    <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        }
+    </aura:html>
+
+    <aura:attribute name="Accnt" type="object"/>
+    <aura:attribute name="orgAccnt" type="object"/>
+    <aura:attribute name="close" type="Aura.Action"/>
+    <aura:attribute name="StatesWithStateCodes" type="List" default="[]"/>
+    <aura:attribute name="isFromPage" type="string" default=""/>
+    <aura:attribute name="isLoading" type="boolean" default="false"/>
+        <aura:attribute name="onclick" type="Aura.Action"/>
+    <aura:attribute name="smsChoice" type="boolean"/>
+    <aura:attribute name="emailChoice" type="boolean"/>
+           
+    
+     <!--Attributes for Physical and Mailing State/Country Picklists-->
+    <aura:attribute name="getPickListMap" type="map"/>
+    
+    
+    <aura:attribute name="refreshError" type="boolean" default="true"/>
+  
+    <!-- Event -->
+    <aura:registerEvent name="ReturnAccountObj" type="c:Community_ReturnAccount"/>
+    <aura:registerEvent name="ModalCloseEvent" type="c:ModalCloseEvt"/>
+
+      
+    <!-- User Email -->
+    <aura:attribute name="showMsg" type="Boolean" default="false" />
+    <aura:attribute name="OrigEmail" type="string" default=""/>
+    <aura:attribute name="Email" type="string" default=""/>
+    
+    <!-- Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+        <!--###### MODAL BOX Start######--> 
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+        <aura:if isTrue="{!v.isLoading}">
+            <lightning:spinner aura:id="mySpinner" variant="brand" />
+        </aura:if>
+        <div class="slds-modal__container">
+                <!-- ###### MODAL BOX HEADER Start ######-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          onclick="{!v.close}"
+                                          alternativeText="close"
+                                          variant="bare-inverse"
+                                          class="slds-modal__close"/>
+                    
+                        <aura:if isTrue="{!v.isFromPage=='Home'}">
+                            <h5 id="modal-heading-01" class="mH" style="margin-bottom:0px !important;">Communication Preferences</h5>
+                            <aura:set attribute="else">
+                                <h5 id="modal-heading-01" class="mH">Communication Preferences</h5>
+                            </aura:set>
+                        </aura:if>    
+                </header>
+                
+                <!--###### MODAL BOX BODY Part Start######-->
+                <div class="slds-modal__content slds-p-around_small modal__padding" id="modal-content-id-1">
+                   <!-- Primary Information -->  
+                    <div class="mdl-section">
+                        <div class="row">
+                          <!--  
+                            <div class=" col-sm-4"> 
+                                 <div class="col"> 
+                                <label class="slds-form-element__label">First Name </label>
+                                </div>
+                                <div class="col slds-input">
+                                                 {!v.Accnt.FirstName}
+                                </div>
+                              -->
+                            <div class=" col-sm-4"> 
+                               <label class="slds-form-element__label">Opt In to Email</label>
+
+                                <lightning:input class="field-alignment"
+                                                 checked="{!v.emailChoice}"
+                                                 aura:id="optInToEmail"
+                                                 readonly="false"
+                                                 
+                                                 type="checkbox"
+                                                
+                                                 />   
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <label class="slds-form-element__label">Opt In to SMS</label>
+
+                                <lightning:input class="field-alignment"
+                                                 checked="{!v.smsChoice}"
+                                                 aura:id="optInToSMS"
+                                                
+                                                 readonly="false"
+                                                 type="checkbox"
+                                                 />  
+                            </div>    
+                            
+     
+                          
+                          
+                            
+
+                        </div>
+                    </div>
+                    <!-- /Primary Information -->  
+                    
+                   
+                    
+                  
+                   
+                </div>
+                <!--###### MODAL BOX FOOTER Part Start ######-->
+                <footer class="slds-modal__footer">
+                    <span class="slds-float_right">         
+                        <lightning:button class="submit-btn btn" variant="brand" onclick="{!c.UpdateAccount}">Update</lightning:button>            
+                        <lightning:button class="cancel-btn btn" variant="brand" onclick="{!v.close}">Cancel</lightning:button>
+                    </span>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--###### MODAL BOX Part END Here ######-->
+</aura:component>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>redirect_to_Account</name>
+        <label>redirect to Account</label>
+        <locationX>1324</locationX>
+        <locationY>518</locationY>
+        <actionName>HealthCloudGA:HcFlowRedirectLocalAction</actionName>
+        <actionType>component</actionType>
+        <inputParameters>
+            <name>url</name>
+            <value>
+                <stringValue>/lightning/o/Account/list?filterName=Recent</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
+    <decisions>
+        <description>check AFC</description>
+        <name>Check_AFC</name>
+        <label>Check AFC</label>
+        <locationX>890</locationX>
+        <locationY>192</locationY>
+        <defaultConnector>
+            <targetReference>updateaccount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Check_AFC_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Authorization_form_consent_records</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>delete_afc</targetReference>
+            </connector>
+            <label>Check AFC</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>check if allowed</description>
+        <name>Check_if_allowed</name>
+        <label>Check if allowed</label>
+        <locationX>592</locationX>
+        <locationY>156</locationY>
+        <defaultConnector>
+            <targetReference>users_allowed_loop</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Current_user_is_allowed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>users_allowed_loop.Label</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>UserID</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>delete_confirmation</targetReference>
+            </connector>
+            <label>Current user is allowed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>if CAR exist</description>
+        <name>If_CAR_exist</name>
+        <label>If CAR exist</label>
+        <locationX>904</locationX>
+        <locationY>368</locationY>
+        <defaultConnector>
+            <targetReference>Check_AFC</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>check_CAR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>clinical_assessment_response_records</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>delete_car</targetReference>
+            </connector>
+            <label>check CAR</label>
+        </rules>
+    </decisions>
+    <description>Account delete flow</description>
+    <formulas>
+        <name>UserID</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
+    <interviewLabel>Account Delete Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Account Delete Flow</label>
+    <loops>
+        <description>users allowed loop</description>
+        <name>users_allowed_loop</name>
+        <label>users allowed loop</label>
+        <locationX>340</locationX>
+        <locationY>50</locationY>
+        <collectionReference>users_with_delete_rights</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Check_if_allowed</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>not_allowed</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordDeletes>
+        <description>delete account</description>
+        <name>delete_account</name>
+        <label>delete account</label>
+        <locationX>1165</locationX>
+        <locationY>412</locationY>
+        <connector>
+            <targetReference>Deleted_screen</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>error</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>Account</object>
+    </recordDeletes>
+    <recordDeletes>
+        <description>delete afc</description>
+        <name>delete_afc</name>
+        <label>delete afc</label>
+        <locationX>1173</locationX>
+        <locationY>187</locationY>
+        <connector>
+            <targetReference>updateaccount</targetReference>
+        </connector>
+        <inputReference>Authorization_form_consent_records</inputReference>
+    </recordDeletes>
+    <recordDeletes>
+        <description>delete car</description>
+        <name>delete_car</name>
+        <label>delete car</label>
+        <locationX>686</locationX>
+        <locationY>373</locationY>
+        <connector>
+            <targetReference>Check_AFC</targetReference>
+        </connector>
+        <inputReference>clinical_assessment_response_records</inputReference>
+    </recordDeletes>
+    <recordLookups>
+        <description>get authorization consent</description>
+        <name>get_authorization_consent</name>
+        <label>get authorization consent</label>
+        <locationX>912</locationX>
+        <locationY>505</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>If_CAR_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ConsentGiverId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>AuthorizationFormConsent</object>
+        <outputReference>Authorization_form_consent_records</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>Get clinical Assessment</description>
+        <name>Get_clinical_Assessment</name>
+        <label>Get clinical Assessment</label>
+        <locationX>700</locationX>
+        <locationY>505</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_authorization_consent</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>HealthCloudGA__Patient__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>HealthCloudGA__Clinical_Assessment_Response__c</object>
+        <outputReference>clinical_assessment_response_records</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <description>users allowed</description>
+        <name>users_allowed</name>
+        <label>users allowed</label>
+        <locationX>261</locationX>
+        <locationY>223</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>users_allowed_loop</targetReference>
+        </connector>
+        <object>Users_with_delete_rights__mdt</object>
+        <outputReference>users_with_delete_rights</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Label</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <description>updateAccount</description>
+        <name>updateaccount</name>
+        <label>updateaccount</label>
+        <locationX>1163</locationX>
+        <locationY>302</locationY>
+        <connector>
+            <targetReference>delete_account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>UserID</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <screens>
+        <description>Please click next to delete this record.</description>
+        <name>delete_confirmation</name>
+        <label>delete_confirmation</label>
+        <locationX>450</locationX>
+        <locationY>507</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_clinical_Assessment</targetReference>
+        </connector>
+        <fields>
+            <name>delete_confirmation_text</name>
+            <fieldText>&lt;p&gt;Please click next to delete this record.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Deleted screen</description>
+        <name>Deleted_screen</name>
+        <label>Deleted screen</label>
+        <locationX>1157</locationX>
+        <locationY>518</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>redirect_to_Account</targetReference>
+        </connector>
+        <fields>
+            <name>Deleted</name>
+            <fieldText>&lt;p&gt;This record has been deleted successfully.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>error</description>
+        <name>error</name>
+        <label>error</label>
+        <locationX>1333</locationX>
+        <locationY>348</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>fault</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!$Flow.FaultMessage}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>not allowed</description>
+        <name>not_allowed</name>
+        <label>not allowed</label>
+        <locationX>383</locationX>
+        <locationY>244</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Not_Allowed_0</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(199, 25, 25);&quot;&gt;Please reach out to your team lead to perform this operation.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>499</locationY>
+        <connector>
+            <targetReference>users_allowed</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Authorization form consent records</description>
+        <name>Authorization_form_consent_records</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AuthorizationFormConsent</objectType>
+    </variables>
+    <variables>
+        <description>clinical_assessment_response_records</description>
+        <name>clinical_assessment_response_records</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>HealthCloudGA__Clinical_Assessment_Response__c</objectType>
+    </variables>
+    <variables>
+        <description>recordId</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <description>users_with_delete_rights</description>
+        <name>users_with_delete_rights</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Users_with_delete_rights__mdt</objectType>
+    </variables>
+</Flow>

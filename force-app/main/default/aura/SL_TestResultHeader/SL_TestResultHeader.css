@@ -1,0 +1,71 @@
+.THIS {
+    background-image: url('/resource/1630331349000/Test_Result_BG');
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+.THIS .sm-img {
+    margin: 0px 15px 0px 0px;
+    max-width: 90%;
+}
+
+.THIS .covidNeg-img {
+    max-width: 25%;
+}
+
+.THIS .m-box {
+    margin: 40px 80px;
+}
+
+.THIS .m-box-style {
+    padding: 20px 65px 25px 65px;
+}
+
+.THIS .bg-white {
+    background-color: white;
+}
+
+.THIS p {
+    font-size: 17px;
+}
+
+/*Mobile*/
+@media screen and (min-width:280px) and (max-width: 767px) {
+    .THIS .m-box-style {
+        padding: 25px 25px;
+    }
+
+    .THIS p {
+        margin-top: 10px !important;
+        margin-bottom: 0px !important;
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .THIS .m-box {
+        margin: 30px 20px 30px 20px;
+    }
+
+    .THIS .sm-img {
+        margin: 0px 8px 0px 0px;
+    }
+}
+
+/*ipad devices */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .THIS .m-box-style {
+        padding: 20px 50px 25px 50px;
+    }
+
+    .THIS .m-box {
+        margin: 30px 30px;
+    }
+
+    .THIS p {
+        font-size: 16px;
+    }
+
+    .THIS .sm-img {
+        margin: 0px 8px 0px 0px;
+    }
+}

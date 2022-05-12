@@ -1,0 +1,168 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_UA_TestResultsCntrl">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="Dob" type="string" default=""/>
+    <aura:attribute name="acnt" type="Object" default=""/>
+    <aura:attribute name="isActive" type="Boolean" default="false"/>
+    <aura:attribute name="showQuestionnaire" type="Boolean" default="false"/>
+    <aura:attribute name="isERMPatientAccount" type="Boolean" default="false"/>
+    <aura:attribute name="responseNotSubmitted" type="Boolean" default="false"/>
+    <aura:attribute name="IsolationEndDate" type="String" default=""/>
+    <aura:attribute name="rId" type="String" default=""/>
+    
+    <!--Attributes for Show/Hide Screens-->
+    <aura:attribute name="showTestResult" type="Boolean" default="false" /> 
+    <aura:attribute name="showInputS" type="Boolean" default="true" /> 
+    <aura:attribute name="showDob" type="Boolean" default="true" /> 
+    
+      <!--Handler -->
+   <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+  
+            <!--DOB Input-->
+    <aura:if isTrue="{!v.showInputS}">  
+        <div class=" main-container">
+            <div class="row justify-content-center" style="margin-right: 0px !important; margin-left: 0px !important;">
+                <div class=" col-sm-7 col-md-7 col-lg-6"> 
+                    <div class="card dob-s">
+                        <div class="card-body ">
+                          <aura:if isTrue="{!v.showDob}">  
+                            <p > Enter Your Date of Birth:</p>
+                            <lightning:input aura:id="DateOfBirth"
+                                             label="Date Of Birth" 
+                                             placeholder="MM/DD/YYYY" 
+                                             class="alignField"
+                                             value="{!v.Dob}" 
+                                             required="true"
+                                             maxlength="10" 
+                                             onchange="{!c.validateAndReplace}"
+                                             pattern="(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d"
+                                             messageWhenPatternMismatch="Invalid date format, correct one is MM/DD/YYYY."
+                                             messageWhenValueMissing="Date of Birth required."/>     
+                            <br/>
+                            <div class="text-right">
+                                <lightning:button label="Next" disabled="{!v.isActive}" onclick="{!c.validateUser}" class="btn s-button " variant="brand"  />
+                            </div>
+                                <aura:set attribute="else">
+                                    <p style="color:red;"> 
+                                        You have exhausted all attempts to enter Date of Birth. Please refresh the page and try again.
+                                    </p>   
+                                </aura:set>
+                            </aura:if>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <lightning:spinner aura:id="bSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+       </aura:if>
+    <!--/Enter DOB Screen-->
+    
+    
+    <!--Test Results  -->
+    <div id="homeBanner"  data-e2e="banner" style="background-image:url('/resource/1630331349000/Test_Result_BG');
+                                                   background-repeat: no-repeat;
+                                                   height: 100%;">
+        <aura:if isTrue="{!v.showTestResult}">
+            <div class="main-container " > 
+                <div class="card m-box bg-white">
+              <img class="sm-img" src="{!$Resource.Test_Result_Header}" alt=""/>
+                <div class="m-box-style">
+                    <div class="row text-center">
+                        <div class=" col-sm-4"> 
+                            <p  class="l2">Name: {!v.acnt.Name}</p>
+                        </div>
+                        <div class=" col-sm-4" > 
+                            <p  class="l2">Result Date: <lightning:formattedDateTime value="{!v.acnt.Test_Date__c}"/> </p>
+                        </div>
+                        <div class=" col-sm-4" > 
+                            <p  class="l2">COVID-19 Result: <span style="color:red !important;">Positive</span> </p>
+                        </div>
+                    </div> 
+                    
+                        <div class=" text-center">  
+                            <h5 class="mainHeading" >
+                                Positive COVID-19 Result: Next Steps
+                            </h5>
+                    </div>
+                  <p >If you need a copy of your test results, you can print them from the Patient Portal or call your nearest CNHS Medical Records Department.</p>
+                    <aura:if isTrue="{!v.isERMPatientAccount}">
+                        <aura:if isTrue="{!v.responseNotSubmitted}">
+                            <p class="t-s2 t-sm sm-m" >
+                                If you answer the next set of questions, we can determine your end of isolation date and send you an isolation note.
+                            </p>
+                            <div class="text-center" style="margin-bottom: 10px;"> <a class="blink" onclick="{!c.fillQuestionnaire}"> CLICK HERE</a></div>
+                            <aura:set attribute="else">
+                                <p class="t-s2 t-sm text-center sm-m" style="font-weight: normal !important" >
+                                    Based on your previous responses your isolation end date is <lightning:formattedDateTime class="dateFmt" value="{!v.IsolationEndDate}"/>
+                                </p>
+                                <div class="text-center"> <a class="blink" href="{!'/cnhs/s/isolation-note?Id='+v.rId}" target="_blank">Click here to access your isolation note</a></div>
+                            </aura:set>  
+                        </aura:if>
+                    </aura:if>
+                    <div class="row ">
+                        <div class=" col-sm-6 col-md-5 col-lg-4 "> 
+                            <img class='img-S' src="{!$Resource.Results_for_General_Public}" alt=""/>
+                        </div>
+                        <div class=" col-sm-6 col-md-7"> 
+                            <ul class="slds-list_dotted sm-fnt">
+                                <li> Regardless of vaccination status, stay home and isolate for a minimum of 5 days. 
+                                    After day 5, end isolation if fever resolves and symptoms improve. Continue to wear a mask for 10 days.</li>
+                                <li> Isolate away from others, even those in your home. If you must be around others in your home, each person should wear a mask. 
+                                    It is helpful if you can use a separate restroom. Disinfect surfaces and door handles frequently.</li>
+                                <li>If you have a fever, continue to stay home until your fever resolves.</li>
+                                <li>For questions regarding quarantine or isolation call 1-833-528-0063.</li>
+                            </ul>      
+                        </div>
+                    </div> 
+                    
+                     <div class="row ">
+                        <div class=" col-sm-6 col-md-5 col-lg-4 "> 
+                            <img class='img-S' src="{!$Resource.Results_for_Health_Public}" alt=""/>
+                        </div>
+                        <div class=" col-sm-6 col-md-7"> 
+                            <ul class="slds-list_dotted sm-fnt">
+                                <li>Regardless of vaccination status, stay home and isolate for a minimum of 7 days. Retesting is required at day 7 before returning to work.</li>
+                                <li>Isolate away from others, even those in your home. If you must be around others in your home, 
+                                    each person should wear a mask. It is helpful if you can use a separate restroom. Disinfect surfaces and door handles frequently.</li>
+                                <li>For questions regarding quarantine or isolation call 1-833-528-0063.</li>
+                            </ul>      
+                            
+                        </div>
+                        
+                    </div> 
+                   <div class=" text-center">
+                    <p>Individuals who are moderately or severely immunocompromised or who have severe or critical symptoms may require a longer isolation period.</p>
+                    </div>
+                    <div class=" text-center">
+                        <h5 class="mainHeading" >
+                            When to Seek Emergency Medical Attention:
+                        </h5>
+                    </div>
+                  <p >
+                   If you have worsening symptoms you should seek medical care. Look for emergency warning signs of COVID-19 (trouble breathing, persistent pain or pressure in the chest, new confusion, 
+                      inability to wake or stay awake and/or pale, gray, or blue-colored skin, lips, or nail beds, depending on skin tone). If someone is showing any of these signs, seek emergency medical care immediately. 
+                    </p>
+
+                    <p class="t-s1 t-sm text-center">
+                        Once released from quarantine or isolation: Any member of the public, regardless of where they live, is encouraged to receive the <strong> COVID-19 Vaccine</strong>. 
+                        Appointments and walk-ins are welcome at all health center locations from 8am - 4pm.
+                        <br/><strong>For appointments, please call <br/>1-539-234-4099</strong>.
+                    </p>
+                    
+                      <p class="t-s2 t-sm text-center">
+                       For questions related to COVID-19, please call 1-833-528-0063 or visit health.cherokee.org
+                    </p>
+                    </div>                      
+                </div>
+            </div>
+   </aura:if> 
+           </div>
+    <!--  Test Results-->
+   
+  
+	  <!--Show CNHS Questionnaire Component-->
+    <aura:if isTrue="{!v.showQuestionnaire}">
+        <c:CNHS_Community_UA_Questionnaire AccountId="{!v.acnt.Id}" rId="{!v.rId}"/>
+    </aura:if>        
+
+</aura:component>

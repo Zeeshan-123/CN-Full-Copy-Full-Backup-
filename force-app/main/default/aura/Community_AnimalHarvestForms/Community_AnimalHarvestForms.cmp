@@ -1,0 +1,84 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_ApplicationsCntrl">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="HuntURL" type="String" default=""/>
+    <aura:attribute name="ClothingAssistanceURL" type="String" default=""/>
+    <aura:attribute name="CoatAssistanceURL" type="String" default=""/>
+    <!--Handler 	
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> -->
+    
+    <div class="main-container"> 
+        <!-- main box -->
+        <div class="card m-box ">
+            <div class="row ">
+                <div class="col" >      
+                    <div class="panel-head">  <h5 class="mainHeading">Wildlife Harvest Forms</h5> </div>
+                    <div class="m-Border "></div>
+                    <p class="paragraph d-s">
+                        The Gadugi Portal currently serves the following Wildlife Harvest Forms:
+                    </p> 
+                </div>
+            </div>
+            
+            <div class="row alignment">
+                <!-- White Tail Deer -->
+                <div class="col-sm-4" >  
+                    <a href="{!$Label.c.Community_WhiteTailDeerURL}" >
+                        <div class="slds-box mBox">
+                            <h1 class="subHeading slds-p-vertical_small">
+                                <lightning:icon  iconName="utility:priority" size="small"/>   
+                                &nbsp; Whitetail Deer Harvest Form</h1>
+                            <!--<p class=" paragraph" >
+                                {!$Label.c.Community_RRRIntroText} 
+                            </p> -->
+                        </div>
+                    </a> 
+                </div>
+                <!-- /Whitetail Deer Harvest -->
+                
+                
+                <!-- Paddlefish Harvest Form -->
+                <div class="col-sm-4" >  
+                    <a href="{!$Label.c.Community_PaddleFishURL}" >
+                        <div class="slds-box mBox">
+                            <h1 class="subHeading slds-p-vertical_small">
+                                <lightning:icon  iconName="utility:priority" size="small"/>   
+                                &nbsp; Paddlefish Harvest Form</h1>
+                          <!-- <p class=" paragraph" >
+                                {!$Label.c.Community_RRRIntroText} 
+                            </p>-->
+                        </div>
+                    </a> 
+                </div>
+                <!--Paddlefish Harvest Form -->
+                
+               
+                 <div class="col-sm-4" >  
+                    <a href="{!$Label.c.Community_TurkeyHarvestURL}" >
+                        <div class="slds-box mBox">
+                            <h1 class="subHeading slds-p-vertical_small">
+                                <lightning:icon  iconName="utility:priority" size="small"/>   
+                                &nbsp; Turkey Harvest Form</h1>
+                          <!-- <p class=" paragraph" >
+                                {!$Label.c.Community_RRRIntroText} 
+                            </p>-->
+                        </div>
+                    </a> 
+                </div>
+               
+                
+               
+                
+                
+                
+              
+            </div>
+            
+            <!--<p class="paragraph"  style="font-weight: 700;">
+                {!$Label.c.CommunityServicePageMessageTwo} 
+                The portal will continue to be expanded with more applications coming on board to better serve citizens. Continue to watch for these exciting updates.
+            </p>-->
+            
+            
+        </div>
+    </div>
+</aura:component>

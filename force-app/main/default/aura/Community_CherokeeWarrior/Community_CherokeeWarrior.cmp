@@ -1,0 +1,177 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global" controller="Community_VeteranInfo">
+	 <ltng:require styles="{!$Resource.CN_Boot}"/>
+      <!--Attributes--> 
+    
+    <aura:attribute name="veteranRecList" type="object[]"/>
+    <aura:attribute name="ShowCreateModule" type="boolean" default="false"/>
+    <aura:attribute name="ShowEditModule" type="boolean" default="false"/>
+    
+      <!--Attributes for file-->
+    <aura:attribute name="filetype" type="List" default="['.jpg', '.PNG', '.jpeg', '.pdf']"/>
+    <aura:attribute name="parentId" type="String"/>
+    
+     <!--Handler 	-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <aura:handler name="render" value="{!this}" action="{!c.doRender}"/>
+
+    
+  <div class="main-container"> 
+        <div class="card m-box">
+      <div class="card-body">
+       	<!--intro section-->      
+         <div class="row ">   
+          <div class="col" >
+           <div class="panel-head"> 
+              <h5 class="mainHeading">Cherokee Warriors</h5> </div>
+              <div class="m-Border "></div>
+               <p class="p-intro">  <aura:unescapedHtml value="{!$Label.c.CherokeeWarriors_WelcomeMessage}"/>  </p>
+             </div>
+          </div>
+          <!--/intro section--> 
+          
+       <div class="row  m-div">
+           <!--image section-->
+        <div class=" col-sm-7 col-md-7 col-lg-6" style="padding-right: 0px;" >   
+            <div class="s-div ">
+			<img class="size-img vidBox" id="logo" src="/resource/1605179508000/CherokeeWarriors" /> 
+            </div> </div><!--/image section-->
+          
+	       <!--Embed Video-->    
+        <div class="col-sm col-md-5 col-lg-6" style="padding-right: 0px;">              
+        <div class="s-div ">
+  			  <iframe  class="vidBox" name="frm" ></iframe>
+  		</div>
+           </div>  <!--/Embed Video-->  
+            </div>
+
+        <div class="panel-head" style="margin-top:2rem;">  
+                     
+          <div class="row ">
+           <!--title-->
+        <div class="col" >      
+            <h5 class="mainHeading" style="margin-top: 8px;">Veteran Information</h5>
+              </div><!--/title-->
+          
+		<!--new record button-->           
+           <div class="col">              
+                <lightning:button label="New Record" class=" btn rec-button " variant="brand"  onclick="{!c.ShowCreateModuleBox}"/>
+               <aura:if isTrue="{!v.ShowCreateModule}">
+               <c:Community_CreateVeteranRec/>
+            </aura:if>
+              
+              </div> <!--/new record button-->     
+            </div>  
+          </div>
+       <div class="m-Border" style="margin-bottom: 10px;" ></div> 
+          <div id="tbl">   
+        <div class="table-responsive-sm">            
+             <table class="table table-bordered">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Service Branch</th>
+                  <th scope="col">Start of Enlistment</th>
+                  <th scope="col">Service Period</th>
+                  <th scope="col">Upload Attachments</th>
+                  <th scope="col">View Attachments</th>
+                  <th scope="col">Edit</th>
+                </tr>
+              </thead>
+         <tbody>
+            <aura:iteration items="{!v.veteranRecList}" var="rec" >  
+                      <tr>
+              <td scope="row">{!rec.Service_Branch__c}</td>
+              <td scope="row">{!rec.Enlistment_Month__c}&nbsp;{!rec.Enlistment_Year__c}</td>
+              <td scope="row">{!rec.Number_of_Service_Years__c}&nbsp;{!rec.Number_of_Service_Months__c}</td>
+              <td scope="row">
+                    <!--Upload Attachment-->
+                    <lightning:fileUpload label="Upload Files"
+                    name="fileUploader"
+                    multiple="true"
+                    accept="{!v.filetype}"
+                    recordId="{!rec.Id}"
+                    onuploadfinished="{!c.refreshView}"                       
+                     />
+                        <!--/Upload Attachment-->
+                </td>
+              <td scope="row">
+                      <!--View Attachment-->
+            <aura:iteration items = "{!rec.ContentDocumentLinks}" var = "recFiles">   
+               <a href="{!'/sfc/servlet.shepherd/document/download/'+recFiles.ContentDocumentId}" target="_blank">  
+                    {!recFiles.ContentDocument.Title} <br/>  </a>
+                  </aura:iteration> 
+                  <!--View Attachment-->
+                </td>
+                
+                 <td scope="row"> 
+                     <span data-id="{!rec.Id}" onclick="{!c.ShowEditModuleBox}"> <lightning:icon iconName="utility:edit" size="xx-small"   alternativeText="edit" title="Edit"/></span>
+                </td>
+            </tr>
+             
+             
+         </aura:iteration>     
+         </tbody>
+              </table>
+              </div>
+            </div>
+          
+         <!--Small Devices Cards-->  
+        <div id="crds">
+        <table class="table table-borderless requestsTable clsSmallScreen">
+         
+         <tbody>
+            <aura:iteration items="{!v.veteranRecList}" var="rec" >  
+            <tr>
+              	<td data-th="Service Branch" class="clsSmallScreentatus">
+									<span class="clsSmallStatus">{!rec.Service_Branch__c}</span>
+									<span class="clsIconContainer">
+                                    <lightning:icon iconName="utility:marshall" size="x-small" alternativeText="Request" title="Request" />    
+                                    </span>
+								</td>
+              <td  data-th="Start of Enlistment">{!rec.Enlistment_Month__c}&nbsp;{!rec.Enlistment_Year__c}</td>
+              <td  data-th="Service Period">{!rec.Number_of_Service_Years__c}&nbsp;{!rec.Number_of_Service_Months__c}</td>
+              
+                <td  data-th="Upload Attachments">
+                   <!--Upload Attachment-->
+                    <lightning:fileUpload label="Upload Files"
+                    name="fileUploader"
+                    multiple="true"
+                    accept="{!v.filetype}"
+                    recordId="{!rec.Id}"
+                    onuploadfinished="{!c.refreshView}"                       
+                     />
+                        <!--/Upload Attachment-->
+                </td>
+                
+              <td  data-th="View Attachments">
+                 <!--View Attachment-->
+           		 <aura:iteration items = "{!rec.ContentDocumentLinks}" var = "recFiles">   
+              	 <a href="{!'/sfc/servlet.shepherd/document/download/'+recFiles.ContentDocumentId}" target="_blank">  
+                    {!recFiles.ContentDocument.Title} <br/>  </a>
+                  </aura:iteration> 
+                  <!--View Attachment-->
+                </td>
+            <td  data-th="Edit Record" >   
+                <div style="margin-bottom:40px;">
+                 <span data-id="{!rec.Id}" onclick="{!c.ShowEditModuleBox}" > 
+                <lightning:button  label="Edit" class="float-left btn rec-button " variant="brand"/>
+              </span> 
+                </div>
+                </td>
+            </tr>
+
+         </aura:iteration>     
+         </tbody>
+              </table>
+          </div>
+          <!--/Small Devices Cards-->
+          
+          
+                    
+		    <aura:if isTrue="{!v.ShowEditModule}">
+               <c:Community_VeteranRecordEdit recIdToUpdate="{!v.parentId}"/>
+            </aura:if> 
+          
+            </div> <!--/card body-->
+            </div>
+    </div>
+</aura:component>

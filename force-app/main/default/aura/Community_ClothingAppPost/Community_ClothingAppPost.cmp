@@ -1,0 +1,91 @@
+<aura:component  implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_ClothingAssistanceController">
+      <ltng:require styles="{!$Resource.CN_Boot}"/>
+     <!--Allow Multi Line Space in Toast Messages-->
+     <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        } 
+    </aura:html>
+    
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false"/>
+    <aura:attribute name="showDeadLineMessage" type="boolean" default="false"/>
+    <aura:attribute name="showCAEdit" type="boolean" default="false"/>
+    <aura:attribute name="showEditBtn" type="boolean" default="false"/>
+    
+    <aura:attribute name="caseId" type="String"/>
+    <aura:attribute name="requestNumber" type="String"/>
+          
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+ 
+   
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                             <!--Success Message-->
+                              <aura:if isTrue="{!v.showSuccessMessage}">  
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                You have successfully submitted your Clothing Assistance Application.
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                             <div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                                 <!--
+                                <aura:if isTrue="{!v.showEditBtn}">  
+                                    <lightning:button class="btn s-button" label="Edit Request" onclick="{!c.editRequestModal}" />
+                                </aura:if>
+                                 -->
+                            </div> 
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                If you have any questions or concerns regarding your Clothing Assistance application, please review your review your request and status by clicking "View Request" above. 
+                                If you have additional questions, you may also contact Cherokee Nation at 918-453-5058 or by email support-gadugiportal@cherokee.org.
+
+                            </p>
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Payment processing will not begin until after the application deadline of August 20th, 2021.
+                            </p>
+                            
+                             <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                            	Payment processing will be completed after all information is verified in the application. 
+                                 Payments may be made electronically or by paper check. Any inconsistent or missing data may delay processing, 
+                                 and further action by Cherokee Nation staff may take additional time before processing and payment is complete.
+                           
+                            </p>
+                                </aura:if>
+                              <!--Deadline Message-->
+                            <aura:if isTrue="{!v.showDeadLineMessage}"> 
+                                <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: red">
+                                    Alert!
+                                    </p> </strong> 
+                                <p>  The Cherokee Nation income-based 2021 student cost assistance program is now closed. Cherokee Nation Citizens were able to apply for this program up until the deadline of December 13, 2021.</p>
+                            </aura:if>
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div>        
+    
+    <!--Show CA Edit Component
+    <aura:if isTrue="{!v.showCAEdit}"  >
+        <c:Community_CAEdit caseId="{!v.caseId}"/>
+    </aura:if>
+-->
+</aura:component>

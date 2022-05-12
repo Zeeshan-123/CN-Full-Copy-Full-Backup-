@@ -1,0 +1,79 @@
+<aura:component  implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_ClothingVoucherCntrl">
+      <ltng:require styles="{!$Resource.CN_Boot}"/>
+     <!--Allow Multi Line Space in Toast Messages-->
+     <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        } 
+    </aura:html>
+    
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false"/>
+    <aura:attribute name="showDeadLineMessage" type="boolean" default="false"/>
+    <aura:attribute name="showCAEdit" type="boolean" default="false"/>
+    <aura:attribute name="showEditBtn" type="boolean" default="false"/>
+    
+    <aura:attribute name="caseId" type="String"/>
+    <aura:attribute name="requestNumber" type="String"/>
+          
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+ 
+   
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                             <!--Success Message-->
+                              <aura:if isTrue="{!v.showSuccessMessage}">  
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                You have successfully submitted your Student Coats Assistance Application.
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                             <div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                            </div> 
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                              If you have any questions or concerns regarding your Student Coats Assistance application, please contact Cherokee Nation at 918-453-5058 or by email support-gadugiportal@cherokee.org. You can view your request by clicking "View Request" above.
+                            </p>
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                               Payment processing will be completed after all information is verified in the application. 
+                                Payments may be made electronically or by paper check. Any inconsistent or missing data may delay processing, 
+                                and further action by Cherokee Nation staff may take additional time before processing and payment is complete.
+                            </p>
+                                </aura:if>
+                              <!--Deadline Message-->
+                            <aura:if isTrue="{!v.showDeadLineMessage}"> 
+                                <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: red">
+                                    Alert!
+                                    </p> </strong> 
+                                <p>   {!$Label.c.Community_CA2IntroText} </p>
+                            </aura:if>
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div>        
+    
+    <!--Show CA Edit Component
+    <aura:if isTrue="{!v.showCAEdit}"  >
+        <c:Community_CAEdit caseId="{!v.caseId}"/>
+    </aura:if>
+-->
+</aura:component>

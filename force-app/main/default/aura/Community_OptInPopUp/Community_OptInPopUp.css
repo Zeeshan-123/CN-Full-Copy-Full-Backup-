@@ -1,0 +1,36 @@
+.THIS .cancel-btn{
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin: 5px 0px;
+}
+
+.THIS .cancel-btn:hover 
+{
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+
+.THIS .submit-btn{
+    background-color: rgb(39, 180, 34);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin: 5px 0px;
+}
+
+.THIS  .submit-btn:hover 
+  {
+      background-color:white;
+      border-color:rgb(39, 180, 34);
+      color:rgb(39, 180, 34);
+      cursor:pointer;
+  }

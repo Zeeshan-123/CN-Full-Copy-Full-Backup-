@@ -1,0 +1,65 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_myProfileDetailsController">
+	 <ltng:require styles="{!$Resource.CN_Boot}"/>
+       <!--Attributes--> 
+    <aura:attribute name="accnt" type="object"/> 
+    <aura:attribute name="activeSections" type="List" default="['A', 'B', 'C']" />
+    <aura:attribute name="activeSectionsMessage" type="String" default="" />
+	<aura:attribute name="ShowModule" type="boolean" default="false"/>
+    <!--Handler 	-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <div class="main-container">
+        
+      <div class=" m-box ">
+	<!--Account Information-->
+		<div class="card">
+             <div class="panel-head">    <h5 class="m-ht">COMMUNICATION PREFERENCES</h5>  </div>
+            <div class="m-br" ></div>
+  			<div class="card-body">
+               
+                  
+             <div class="row">
+                <div class="col">
+			 <div class="row">
+     			 <div class="col-12 col-sm-6">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                          <p class="p-t">    Email Opt-Out </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">   {!v.accnt.PersonHasOptedOutOfEmail} </p>
+                      </div>
+                  </div>
+                 </div>
+                <div class="col-12 col-sm-6 ">
+                   <div class="row">
+                      <div class="col-5 col-sm-6 mrgn">
+                          <p class="p-t">  SMS Opt-Out </p>
+                      </div>
+                      <div class="col-7 col-sm-6 mrgn">
+                          <p class="p-t">    {!v.accnt.PersonHasOptedOutOfEmail} </p>
+                      </div>
+                  </div>
+                 </div>
+                    </div>        
+                </div>
+             </div>    
+           
+            
+                
+                
+       
+        
+                
+       </div>
+    </div> 
+<!--Account Information-->
+          
+
+            <!--Second Section-->   
+
+          
+          
+       </div>
+    </div>      
+</aura:component>

@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <assignments>
+        <description>Set task owner</description>
+        <name>Set_task_owner</name>
+        <label>Set task owner</label>
+        <locationX>1501</locationX>
+        <locationY>285</locationY>
+        <assignmentItems>
+            <assignToReference>Get_Tasks.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>get_original_task.OwnerId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Get_Tasks.Picked_up_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Task</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Update original task</description>
+        <name>Update_original_task</name>
+        <label>Update original task</label>
+        <locationX>890</locationX>
+        <locationY>484</locationY>
+        <assignmentItems>
+            <assignToReference>get_original_task.OwnerId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$User.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>get_original_task.Picked_up_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>get_original_task.Take_Ownership__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>update_original_task_0</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>if called from list view</description>
+        <name>if_called_from_list_view</name>
+        <label>if called from list view</label>
+        <locationX>885</locationX>
+        <locationY>288</locationY>
+        <defaultConnector>
+            <targetReference>IF_task_is_daily_followup</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>List_view</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>listview</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_original_task</targetReference>
+            </connector>
+            <label>List view</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>IF task is daily followup</description>
+        <name>IF_task_is_daily_followup</name>
+        <label>IF task is daily followup</label>
+        <locationX>693</locationX>
+        <locationY>177</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Daily_followup</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4 AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>get_original_task.Subject</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Daily Followup Task</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>get_original_task.Subject</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Daily Patient Followup Task</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>get_original_task.Send_Survey_Invite__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>get_original_task.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>get_original_task.ActivityDate</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account</targetReference>
+            </connector>
+            <label>Daily followup</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>if task owner not assigned already</description>
+        <name>if_task_owner_not_assigned_already</name>
+        <label>if task owner not assigned already</label>
+        <locationX>1136</locationX>
+        <locationY>192</locationY>
+        <defaultConnector>
+            <targetReference>Iterate_Over_Contacts</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>if_task_owner_not_assigned_already_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Tasks.OwnerId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>get_original_task.OwnerId</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Tasks</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_Tasks.OwnerId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>00G</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_task_owner</targetReference>
+            </connector>
+            <label>if task owner not assigned already</label>
+        </rules>
+    </decisions>
+    <description>Assign all related household tasks</description>
+    <formulas>
+        <description>today date</description>
+        <name>todaydate</name>
+        <dataType>Date</dataType>
+        <expression>today()</expression>
+    </formulas>
+    <interviewLabel>Assign all related household tasks {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Assign all related household tasks</label>
+    <loops>
+        <description>go over all contacts</description>
+        <name>go_over_all_contacts</name>
+        <label>go over all contacts</label>
+        <locationX>1030</locationX>
+        <locationY>572</locationY>
+        <collectionReference>get_household_records</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>get_HH_Contacts</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Iterate_Over_Households</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Iterate Over Contacts</description>
+        <name>Iterate_Over_Contacts</name>
+        <label>Iterate Over Contacts</label>
+        <locationX>1029</locationX>
+        <locationY>333</locationY>
+        <collectionReference>get_HH_Contacts</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Get_Tasks</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>go_over_all_contacts</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Iterate Over Households</description>
+        <name>Iterate_Over_Households</name>
+        <label>Iterate Over Households</label>
+        <locationX>556</locationX>
+        <locationY>680</locationY>
+        <collectionReference>Get_Account_Contact_Relations</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>get_household_records</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Account</name>
+        <label>Get Account</label>
+        <locationX>525</locationX>
+        <locationY>279</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Account_Contact_Relations</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_original_task.Account__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Account Contact Relations</description>
+        <name>Get_Account_Contact_Relations</name>
+        <label>Get Account Contact Relations</label>
+        <locationX>523</locationX>
+        <locationY>438</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Iterate_Over_Households</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContactId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Account.PersonContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>get HH Contacts</description>
+        <name>get_HH_Contacts</name>
+        <label>get HH Contacts</label>
+        <locationX>1208</locationX>
+        <locationY>655</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Iterate_Over_Contacts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>PersonContactId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>go_over_all_contacts.ContactId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>get household records</description>
+        <name>get_household_records</name>
+        <label>get household records</label>
+        <locationX>1012</locationX>
+        <locationY>791</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>go_over_all_contacts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Iterate_Over_Households.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AccountContactRelation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>get original task</description>
+        <name>get_original_task</name>
+        <label>get original task</label>
+        <locationX>892</locationX>
+        <locationY>149</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>if_called_from_list_view</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>RecordID</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Get Tasks</description>
+        <name>Get_Tasks</name>
+        <label>Get Tasks</label>
+        <locationX>1289</locationX>
+        <locationY>273</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>if_task_owner_not_assigned_already</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND 3 AND (4 OR 5) AND 6</filterLogic>
+        <filters>
+            <field>Account__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Iterate_Over_Contacts.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ActivityDate</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Daily Followup Task</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Daily Patient Followup Task</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Send_Survey_Invite__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>update original task</description>
+        <name>update_original_task_0</name>
+        <label>update original task</label>
+        <locationX>703</locationX>
+        <locationY>349</locationY>
+        <connector>
+            <targetReference>IF_task_is_daily_followup</targetReference>
+        </connector>
+        <inputReference>get_original_task</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Update Task</description>
+        <name>Update_Task</name>
+        <label>Update Task</label>
+        <locationX>1205</locationX>
+        <locationY>405</locationY>
+        <connector>
+            <targetReference>Iterate_Over_Contacts</targetReference>
+        </connector>
+        <inputReference>Get_Tasks</inputReference>
+    </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <start>
+        <locationX>579</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>get_original_task</targetReference>
+        </connector>
+    </start>
+    <status>Obsolete</status>
+    <variables>
+        <name>listview</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>RecordIDs</description>
+        <name>RecordID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

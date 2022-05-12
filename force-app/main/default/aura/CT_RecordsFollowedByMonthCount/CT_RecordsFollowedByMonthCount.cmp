@@ -1,0 +1,56 @@
+<!--
+**********************************
+@author: Shams
+@date: 12/11/2020
+@purpose: For a custom report tab
+**********************************
+-->
+<aura:component controller="CT_RecordsFollowedByMonthCount" implements="force:appHostable" >
+    
+    <!--use JQuery Data Table css,Js and jQUERY js file in lightning component by using ltng:require component-->
+    <ltng:require styles="{! $Resource.	datatable + '/DataTables-1.10.16/media/css/jquery.dataTables.min.css'}" 
+                  scripts="{!join(',', 
+                           $Resource.script + '/jquery-3.5.1.js',  $Resource.ChartJs,$Resource.script + '/moment.min.js',
+                           $Resource.datatable + '/DataTables-1.10.16/media/js/jquery.dataTables.min.js')
+                           }" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    <aura:attribute name="truthy" type="boolean" default="true" />
+    <aura:attribute name="truthy2" type="boolean" default="true" />
+    <aura:attribute name="CaseCount" type="integer" default="0" />
+    <aura:attribute name="ContactCount" type="integer" default="0" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>  
+    <aura:attribute name="StartDate" type="DateTime" default="{!'2020-03-06T10:17:36.789Z'}"/>     
+    <aura:attribute name="EndDate" type="DateTime" default="{!'2020-03-06T10:17:36.789Z'}"/>     
+    <div class="slds-box slds-theme_default">
+        <aura:renderIf isTrue="{!v.truthy!=true}">
+        <div class="slds-is-relative">
+            <lightning:spinner aura:id="spinner" variant="brand" size="large" />
+        </div>
+        </aura:renderIf>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-4">
+                <lightning:input type="date" name="StartDate" label="Start Date" required="true" value="{!v.StartDate}" />
+            </div>
+            <div class="slds-col slds-size_1-of-8"></div>
+            <div class="slds-col slds-size_1-of-4">
+                <lightning:input type="date" name="EndDate" label="End Date" required="true" value="{!v.EndDate}" />
+            </div>
+            <div class="slds-col slds-size_1-of-8"></div>
+            <div class="slds-col slds-size_1-of-4">
+                <lightning:button variant="brand" label="Search" title="Search" onclick="{! c.handleClick }"/>
+            </div>
+        </div>
+        <aura:renderIf isTrue="{!v.truthy}">
+            <h1 class="heading">Cases ({!v.CaseCount})</h1>
+            <div class="slds-box">
+                <canvas aura:id="linechart" height="50" ></canvas>
+            </div>
+        </aura:renderIf>
+        <br/>
+        <aura:renderIf isTrue="{!v.truthy2}">
+            <h1 class="heading">Contacts ({!v.ContactCount})</h1>
+            <div class="slds-box">
+                <canvas aura:id="linechart2" height="50" ></canvas>
+            </div>
+        </aura:renderIf>
+    </div>
+</aura:component>

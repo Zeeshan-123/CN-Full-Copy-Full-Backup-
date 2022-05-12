@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <decisions>
+        <processMetadataValues>
+            <name>index</name>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </processMetadataValues>
+        <name>myDecision</name>
+        <label>myDecision</label>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <defaultConnectorLabel>default</defaultConnectorLabel>
+        <rules>
+            <name>myRule_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>formula_myRule_1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>myRule_1_A1</targetReference>
+            </connector>
+            <label>Check if Cerner Queue Bypassed  ERM Account</label>
+        </rules>
+    </decisions>
+    <description>This is used to create handover task against the ERM records created via cerner queue trigger. Added check to skip using custom setting.</description>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>today()</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_2_myRule_1_A1_5447689485</name>
+        <dataType>Date</dataType>
+        <expression>today()</expression>
+    </formulas>
+    <formulas>
+        <processMetadataValues>
+            <name>originalFormula</name>
+            <value>
+                <stringValue>ISNEW()
+&amp;&amp;
+[Account].RecordType.DeveloperName == &apos;ERM_Patient&apos;
+&amp;&amp;
+[Account].Bypass_Cerner_Queue__c
+&amp;&amp;
+ispickval([Account].Case_Status__c, &apos;Active&apos; )
+&amp;&amp;
+ispickval([Account].Stage__c, &apos;Case - In CI Queue&apos;)
+&amp;&amp;
+[Account].Contact_or_Case_new__c == &apos;Case&apos;
+&amp;&amp; 
+(
+	IF(
+		ISNEW(),
+		([Account].Process_EHR_Records__c == false),
+		(
+			OR (
+				NOT( ISCHANGED( [Account].Test_Type_Generic__c) ),
+				NOT( ISCHANGED( [Account].Test_Result_Generic__c) ),
+				NOT( ISCHANGED( [Account].Test_Date_Generic__c) )
+			) &amp;&amp;
+			NOT($Setup.Skip_Account_Automation__c.Skip_Account_Process_Builder__c)
+		)
+	)
+)</stringValue>
+            </value>
+        </processMetadataValues>
+        <name>formula_myRule_1</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()
+&amp;&amp;
+{!myVariable_current.RecordType.DeveloperName} == &apos;ERM_Patient&apos;
+&amp;&amp;
+{!myVariable_current.Bypass_Cerner_Queue__c}
+&amp;&amp;
+ispickval({!myVariable_current.Case_Status__c}, &apos;Active&apos; )
+&amp;&amp;
+ispickval({!myVariable_current.Stage__c}, &apos;Case - In CI Queue&apos;)
+&amp;&amp;
+{!myVariable_current.Contact_or_Case_new__c} == &apos;Case&apos;
+&amp;&amp; 
+(
+	IF(
+		ISNEW(),
+		({!myVariable_current.Process_EHR_Records__c} == false),
+		(
+			OR (
+				NOT( ISCHANGED( {!myVariable_current.Test_Type_Generic__c}) ),
+				NOT( ISCHANGED( {!myVariable_current.Test_Result_Generic__c}) ),
+				NOT( ISCHANGED( {!myVariable_current.Test_Date_Generic__c}) )
+			) &amp;&amp;
+			NOT({!$Setup.Skip_Account_Automation__c.Skip_Account_Process_Builder__c})
+		)
+	)
+)</expression>
+    </formulas>
+    <interviewLabel>Create_Handover_Task_for_Cerner_Bypass_ERM_Records-8_InterviewLabel</interviewLabel>
+    <label>Create Handover Task for Cerner Bypass ERM Records</label>
+    <processMetadataValues>
+        <name>ObjectType</name>
+        <value>
+            <stringValue>Account</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>ObjectVariable</name>
+        <value>
+            <elementReference>myVariable_current</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OldObjectVariable</name>
+        <value>
+            <elementReference>myVariable_old</elementReference>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>TriggerType</name>
+        <value>
+            <stringValue>onCreateOnly</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Workflow</processType>
+    <recordCreates>
+        <name>myRule_1_A1</name>
+        <label>Create Handover Task</label>
+        <locationX>100</locationX>
+        <locationY>200</locationY>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Date</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Due Date Only</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Formula</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>formula_2_myRule_1_A1_5447689485</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Assigned To ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Group;User</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideLabel</name>
+                <value>
+                    <stringValue>Case_Investigation_Team_Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Queue</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>OwnerId</field>
+            <value>
+                <stringValue>00G3t000003nmABEAY</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Priority</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Priority</field>
+            <value>
+                <elementReference>myVariable_current.Priority__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Task Record Type ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>RecordType</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>RecordTypeId</field>
+            <value>
+                <stringValue>0123t000000P4z5AAC</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Status</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Status</field>
+            <value>
+                <stringValue>Not Started</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Subject</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue></stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>String</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>Subject</field>
+            <value>
+                <stringValue>Take case ownership for the First followup</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Related To ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Account;AccountCaseJunction__c;Accreditation;ActivityTiming;AssessmentIndicatorDefinition;AssessmentTask;AssessmentTaskContentDocument;AssessmentTaskDefinition;AssessmentTaskOrder;Asset;AssetRelationship;AssignedResource;AuthApplicationPlace;AuthLocationAccessSchedule;Award;BoardCertification;BusRegAuthorizationType;BusinessLicense;BusinessLicenseApplication;BusinessMilestone;BusinessProfile;BusinessType;Campaign;CareBarrier;CareBarrierDeterminant;CareBarrierType;CareBenefitVerifyRequest;CareDeterminant;CareDeterminantType;CareDiagnosis;CareInterventionType;CareMetricTarget;CareObservation;CareObservationComponent;CarePgmProvHealthcareProvider;CarePreauth;CarePreauthItem;CareProgram;CareProgramCampaign;CareProgramEligibilityRule;CareProgramEnrollee;CareProgramEnrolleeProduct;CareProgramEnrollmentCard;CareProgramGoal;CareProgramProduct;CareProgramProvider;CareProgramTeamMember;CareProviderAdverseAction;CareProviderFacilitySpecialty;CareProviderSearchableField;CareRegisteredDevice;CareRequest;CareRequestDrug;CareRequestExtension;CareRequestItem;CareRequestReviewer;CareSpecialty;CareSpecialtyTaxonomy;CareTaxonomy;Case;Cerner_Queue__c;CommSubscriptionConsent;ComplaintCase;ContactEncounter;ContactEncounterParticipant;ContactRequest;Contract;CourseOffering;CoverageBenefit;CoverageBenefitItem;CoverageBenefitItemLimit;DelegatedAccount;DocumentChecklistItem;EnrollmentEligibilityCriteria;Examination;Grant__c;Grants_Activity__c;HealthCloudGA__CandidatePatient__c;HealthCloudGA__CarePlanGoal__c;HealthCloudGA__CarePlanProblem__c;HealthCloudGA__EHRProcedurePerformer__c;HealthCloudGA__EHRProcedureRequest__c;HealthCloudGA__EHRProcedure__c;HealthCloudGA__EhrAllergyIntolerance__c;HealthCloudGA__EhrCarePlanActivity__c;HealthCloudGA__EhrCarePlanConcern__c;HealthCloudGA__EhrCarePlanGoal__c;HealthCloudGA__EhrCarePlanParticipant__c;HealthCloudGA__EhrCarePlan__c;HealthCloudGA__EhrConditionRelatedItem__c;HealthCloudGA__EhrCondition__c;HealthCloudGA__EhrDevice__c;HealthCloudGA__EhrDosageInstruction__c;HealthCloudGA__EhrEncounterAccomodation__c;HealthCloudGA__EhrEncounterParticipant__c;HealthCloudGA__EhrEncounter__c;HealthCloudGA__EhrImmunizationReaction__c;HealthCloudGA__EhrImmunization__c;HealthCloudGA__EhrMedicationPrescription__c;HealthCloudGA__EhrMedicationStatement__c;HealthCloudGA__EhrObservation__c;HealthCloudGA__EhrPatientCareProvider__c;HealthCloudGA__EhrPatientContact__c;HealthCloudGA__EhrPatient__c;HealthCloudGA__EhrPractitionerIdentity__c;HealthCloudGA__EhrPractitionerQualification__c;HealthCloudGA__EhrPractitionerRole__c;HealthCloudGA__EhrPractitioner__c;HealthCloudGA__EhrRelatedObservation__c;HealthCloudGA__EhrRelatedPerson__c;HealthCloudGA__EhrVaccinationProtocol__c;HealthCloudGA__EhrVirtualDeviceChannel__c;HealthCloudGA__EhrVirtualDevice__c;HealthCloudGA__ProgramPatientAffiliation__c;HealthCloudGA__ProgramPatientSummary__c;HealthCloudGA__Program__c;HealthCloudGA__Provider__c;HealthcareFacility;HealthcareFacilityNetwork;HealthcarePayerNetwork;HealthcarePractitionerFacility;HealthcareProvider;HealthcareProviderNpi;HealthcareProviderSpecialty;HealthcareProviderTaxonomy;IdentityDocument;Image;IndividualApplication;InspectionAssessmentInd;InspectionType;ListEmail;LiveAgentSession;LiveChatTranscript;Location;MedicinalIngredient;MemberPlan;OperatingHoursHoliday;Opportunity;Order;PartyConsent;PersonExamination;PersonLifeEvent;PlanBenefit;PlanBenefitItem;PreliminaryApplicationRef;ProcessException;Product2;ProductRequest;ProductRequestLineItem;PublicComplaint;PublicSector__EmergencyRequest__c;PurchaserPlan;ReceivedDocument;RegAuthorizationTypeProduct;RegulatoryAuthority;RegulatoryAuthorizationType;RegulatoryCode;RegulatoryCodeAssessmentInd;RegulatoryCodeViolation;ResourceAbsence;ServiceAppointment;ServiceResource;Shift;Solution;SurveyQuestion;TrainingCourseParticipant;TrnCourse;Veteran_Service__c;ViolationEnforcementAction;ViolationType;ViolationTypeAssessmentInd;Visit;VisitedParty;VolunteerProject;WorkOrder;WorkOrderLineItem;maps__AdvRouteContinuousTravel__c;maps__AdvRouteDataSet__c;maps__AdvRouteDefaultValue__c;maps__AdvRouteDefaultValuesGrouping__c;maps__AdvRouteOffDays__c;maps__AdvRouteOutputType__c;maps__AdvRoutePriority__c;maps__AdvRoutePromotionalPeriodConfiguration__c;maps__AdvRouteQueryFilterGrouping__c;maps__AdvRouteQueryFilter__c;maps__AdvRouteRoutableObject__c;maps__AdvRouteSettings__c;maps__AdvRouteTemplateUser__c;maps__AdvRouteTemplate__c;maps__AdvRouteVisitWindows__c;maps__AdvRouteWaypoint__c;maps__AdvRoute__c;maps__LiveAssetDailySummaryEvent__c;maps__LiveAssetDailySummary__c;maps__LiveAsset__c;maps__LiveAsyncError__c;maps__LiveDailyDriveTrip__c;maps__LiveDriverAssignment__c;maps__LiveDriver__c;maps__LiveEventAssociation__c;maps__LiveEvent__c;maps__LiveIoTDevice__c;maps__LiveSummaryStateMileage__c;maps__LiveSummaryStopRelationshipConfig__c</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>WhatId</field>
+            <value>
+                <elementReference>myVariable_current.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <processMetadataValues>
+                <name>dataType</name>
+                <value>
+                    <stringValue>ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>isRequired</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideLabel</name>
+                <value>
+                    <stringValue>Name ID</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>leftHandSideReferenceTo</name>
+                <value>
+                    <stringValue>Contact;Lead</stringValue>
+                </value>
+            </processMetadataValues>
+            <processMetadataValues>
+                <name>rightHandSideType</name>
+                <value>
+                    <stringValue>Reference</stringValue>
+                </value>
+            </processMetadataValues>
+            <field>WhoId</field>
+            <value>
+                <elementReference>myVariable_current.PersonContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+    </recordCreates>
+    <startElementReference>myDecision</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>myVariable_current</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>myVariable_old</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+</Flow>

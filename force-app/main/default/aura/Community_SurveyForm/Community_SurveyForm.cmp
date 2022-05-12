@@ -1,0 +1,322 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global"
+    controller="Community_SurveyFormController">
+    <ltng:require styles="{!$Resource.CN_Boot}" />
+    <!--Allow Multi Line Space in Toast Messages-->
+    <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        }
+    </aura:html>
+
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <aura:attribute name="caseId" type="String" />
+    <aura:attribute name="requestNumber" type="String" />
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false" />
+
+    <aura:attribute name="surveyForm" type="boolean" default="false" />
+    <aura:attribute name="accObj" type="Object" />
+    <aura:attribute name="exceptionMsg" type="String" />
+
+
+    <aura:attribute name="options" type="String[]" default="[
+    {'id': '0', 'label': 'Select 1 to 10'},
+    {'id': '1', 'label': '1'},
+    {'id': '2', 'label': '2'},
+    {'id': '3', 'label': '3'},
+    {'id': '4', 'label': '4'},
+    {'id': '5', 'label': '5'},
+    {'id': '6', 'label': '6'},
+    {'id': '7', 'label': '7'},
+    {'id': '8', 'label': '8'},
+    {'id': '9', 'label': '9'},
+    {'id': '10', 'label': '10'}
+    ]" />
+
+    <aura:attribute name="value1" type="String" default="0" />
+    <aura:attribute name="value2" type="String" default="0" />
+    <aura:attribute name="value3" type="String" default="0" />
+    <aura:attribute name="value4" type="String" default="0" />
+    <aura:attribute name="value5" type="String" default="0" />
+    <aura:attribute name="value6" type="String" default="0" />
+    <aura:attribute name="value7" type="String" default="0" />
+    <aura:attribute name="value8" type="String" default="0" />
+    <aura:attribute name="value9" type="String" default="0" />
+    <aura:attribute name="value10" type="String" default="0" />
+    <aura:attribute name="value11" type="String" default="0" />
+    <aura:attribute name="value12" type="String" default="0" />
+    <aura:attribute name="value13" type="String" default="0" />
+
+    <!-- Survey Form -->
+    <aura:if isTrue="{! v.surveyForm}">
+        <div class="main-container">
+            <div class="card m-box ">
+                <!-- <img src="{!$Resource.Hunt_App_Header}" alt=""/> -->
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #d88e2d;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                                Survey Form
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                </div>
+                <div class="m-box-style">
+                    <div style="text-align: justify">
+                        <br/>
+                        <p class="header-text">The Cherokee Nation recently received its share of the American Rescue Plan Act (ARPA) COVID-19 recovery funds.  We have been working to develop plans, and we have identified several areas of interest.  One such area of interest was direct assistance to citizens like the $2,000 COVID Assistance payment, administered through the new Ga-Du-Gi portal.</p>
+                        <br/>
+                        <p class="header-text">Principal Chief Chuck Hoskin Jr. and Deputy Chief Bryan Warner value your input to determine which programs or projects will provide the greatest benefit to for you and your family, and all Cherokee citizens as we respond to the impacts of COVID-19.  Utilizing the Ga-Du-Gi portal, we are gathering the feedback from every registered citizen.  Your input is important as we continue delivering the resources and funding to build a better Cherokee Nation for the next seven generations.</p>
+                        <br/>
+                        <p class="header-text">Please take a few minutes to rank each category of proposed funding on a scale of 1-10 (10 being the highest level of importance/benefit and 1 being the lowest level of importance/benefit).</p>
+                        <br/>
+                        
+                    </div>
+                    <!-- Survey Information -->
+                    <div class="panel-head2">
+                        <h5 class="mainHeading text-center">Please rate the following programs on a scale of 1-10 </h5>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 setmargin">
+                            <p>Individual Assistance</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- <lightning:slider aura:id="mySlider1" min="1" max="10" 
+                            value="{!v.slider1Val1}" disabled="false" onchange="{! c.handleRangeChange }" /> -->
+
+                            <lightning:select aura:id="group1" name="group1" label="" value="{! v.value1 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                            <!-- <div class=" multiRadio">
+                                <lightning:radioGroup aura:id="group1" name="group1" options="{! v.options }"
+                                    value="{! v.value1 }" type="radio" />
+                            </div> -->
+
+                            <!-- <input id="slider1" type="range" style="width: 100%;" class="form-range" min="1" max="10"
+                            value="{! v.slider1Val1}" onchange="{! c.handleRangeChange }" /> -->
+                            <!-- <p>Value: <span id="demo"></span></p> -->
+
+                            <!-- <span value="{! v.slider1Val1}"></span> -->
+                        </div>
+
+                        <br />
+
+                        <div class="col-sm-6 setmargin">
+                            <p>DRPT Bridge (a-sv-dlv-i) (Anti-Poverty Program)</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <!-- <lightning:slider aura:id="mySlider2" min="1" max="10" value="{!v.slider1Val2}" disabled="false"
+                            onchange="{! c.handleRangeChange }" /> -->
+                            <lightning:select aura:id="group2" label="" value="{! v.value2 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Payroll and Hazard Pay</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group3" label="" value="{! v.value3 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                            <!-- <lightning:slider aura:id="mySlider3" min="1" max="10" value="{!v.slider1Val3}" disabled="false"
+                            onchange="{! c.handleRangeChange }" /> -->
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Vaccine Education and Outreach</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group4" label="" value="{! v.value4 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Workplace Health and Safety Improvements</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group5" label="" value="{! v.value5 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Food Security</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group6" label="" value="{! v.value6 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Housing/Quarantine/Domestic Violence</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group7" label="" value="{! v.value7 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Community Partners/CCO</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group8" label="" value="{! v.value8 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Job Training/Small Business/Economic Impact</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group9" label="" value="{! v.value9 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Education/Language/Higher Education Relief and Assistance</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group10" label="" value="{! v.value10 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Health Infrastructure/Behavioral Health Operations/Wellness</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group11" label="" value="{! v.value11 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Transportation and Infrastructure (Roads, Water and Sanitation)</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group12" label="" value="{! v.value12 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+
+                        <div class="col-sm-6 setmargin">
+                            <p>Broadband Infrastructure</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <lightning:select aura:id="group13" label="" value="{! v.value13 }">
+                                <aura:iteration items="{!v.options}" var="option">
+                                    <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}">
+                                    </option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </div>
+                    </div>
+
+                    <br />
+                    <!-- /Survey Information -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <p><b>Do you have any additional feedback related to the programs above?</b>
+                            <lightning:helptext style="padding-left: 5px !important;"
+                                            content="Maximum characters limit of 900 including (period, comma, apostrophe and space)" />
+                            </p>
+                            
+                        </div>
+                        <div class="col-sm-12">
+                            <span id="commentBox" onkeypress="{!c.AlphanumericCheck}" onkeyup="{!c.AlphanumericCheck}">
+                                <lightning:textarea aura:id="commentBox" name="commentBox" required="false" value=""
+                                    placeholder="type here..." label="" maxlength="900"
+                                    messageWhenTooLong="A maximum of 900 characters are allowed in a tweet."
+                                    messageWhenValueMissing="An empty feedback cannot be posted." />
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class=" text-center">
+                        <lightning:button variant="neutral" class="btn cancel-button "
+                        label="Cancel" title="Cancel" onclick="{! c.takeMeHome }" />
+                        <lightning:button label="Submit" disabled="false" class="btn submit-button " variant="brand"
+                            onclick="{!c.submitForm}" />
+                    </div>
+                    <lightning:spinner aura:id="Spinner2" alternativeText="Processing.." title="Processing.."
+                        variant="brand" size="large" class="slds-hide" />
+
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!-- /Survey Form -->
+
+    <!--Success Message Div-->
+    <aura:if isTrue="{!v.showSuccessMessage}">
+        <div class=" container" style='padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6">
+                    <div class="card sm-box">
+                        <div class="align-s-content">
+                            <strong>
+                                <p class="msgTextFont m2" style="font-size: 30px; color: #7684e4;">
+                                    Wado!
+
+                                </p>
+                            </strong>
+                            <p class="msgTextFont " style="text-align: center; padding-bottom: 10px;">
+                                You have successfully shared your feedback on Cherokee Nation’s response to the impacts of COVID-19.
+                            </p>
+
+                            <div style="text-align: center;">
+                                <lightning:button variant="brand" class="btn submit-button " label="Return Home"
+                                    title="Return Home" onclick="{! c.takeMeHome }" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </aura:if>
+    <!--/Success Message Div-->
+</aura:component>

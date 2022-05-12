@@ -1,0 +1,173 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+
+    <div class="main-container slds-m-around_x-large"> 
+        <h1 class="mainHeading">Cherokee Nation Calendar of Events for March</h1>
+        <h1 class="heading"> <lightning:icon class="icn" iconName="utility:event" size="small"/>  Published: March 2nd, 2020 </h1>
+        <img class="size-img " src="/resource/1603270189000/CN_Event/CN_Events/CN_Event.png" alt="follow"/>
+        
+        <div style="border-bottom: 1.5px solid rgba(215, 217, 220, 0.25); margin-bottom:20px;  width: 66%;"></div>
+        <div class="slds-grid slds-wrap  " >                    
+        <div class="slds-col slds-large-size_2-of-3 slds-medium-size_1-of-2 slds-small-size_1-of-1"> 
+            <p class="para"> <span style="font-weight:bold; font-family: Sanchez; font-size: 16px;">TAHLEQUAH, Okla.</span> – Cherokee Nation will host several events in March 
+                including the tribe’s annual Public School Appreciation Day and various other cultural activities.  </p>  
+        <strong> <h1 class="subHeading">March 2</h1>  </strong>
+        <p class="para">Cherokee Nation Human Services will be accepting applications for its School Clothing Assistance Program starting 
+            March 2 and running through June 15. Applications will be available online or at any Cherokee Nation Human Services
+            location. For more information or to print off an application,
+            <a href="#"> visit https://www.cherokee.org/all-services/human-services/family-assistance/school-clothing-assistance-program/ </a>.</p> 
+           
+        <strong> <h1 class="subHeading">March 3</h1>  </strong>
+      
+            <p class="para">Cherokee Nation will break ground on an expansion project that will add 80,000 square feet of new space to the Wilma P.
+            Mankiller Health Center, located at 471688 OK-51in Stilwell at 1:30 p.m. 
+            The two-story addition will expand the health center’s dental, optometry and pharmacy services, among other highlights.</p>     
+
+            <p class="para">Cherokee Nation Community and Cultural Outreach will host a cultural event at the Vian Peace Center and Youth Service building,
+            located at 101 N. Blackstone St. in Vian, from 6-8 p.m. Learn about tools and weapons for hunting as well as the process of tanning hides with Cherokee National Treasure Noel Grayson. The event is free and open to the public.
+            A meal will be provided. For more information, call Dawni Squirrel at 918-525-2041 or email
+            <a href="#"> dawnena-squirrel@cherokee.org.</a>  
+            </p>  
+            
+            <p class="para">The Tahlequah community walking/running group will meet every Tuesday starting March 3 at the Cherokee Nation Outpatient Health Center, 
+                located at 19600 E. Ross St., from 5:30 to 6:30 p.m. Join community members and encourage better health for one another with this free 8-week walking group.
+                It’s a go at your own pace setting and all are welcome to join. For more information, call Megan Lawrence at 918-453-5000 ext. 5981 or email
+            <a href="#"> magen-lawrence@cherokee.org</a>.
+            </p>
+            
+            
+            
+        <strong> <h1 class="subHeading">March 5</h1>  </strong>
+      
+            <p class="para">
+            Cherokee Nation hosts its annual Public School Appreciation Day at Hard Rock Hotel &amp; Casino Tulsa at 11 a.m. 
+                The Cherokee Nation annually gives school districts in northeast Oklahoma 38 percent of funding from motor vehicle tag sales. 
+                During the event, school superintendents from more than 100 school districts will be awarded checks totaling more than $6 million to use how they see fit.    
+            </p>
+            
+       <strong> <h1 class="subHeading">March 7</h1>  </strong>
+      
+           <p class="para">
+           Cherokee Nation Prison Museum in Tahlequah will host a moccasin making class from 10 a.m. to 2 p.m.
+                Cost is $35 and materials will be supplied for participants to make their very own pair of pucker-toe moccasins. Participants are encouraged to bring a sack lunch. Class space is limited and pre-registration is required. For more information or to register, visit 
+           <a href="#"> https://shop.visitcherokeenation.com/collections/special-events/products/make-your-own-moccasins-class-1-march.</a>
+            </p>   
+            
+      	   <p class="para">
+           Cherokee Heritage Center is hosting a one-hour genealogy class at the center, located at 21192 S.
+               Keeler Drive in Park Hill, from 11 a.m. to 12 p.m. Come learn from experienced genealogists the process of researching your Cherokee ancestry. The cost is $10 per adult and $5 per student. Pre-registration is required.
+               For more information or to register, call Gene Norris at 918-456-6007 ext. 6159 or email 
+           <a href="#"> gene-norris@cherokee.org</a>.
+            </p>    
+            
+            
+           <p class="para">
+           St. Francis Hospital will offer a “Stop The Bleed” educational course in the Cherokee Nation Outpatient Health Center conference room C, 
+               from 9 a.m. to 11:30 a.m. and 1 p.m. to 4 p.m. Through this free course, attendees will gain the ability to recognize life-threatening
+               bleeding and will be able to intervene effectively in an emergency situation.
+               For more information, call Becky Boyle at 918-458-3154 or Ryan Stilwell at 918-772-4755.    
+           </p>
+            
+            
+         <strong> <h1 class="subHeading">March 8</h1>  </strong>   
+           <p class="para">
+           Cherokee National Youth Choir will present their first concert of the 2020 season at Gore United Methodist Church, located at E. 4th and Winn St. 
+                in Gore, from 6 p.m. to 7 p.m. The concert is free and open to the public. For more information, email    
+        	 <a href="#"> youth-choir@cherokee.org</a>.
+            </p> 
+            
+         
+          <strong> <h1 class="subHeading">March 10</h1>  </strong>   
+           <p class="para">
+           Cherokee National Youth Choir will be featured at the All Cherokee Preaching and Singing at Euwasha Baptist Church,
+               located at 344 N. 447th in Kenwood, from 7 p.m. to 9 p.m. The event is free and is sponsored by the Cherokee Language Master Apprentice Program.
+               For more information, call CLMAP at 918-207-4995 or email Howard Paden at    
+        	 <a href="#"> howard-paden@cherokee.org</a>.
+            </p>   
+            
+          <strong> <h1 class="subHeading">March 11</h1>  </strong>   
+           <p class="para">
+           Cherokee Nation Registration outreach program will be at the Cherokee Nation Career Services office, 
+               located at 1087 E. Marshall St. in Tulsa, from 9:30 a.m. to 3 p.m. Staff will break for lunch from 12 to 1 p.m. Registration staff will be able to accept new applications, assist applicants with missing documents, and answer any general questions an applicant may have.
+               Cherokee Nation photo IDs will not be available. For more information call 918-574-2749.
+            </p>    
+        
+         <strong> <h1 class="subHeading">March 14</h1>  </strong>   
+           <p class="para">
+           Cherokee National History Museum in Tahlequah will feature Cherokee National Treasure 
+               Lisa Rutherford as part of the museum’s Second Saturday Artist Showcase series. The event will be from 10 a.m. to 4 p.m. Watch Rutherford as she demonstrates making Cherokee Feather Capes. She will also have some of her work, 
+               including pottery and moccasins, available for sale. For more information, visit  
+        	 <a href="#"> https://www.visitcherokeenation.com/events/second-saturday-artist-showcase-featuring-lisa-rutherford</a>.
+            </p>  
+            
+          <strong> <h1 class="subHeading">March 16</h1>  </strong>   
+           <p class="para">
+          Cherokee Nation Tribal Council meeting will be held at the W. W. Keeler Tribal Complex,
+               located at 17675 S. Muskogee Ave. in Tahlequah at 6 p.m. For the agenda, visit    
+        	 <a href="#"> https://cherokee.legistar.com/Calendar.aspx</a>
+            </p>     
+            
+            
+           <strong> <h1 class="subHeading">March 18</h1>  </strong>   
+           <p class="para">
+             Cherokee Nation Registration outreach program will be at the Cherokee Nation Career Services office,
+               located 23205 S. Hwy 66 in Claremore, from 9:30 a.m. to 3 p.m. Staff will break for lunch from 12 to 1 p.m. Registration staff will be able to accept new applications, assist applicants with missing documents, and answer any general questions an applicant may have. 
+               Cherokee Nation photo IDs will not be available. For more information, call 918-342-7450.  
+            </p>     
+            
+            
+          <strong> <h1 class="subHeading">March 19</h1>  </strong>   
+           <p class="para">
+          Cherokee Nation Culture and Tourism will host a Spring Break Make and Take event from 10 a.m. to 4 p.m. 
+               at all Cherokee Nation owned museums. Students can participate in various cultural activities throughout the day.
+               The Make and Take event is free and open to the public. For more information, visit   
+        	 <a href="#">  https://www.visitcherokeenation.com/events/spring-break-make-and-take</a>.
+            </p>      
+            
+            <strong> <h1 class="subHeading">March 21</h1>  </strong>   
+           <p class="para">
+          Cherokee Heritage Center will host a Cherokee Family Research Workshop in the Osiyo Training Room,
+               located behind the Cherokee Nation Gift Shop at 17725 S. Muskogee Ave.
+               in Tahlequah, from 8:30 a.m. to 4 p.m. For more information call Gene Norris at 918-456-6007 Ext. 6159 or email   
+        	 <a href="#"> gene-norris@cherokee.org</a>.
+            </p>    
+            
+            
+             <strong> <h1 class="subHeading">March 25</h1>  </strong>   
+           <p class="para">
+         Cherokee Nation Registration outreach program will be at the Cherokee Casino &amp; Hotel West Siloam Springs, located at 614 S. Stateline Rd. in Colcord, from 9:30 a.m. to 3 p.m. Staff will break for lunch from 12 to 1 p.m. Registration staff will be able to accept new applications,
+               assist applicants with missing documents, and answer any general questions an applicant may have. Cherokee Nation photo IDs will not be available. For more information, call 918-422-6371.
+            </p>    
+            
+          <strong> <h1 class="subHeading">March 26-27</h1>  </strong>   
+           <p class="para">
+          Entries for the Cherokee Art Market Youth Art Competition Show will be accepted between 10 a.m. and 5 p.m. at the Ho-Chee-Nee Chapel
+               at the Cherokee Heritage Center, located at 21192 S. Keeler Drive in Park Hill. For more information, email 
+        	 <a href="#"> cherokeeartmarket@cnent.com </a> or visit <a href="#"> www.cherokeeartmarket.com</a>.
+            </p>    
+        
+         <p class="para">
+        Cherokee Heritage Center is hosting Indian Territory Days at the center, located at 21192 S. Keeler Drive in Park Hill, from 10 a.m. to 2 p.m. Come experience two days of hands-on activities, games and demonstrations for school-aged children with a focus on Cherokee life in the late 1800s. The cost is $7 per students and $2 for adults. For more information, call Tonia Weavel at 918-456-6007 ext. 6161 or email 
+          <a href="#">tonia-weavel@cherokee.org</a>. 
+            </p>         
+            
+            
+            
+         <strong> <h1 class="subHeading">March 28</h1>  </strong>   
+           <p class="para">
+         Cherokee Nation Public Health hosts a Super Hero 5K and Fun Run at the Redbird Smith Health Clinic, located at 301 S. JT Stites in Sallisaw. 
+               All proceeds will benefit the Boys &amp; Girls Club of Sequoyah County. For more information or to pre-register, visit
+        	 <a href="#"> https://runsignup.com/superhero5ksallisaw</a>.
+            </p>    
+        
+         <p class="para">
+       Cherokee Heritage Center is displaying “American Indians in Major League Baseball: 
+             The First Fifty Years” exhibit at the center, located at 21192 S. Keeler Drive in Park Hill, from 9 a.m. to 5 p.m. Learn about a rearly told part of sports history, baseball’s profound influence in Indian Territory and how American Indians shaped the game from its earliest years. Admission fee is $7 
+             for students and $12 for adults. For more information, call Callie Chunestudy at 918-456-6007 ext. 6153 or email 
+          <a href="#">callie-chunestudy@cherokee.org</a>. 
+            </p>         
+                 
+            
+            </div>
+        </div>
+    </div>
+</aura:component>

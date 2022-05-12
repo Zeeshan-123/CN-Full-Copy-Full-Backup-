@@ -1,0 +1,145 @@
+.THIS .mpI
+{
+    padding-bottom:20px !important;
+}
+
+.THIS .m-title{
+    font-size: 22px;
+    text-align: center;
+    font-weight: 700;
+    color: #43444a;
+}
+
+.THIS .b-text
+{
+	font-size: 15px;
+    font-family: sans-serif,tahoma;
+    margin-bottom: 0px !important;
+    color: rgb(45, 138, 204);
+}
+.THIS .register-div {
+      margin-top: 25px;
+      margin-left:-40px;
+}
+
+.THIS .closet{
+    opacity: 1 !important;
+    color:white !important;
+}
+
+.THIS .img-size {
+    width:100%;
+    height: 155px;
+}
+.THIS .fields-div {
+    /*padding: 20px 35px 70px 35px;*/
+padding: 20px 35px 50px 35px;
+}
+
+.THIS .signin-button {
+
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color:rgb(45, 138, 204);
+    border-color:rgb(0, 176, 240);
+    border-radius:0px;
+ /*   margin-top: 35px; */
+    margin-top: 22px;
+
+}
+
+
+.THIS .signin-button:hover {
+  background:rgb(37, 116, 169);
+    border-color:rgb(37, 116, 169);
+    color:#fff;
+}
+
+.THIS .register-button {
+
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color:#fff;
+    border-radius:0px;
+    background-color:rgb(0, 176, 240);
+    border-color:rgb(0, 176, 240);
+    margin-right: 10px;
+    margin-left: 5px;
+    z-index: 999 !important;
+}
+
+.THIS .register-button:hover {
+    background:#fff;
+    border-color:rgb(0, 176, 240);
+    color:rgb(0, 176, 240);
+}
+.THIS .fpLink{
+    font-size: 15px;
+    font-family: sans-serif,tahoma;
+   /*  margin-top: 43px; */
+    margin-top: 30px;
+    color:rgb(45, 138, 204);
+
+}
+
+.THIS .inputField{
+  border-radius: 2px;
+  font-size: 16px;
+    
+     
+}
+
+
+.THIS ::placeholder {
+    color: #e6dbdb;
+    font-family: sans-serif,tahoma;
+}
+
+.THIS .para{
+    font-size: 15px;
+    font-family: sans-serif,tahoma;
+    color:#fff;
+	margin-left: 70px;
+    margin-top: 12px;
+     
+}
+
+@media screen and (min-width:280px) and (max-width: 767px) {
+    .THIS p{
+        margin-bottom:0px;
+    }
+    
+    .THIS .fields-div {
+     padding: 15px 35px 30px 35px;
+}
+	.THIS .para{
+    font-size: 15px;
+    font-family: sans-serif,tahoma;
+    color:#fff;
+	margin-left: 70px;
+    margin-top: 0px;
+     
+}
+    
+    .THIS .m-title{
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+    color: #43444a;
+    margin-bottom: 8px;
+}
+    
+    .THIS .fpLink {
+    margin-top: 27px;
+}
+    
+    .THIS .b-text
+{
+
+	margin-top: 15px;
+    }
+}

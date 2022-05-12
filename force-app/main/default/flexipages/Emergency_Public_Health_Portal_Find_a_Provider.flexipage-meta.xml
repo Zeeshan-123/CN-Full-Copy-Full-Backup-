@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>hideAdvancedSearch</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>resultCardFields</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;ProviderName&quot;,&quot;label&quot;:&quot;Provider Name&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;FacilityName&quot;,&quot;label&quot;:&quot;Facility Name&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;FacilityAddress&quot;,&quot;label&quot;:&quot;Address&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;FacilityPhone&quot;,&quot;label&quot;:&quot;Facility Phone&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;OperatingHours&quot;,&quot;label&quot;:&quot;Operating Hour ID&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;NationalProviderIdentifier&quot;,&quot;label&quot;:&quot;National Provider Identifier&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;ProviderType&quot;,&quot;label&quot;:&quot;Provider Type&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;CertificationType&quot;,&quot;label&quot;:&quot;Certification Type&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;EducationType&quot;,&quot;label&quot;:&quot;Education Type&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;Specialty&quot;,&quot;label&quot;:&quot;Specialty&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;SubSpecialty&quot;,&quot;label&quot;:&quot;Subspecialty&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;PlanType&quot;,&quot;label&quot;:&quot;Plan Type&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;IsAcceptingNewPatients&quot;,&quot;label&quot;:&quot;Accepts new patients&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;InNetwork&quot;,&quot;label&quot;:&quot;In Network&quot;,&quot;displayLabel&quot;:true}</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>searchFields</name>
+                    <valueList>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;ProviderName&quot;,&quot;label&quot;:&quot;Provider Name&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;Specialty&quot;,&quot;label&quot;:&quot;Specialty&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;SubSpecialty&quot;,&quot;label&quot;:&quot;Subspecialty&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;PlanType&quot;,&quot;label&quot;:&quot;Plan Type&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;IsAcceptingNewPatients&quot;,&quot;label&quot;:&quot;Accepts new patients&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;FacilityName&quot;,&quot;label&quot;:&quot;Facility Name&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;FacilityAddress&quot;,&quot;label&quot;:&quot;Patient Address&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;Radius&quot;,&quot;label&quot;:&quot;Maximum Distance&quot;,&quot;section&quot;:&quot;BASIC&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;NationalProviderIdentifier&quot;,&quot;label&quot;:&quot;National Provider Identifier&quot;,&quot;section&quot;:&quot;ADV&quot;}</value>
+                        </valueListItems>
+                        <valueListItems>
+                            <value>{&quot;name&quot;:&quot;ProviderType&quot;,&quot;label&quot;:&quot;Provider Type&quot;,&quot;section&quot;:&quot;ADV&quot;}</value>
+                        </valueListItems>
+                    </valueList>
+                </componentInstanceProperties>
+                <componentName>healthcloud:providerSearchCommunity</componentName>
+                <identifier>healthcloud_providerSearchCommunity</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>content</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>description</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>metaTags</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Find a Provider</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:seoAssistant</componentName>
+                <identifier>forceCommunity_seoAssistant</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>sfdcHiddenRegion</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <name>header</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <name>footer</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Find a Provider</masterLabel>
+    <template>
+        <name>siteforce:sldsOneColLayout</name>
+    </template>
+    <type>CommAppPage</type>
+</FlexiPage>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;H2 class=&quot;locateEmergencyServicesCardHeader&quot;&gt;Emergency Contacts&lt;/H2&gt;
+&lt;div class=&quot;locateEmergencyServicesRow&quot;&gt;
+    &lt;div class=&quot;locateEmergencyServicesColumn&quot;&gt;
+        &lt;div class=&quot;locateEmergencyServicesCard&quot;&gt;
+            &lt;h4&gt;Makana County EMS Agency&lt;/h4&gt;
+            &lt;!--&lt;p style=&quot;color:rgb(205, 37, 30);&quot;&gt;Alameda Country&lt;/p&gt;--&gt;
+            &lt;p&gt;Director: Melinda Smith&lt;/p&gt;
+            &lt;p&gt;Mdeical Director: Steve Green MD, FACEP, FACP&lt;/p&gt;
+            &lt;p&gt;1000 Main Street, Ste. 200&lt;/p&gt;
+            &lt;p&gt;San Francisco, CA 94577&lt;/p&gt;
+            &lt;p&gt;Phone: (123)555-1212&lt;/p&gt;
+            &lt;p&gt;Fax: (123)555-1212&lt;/p&gt;
+            &lt;p&gt;Email: &lt;a href=&quot;mailto:msmith@makana.co.gov&quot; target=&quot;_top&quot;&gt;msmith@makana.co.gov&lt;/a&gt;&lt;/p&gt;
+            &lt;BR/&gt;
+            &lt;!--&lt;h4&gt;Monterey Country EMS Agency&lt;/h4&gt;--&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+	&lt;!--
+    &lt;div class=&quot;locateEmergencyServicesColumn&quot;&gt;
+        &lt;div class=&quot;locateEmergencyServicesCard&quot;&gt;
+            &lt;h3&gt;Alameda Country EMS Agency&lt;/h3&gt;
+            &lt;p style=&quot;color:rgb(205, 37, 30);&quot;&gt;Alameda Country&lt;/p&gt;
+            &lt;p&gt;Director: Lauri McFadden&lt;/p&gt;
+            &lt;p&gt;Mdeical Director: Karl Sporer,MD,FACEP,FACP&lt;/p&gt;
+            &lt;p&gt;1000 San Leandro Blvd.,Ste.200&lt;/p&gt;
+            &lt;p&gt;San Leandro,CA 94577&lt;/p&gt;
+            &lt;p&gt;Phone: (510)610-2050&lt;/p&gt;
+            &lt;p&gt;Fax: (510)610-2099&lt;/p&gt;
+            &lt;p&gt;Email: &lt;a href=&quot;mailto:Lauri.McFadden@acgov.org&quot; target=&quot;_top&quot;&gt;Lauri.McFadden@acgov.org&lt;/a&gt;&lt;/p&gt;
+            &lt;BR/&gt;
+            &lt;H3&gt;Monterey Country EMS Agency&lt;/H3&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+	
+    &lt;div class=&quot;column&quot;&gt;
+        &lt;div class=&quot;card&quot;&gt;
+            &lt;h3&gt;Alameda Country EMS Agency&lt;/h3&gt;
+            &lt;p style=&quot;color:rgb(205, 37, 30);&quot;&gt;Alameda Country&lt;/p&gt;
+            &lt;p&gt;Director: Lauri McFadden&lt;/p&gt;
+            &lt;p&gt;Mdeical Director: Karl Sporer,MD,FACEP,FACP&lt;/p&gt;
+            &lt;p&gt;1000 San Leandro Blvd.,Ste.200&lt;/p&gt;
+            &lt;p&gt;San Leandro,CA 94577&lt;/p&gt;
+            &lt;p&gt;Phone: (510)610-2050&lt;/p&gt;
+            &lt;p&gt;Fax: (510)610-2099&lt;/p&gt;
+            &lt;p&gt;Email: &lt;a href=&quot;mailto:Lauri.McFadden@acgov.org&quot; target=&quot;_top&quot; style=&quot;text-decoration: underline;color: blue;&quot;&gt;Lauri.McFadden@acgov.org&lt;/a&gt;&lt;/p&gt;
+            &lt;BR/&gt;
+            &lt;H3&gt;Monterey Country EMS Agency&lt;/H3&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;column&quot;&gt;
+        &lt;div class=&quot;card&quot;&gt;
+            &lt;h3&gt;Alameda Country EMS Agency&lt;/h3&gt;
+            &lt;p style=&quot;color:rgb(205, 37, 30);&quot;&gt;Alameda Country&lt;/p&gt;
+            &lt;p&gt;Director: Lauri McFadden&lt;/p&gt;
+            &lt;p&gt;Mdeical Director: Karl Sporer,MD,FACEP,FACP&lt;/p&gt;
+            &lt;p&gt;1000 San Leandro Blvd.,Ste.200&lt;/p&gt;
+            &lt;p&gt;San Leandro,CA 94577&lt;/p&gt;
+            &lt;p&gt;Phone: (510)610-2050&lt;/p&gt;
+            &lt;p&gt;Fax: (510)610-2099&lt;/p&gt;
+            &lt;p&gt;Email: &lt;a href=&quot;mailto:Lauri.McFadden@acgov.org&quot; target=&quot;_top&quot; style=&quot;text-decoration: underline;color: blue;&quot;&gt;Lauri.McFadden@acgov.org&lt;/a&gt;&lt;/p&gt;
+            &lt;BR/&gt;
+            &lt;H3&gt;Monterey Country EMS Agency&lt;/H3&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+	--&gt;
+&lt;/div&gt;</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:htmlBlock</componentName>
+                <identifier>forceCommunity_htmlBlock</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>header</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>description</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>metaTags</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Locate Emergency Services</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:seoAssistant</componentName>
+                <identifier>forceCommunity_seoAssistant</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>sfdcHiddenRegion</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <name>content</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <name>footer</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Locate Emergency Services</masterLabel>
+    <template>
+        <name>siteforce:sldsOneColLayout</name>
+    </template>
+    <type>CommAppPage</type>
+</FlexiPage>

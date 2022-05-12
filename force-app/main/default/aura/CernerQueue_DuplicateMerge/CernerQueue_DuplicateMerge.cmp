@@ -1,0 +1,346 @@
+<aura:component controller="CernerQueue_DuplicateMergeController">
+    <aura:attribute name="isOpen" type="boolean" default="false"/>
+    <!--currentStep attribute will control the steps of progress indicator-->
+    <aura:attribute name="currentStep" type="string" default="1"/>
+    <aura:attribute name="result" type="string" default=""/>
+    <aura:attribute name="error" type="string" default=""/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="recordId" type="String"  />
+    
+    <aura:attribute name="AccountsC1" type="Account[]" />
+    <aura:attribute name="AccountsC2" type="Account[]" />
+    <aura:attribute name="AccountsC3" type="Account[]" />
+    <aura:attribute name="AccountColumns" type="List" />
+    <aura:attribute name="CQColumns" type="List" />
+    <aura:attribute name="SelectedAccount" type="String" />
+    <aura:attribute name="oldSelectedAccount" type="String" />
+    <aura:attribute name="listviewid" type="String" />
+    <aura:attribute name="AllowNext" type="Boolean" default="false"/>
+    
+    <aura:attribute name="SelectedAccountR" type="Account" />
+    <aura:attribute name="SelectedCernerQueueR" type="Cerner_Queue__c" />
+    <aura:attribute name="SelectedCernerQueueRL" type="Cerner_Queue__c[]" />
+    
+    <aura:attribute name="t1HasData" type="Boolean" default="false"/>
+    <aura:attribute name="t2HasData" type="Boolean" default="false"/>
+    <aura:attribute name="t3HasData" type="Boolean" default="false"/>
+     
+    <aura:attribute name="FName" type="String" />
+    <aura:attribute name="LName" type="String" />
+    <aura:attribute name="MRN" type="String" />
+    <aura:attribute name="DOB" type="Date" />
+    <aura:attribute name="Gender" type="String" />
+    <aura:attribute name="MaritalStatus" type="String" />
+    <aura:attribute name="Phone" type="String" />
+    <aura:attribute name="Mobile" type="String" />
+    <aura:attribute name="Street" type="String" />
+    <aura:attribute name="City" type="String" />
+    <aura:attribute name="State" type="String" />
+    <aura:attribute name="PostalCode" type="String" />
+    <aura:attribute name="Country" type="String" />
+    <aura:attribute name="County" type="String" />
+    <aura:attribute name="Email" type="String" />
+    <aura:attribute name="type" type="String" default="Ac"/>
+    
+    <aura:attribute name="FNameOps" type="List"/>
+    <aura:attribute name="LNameOps" type="List" />
+    <aura:attribute name="MRNOps" type="List" />
+    <aura:attribute name="DOBOps" type="List" />
+    <aura:attribute name="GenderOps" type="List" />
+    <aura:attribute name="MaritalStatusOps" type="List" />
+    <aura:attribute name="PhoneOps" type="List" />
+    <aura:attribute name="MobileOps" type="List" />
+    <aura:attribute name="StreetOps" type="List" />
+    <aura:attribute name="CityOps" type="List" />
+    <aura:attribute name="StateOps" type="List" />
+    <aura:attribute name="PostalCodeOps" type="List" />
+    <aura:attribute name="CountryOps" type="List" />
+    <aura:attribute name="CountyOps" type="List" />
+    <aura:attribute name="EmailOps" type="List" />
+    <aura:attribute name="typeOps" type="List" default="[{'label': 'Select All', 'value': 'CQ'},{'label': 'Select All', 'value': 'Ac'}]"/>
+    
+    
+    
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <div class="slds-m-around_xx-large">
+        
+        <!--Use aura:if tag to display Model Box, on the bese of conditions. [isOpen boolean attribute] -->    
+        <aura:if isTrue="{!v.isOpen}">
+            
+            <!--###### MODAL BOX Start From Here ######--> 
+            <div role="dialog" tabindex="-1" aria-labelledby="header99" class="slds-modal slds-fade-in-open" >
+                <div class="slds-modal__container" style="max-width: 95rem !important;width:95% !important;">
+                    <!-- ###### MODAL BOX HEADER Part Start From Here ######-->
+                    <div class="slds-modal__header">
+                         <aura:if isTrue="{!v.currentStep != '3'}">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModel }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        </aura:if>
+                        <br/>
+                        
+                        <!--lightning progressIndicator start-->
+                        <lightning:progressIndicator currentStep="{!v.currentStep}" type="base">
+                            <lightning:progressStep label="Select Account" value="1" onclick="{!c.selectFromHeaderStep1}"/>
+                            <lightning:progressStep label="Select Fields" value="2" onclick="{!c.selectFromHeaderStep2}"/>
+                            <lightning:progressStep label="Merge" value="3" onclick="{!c.selectFromHeaderStep3}"/>
+                        </lightning:progressIndicator>
+                    </div>
+                    
+                    <!--###### MODAL BOX BODY Part Start From Here ######-->
+                    <div class="slds-modal__content slds-p-around_medium" >
+                        <!--showing 3 screens based on progress indicator steps-->
+                        <div class="{!v.currentStep == '1' ? 'slds-show' : 'slds-hide'}" >
+                            <lightning:card title="Incoming Record from Cerner"> 
+                            <lightning:datatable aura:id="tblzero"
+                                                 columns="{! v.CQColumns }"
+                                                 data="{! v.SelectedCernerQueueRL }"
+                                                 keyField="Id"
+                                                 hideCheckboxColumn="true"
+                                                 />
+                            </lightning:card>
+                            <br/>
+                            <lightning:card title="Matching Records found Based on MRN"> 
+                            <lightning:datatable aura:id="tblOne"
+                                                 columns="{! v.AccountColumns }"
+                                                 data="{! v.AccountsC1 }"
+                                                 maxRowSelection="1"
+                                                 keyField="Id"
+                                                 onrowaction="{! c.handleRowActionC1 }"
+                                                 onrowselection="{!c.updateSelectedrecordc1 }"/>
+                                <aura:if isTrue="{!v.AccountsC1.length == 0}">
+                                	<aura:text  value="No record to display"/>
+                                </aura:if>
+                            </lightning:card>
+                            <br/>
+                            <lightning:card title="Matching Records found Based on Name and DOB"> 
+                            <lightning:datatable aura:id="tblTwo"
+                                                 columns="{! v.AccountColumns }"
+                                                 data="{! v.AccountsC2 }"
+                                                 maxRowSelection="1"
+                                                 keyField="Id"
+                                                 onrowaction="{! c.handleRowActionC2 }"
+                                                 onrowselection="{!c.updateSelectedrecordc2 }"/>
+                                <aura:if isTrue="{!v.AccountsC2.length == 0}">
+                                	<aura:text  value="No record to display"/>
+                                </aura:if>
+                            </lightning:card>
+                            <br/>
+                            <lightning:card title="Matching Records found Based on DOB and Phone"> 
+                            <lightning:datatable aura:id="tblThree"
+                                                 columns="{! v.AccountColumns }"
+                                                 data="{! v.AccountsC3 }"
+                                                 maxRowSelection="1"
+                                                 keyField="Id"
+                                                 onrowaction="{! c.handleRowActionC3 }"
+                                                 onrowselection="{!c.updateSelectedrecordc3 }"/>
+                                <aura:if isTrue="{!v.AccountsC3.length == 0}">
+                                	<aura:text  value="No record to display"/>
+                                </aura:if>
+                            </lightning:card>
+                        </div>
+                        <div class="{!v.currentStep == '2' ? 'slds-show' : 'slds-hide'}" >
+                            <div class="Header"><div class="one"><b>Cerner Queue</b></div><div class="two"><b>Account</b></div>
+                            </div>
+							<lightning:radioGroup name="type" 
+                                                  label=""
+                                                  options="{!v.typeOps}"
+                                                  value="{!v.type}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  onchange="{!c.handleselectAll}"
+                                                  />
+                            <br/>
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="First Name" 
+                                                  label="First Name"
+                                                  options="{!v.FNameOps}"
+                                                  value="{!v.FName}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  disabled="true"
+                                                  />
+                             <hr class="hr"></hr>
+                             <lightning:radioGroup name="Last Name" 
+                                                  label="Last Name"
+                                                  options="{!v.LNameOps}"
+                                                  value="{!v.LName}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                   disabled="true"
+                                                  />
+                             <hr class="hr"></hr>
+                             <lightning:radioGroup name="MRN" 
+                                                  label="MRN"
+                                                  options="{!v.MRNOps}"
+                                                  value="{!v.MRN}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                             <hr class="hr"></hr>
+                             <lightning:radioGroup name="DOB" 
+                                                  label="DOB"
+                                                  options="{!v.DOBOps}"
+                                                  value="{!v.DOB}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                             <hr class="hr"></hr>
+                             <lightning:radioGroup name="Gender" 
+                                                  label="Gender"
+                                                  options="{!v.GenderOps}"
+                                                  value="{!v.Gender}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                             <hr class="hr"></hr>
+                            <!--
+                             <lightning:radioGroup name="Marital Status" 
+                                                  label="Marital Status"
+                                                  options="{!v.MaritalStatusOps}"
+                                                  value="{!v.MaritalStatus}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                             <hr class="hr"></hr>
+							-->
+                             <lightning:radioGroup name="Phone" 
+                                                  label="Phone"
+                                                  options="{!v.PhoneOps}"
+                                                  value="{!v.Phone}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="Mobile" 
+                                                  label="Mobile"
+                                                  options="{!v.MobileOps}"
+                                                  value="{!v.Mobile}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="Email" 
+                                                  label="Email"
+                                                  options="{!v.EmailOps}"
+                                                  value="{!v.Email}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="Street Address" 
+                                                  label="Street Address"
+                                                  options="{!v.StreetOps}"
+                                                  value="{!v.Street}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="City" 
+                                                  label="City"
+                                                  options="{!v.CityOps}"
+                                                  value="{!v.City}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="State" 
+                                                  label="State"
+                                                  options="{!v.StateOps}"
+                                                  value="{!v.State}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <lightning:radioGroup name="Country" 
+                                                  label="Country"
+                                                  options="{!v.CountryOps}"
+                                                  value="{!v.Country}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            <!--
+                            <lightning:radioGroup name="County" 
+                                                  label="County"
+                                                  options="{!v.CountyOps}"
+                                                  value="{!v.County}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+							-->
+                            <lightning:radioGroup name="Postal Code" 
+                                                  label="Postal Code"
+                                                  options="{!v.PostalCodeOps}"
+                                                  value="{!v.PostalCode}"
+                                                  type="radio"
+                                                  class="customRadioCls"
+                                                  />
+                            <hr class="hr"></hr>
+                            
+                        </div>
+                        <div class="{!v.currentStep == '3' ? 'slds-show' : 'slds-hide'}"  >
+                            <div class="success">
+                                <div class="{!v.result == '' ? 'slds-show' : 'slds-hide'}">
+                                    <div class="slds-spinner_container">
+                                        <div class="slds-spinner--brand slds-spinner slds-spinner--large" role="alert">
+                                            <span class="slds-assistive-text">Loading, Please Wait...</span>
+                                            <div class="slds-spinner__dot-a"></div>
+                                            <div class="slds-spinner__dot-b"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="{!v.result == 'success' ? 'slds-show' : 'slds-hide'}">
+                                <b>Success!</b>
+                                <br/><br/>
+								<lightning:button variant="brand" 
+                                              label="Click here to Open the updated Account"
+                                              title="Click here to Open the updated Account"
+                                              onclick="{! c.redirecttoMergedAccount }"/> 
+                                </div>
+                                <div class="{!v.result == 'fail' ? 'slds-show' : 'slds-hide'}">
+                                <b>{!v.error}</b>
+                                <br/><br/> 
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
+                    
+                    <!--###### MODAL BOX FOOTER Part Start From Here ######-->
+                    <div class="slds-modal__footer slds-modal__footer_directional">
+                        <lightning:button disabled="{!or(v.currentStep == '1',v.result == 'success') ? 'disabled':''}"
+                                          variant="neutral" 
+                                          label="Back"
+                                          title="Back"
+                                          onclick="{! c.moveBack }"/>
+                        <aura:if isTrue="{!and(v.currentStep == '1', v.AllowNext)}">
+                            <lightning:button variant="brand" 
+                                                  label="Next"
+                                                  title="Next"
+                                                  onclick="{! c.moveNext }"/>
+                        </aura:if>
+                        <aura:if isTrue="{!and(v.currentStep == '2', v.AllowNext)}">
+                            <lightning:button variant="brand" 
+                                                  label="Merge"
+                                                  title="Merge"
+                                                  onclick="{! c.moveNext }"/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.currentStep == '3'}"> 
+                            <lightning:button variant="brand" 
+                                              label="Close"
+                                              title="Close"
+                                              onclick="{! c.finish }"/>  
+                        </aura:if>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            <!--###### MODAL BOX Part END Here ######-->
+        </aura:if>
+    </div>
+</aura:component>

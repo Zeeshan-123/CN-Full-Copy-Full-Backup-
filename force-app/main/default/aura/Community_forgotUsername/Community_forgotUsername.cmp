@@ -1,0 +1,79 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="LoginController">
+     <ltng:require styles="{!$Resource.CN_Boot}"/> 
+     <aura:attribute name="visible" type="Boolean" default="true" /> 
+   	 <aura:attribute name="visibleMessage" type="Boolean" default="false" /> 
+    
+    <!--Attributes for spinner-->
+    <aura:attribute name="isSpinner" type="boolean" default="false"/>
+    <aura:attribute name="isActive" type="boolean" default="false"/>
+    
+    <!--Username-->
+    <aura:attribute name="Username" type="String" default=""/>
+  
+    <div class="container"> 
+    <aura:if isTrue="{!v.visible}">  
+        <h1 class="mainHeading slds-align_absolute-center">Forgot Username</h1>
+        </aura:if>
+        
+       <div class="row justify-content-center">
+            <div class="col-sm-10 col-md-7" > 
+         <!--Form Div-->         
+           <aura:if isTrue="{!v.visible}">  
+            <div class="card m-box">
+          <div class="align-content">
+            <p class="textFont pM"> Having trouble logging in?</p>
+            
+            <ul class="slds-list_dotted textFont pM">
+                  <li>Usernames are in the form of an email address. </li>
+                  <!--<li>Passwords are case sensitive.</li>-->
+           </ul>
+              
+              <p class="textFont">To recover your username, please first enter your Citizen ID and Date of Birth.</p>
+              <br/>
+              <lightning:input aura:id="DOB"
+                               label="Date Of Birth" 
+                               placeholder="MM/DD/YYYY" 
+                               class="inputField"
+                               required="true"
+                               maxlength="10" 
+                               onchange="{!c.validateAndReplace}"
+                               pattern="(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d"
+                               messageWhenPatternMismatch="Invalid date format, correct one is MM/DD/YYYY."
+                               messageWhenValueMissing="Date of Birth required."
+                               onblur="{!c.clearError}"/>      
+              
+              <lightning:input aura:id="CitID"
+                               type="text" 
+                               label="Citizen/Registration ID"
+                               placeholder="Ex: 123402"  
+                               class="inputField"
+                               required="true"
+                               messageWhenValueMissing="Citizen Id required."
+                               onblur="{!c.clearError}"/>   
+              <div class=" text-center btn-div" >
+                <lightning:button class="btn cancelButton" aura:id="cancelButton" label="Cancel" onclick="{!c.handleCancel}" />
+                <lightning:button class="btn resetButton" disabled="{!v.isActive}" aura:id="submitButton" label="Recover Username" onclick="{!c.handleSearch}" />
+                <lightning:spinner aura:id="Spinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+               </div>
+            </div>  
+                </div>
+           </aura:if>
+                <!--/Form Div-->  
+                
+        <!--Message Div-->
+        <aura:if isTrue="{!v.visibleMessage}">     
+             <div class="card sm-box">
+            <div class="align-s-content"> 
+         <strong>  <p class="msgTextFont pM" style="text-align:center !important;"> Your Username is:</p> </strong> 
+            <p class="msgTextFont pM"> {!v.Username}</p>
+            <div class="msgTextFont " style="text-align:center !important;"> <a href="/s/login" >Back to login</a></div>    
+            </div>
+            </div>
+           </aura:if>
+                <!--/Message Div-->     
+                </div>  
+            </div>  
+      
+          </div>  
+    
+</aura:component>

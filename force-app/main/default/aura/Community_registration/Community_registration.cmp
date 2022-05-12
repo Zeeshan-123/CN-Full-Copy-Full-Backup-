@@ -1,0 +1,299 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_registrationController">
+	   <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <!--Allow Multi Line Space in Toast Messages-->
+     <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        }
+    </aura:html>
+    <!--Attributes for Registration-->
+    <aura:attribute name="firstName" type="string" default=""/>
+    <aura:attribute name="lastName" type="string" default=""/>
+    <aura:attribute name="email" type="string" default=""/>
+    <aura:attribute name="emailConfirm" type="string" default=""/>
+    <aura:attribute name="Dob" type="string" default=""/>
+    <aura:attribute name="tribeID" type="string" default=""/>
+    <aura:attribute name="phone" type="string" default=""/>
+     <!--Attributes for OTP-->
+    <aura:attribute name="OTP" type="string" default=""/>
+    <aura:attribute name="counter" default="0" type="integer"/>
+    
+    <!--Attributes for Show/Hide Screens-->
+    <aura:attribute name="visibleResetPasswordFrom" type="Boolean" default="false" /> 
+    <aura:attribute name="visibleRegForm" type="Boolean" default="false" /> 
+    <aura:attribute name="visibleOtpScreen" type="Boolean" default="false" /> 
+    <aura:attribute name="showOtpErrorScreen" type="Boolean" default="false" /> 
+    <aura:attribute name="visibleMessage" type="Boolean" default="false" />
+    <aura:attribute name="showMsg" type="Boolean" default="false" />
+    <!--Attributes for Buttons-->
+    
+    <aura:attribute name="isActive" type="boolean" default="false"/>
+    <aura:attribute name="resetBtnActive" type="boolean" default="false"/>
+    <aura:attribute name="finishBtnActive" type="boolean" default="false"/>
+      <!--Attributes for Reset Password-->
+    
+    <aura:attribute name="userPassword" type="String" /> 
+    <aura:attribute name="userConfirmPassword" type="String"/> 
+    <aura:attribute name="showpassword" type="Boolean" default="false"/>  
+    
+    <aura:attribute name="timeLeft" type="String"/>
+    
+     <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+ 
+   <!--Registration Form--> 
+      <aura:if isTrue="{!v.visibleRegForm}">   
+        <div class=" main-container">
+           
+               
+      <div class="row justify-content-center">
+            <div class=" col-sm-7 col-md-6 col-lg-5 col-xl-4"> 
+            <div class="card " style="  padding:0px; background-color:white;">
+
+     <img class="img-size" src="/resource/1604483450000/Login_Banner"/>
+      <div class="title">Registration</div>
+ 		<div class="fields-div">
+            <lightning:input aura:id="fName"
+                             type="text" 
+                             label="First Name"
+                             class="alignField inputField"
+                             placeholder="First Name"
+                              maxlength="15"
+                             value="{!v.firstName}"
+                             required="true"
+                             messageWhenValueMissing="First Name required."
+                             onblur="{!c.clearError}"/>         
+            
+            <lightning:input aura:id="lName"
+                             type="text" 
+                             maxlength="50"
+                             label="Last Name" 
+                             class="alignField inputField" 
+                             placeholder="Last Name" 
+                             value="{!v.lastName}" 
+                             required="true"
+                             messageWhenValueMissing="Last Name required."
+                             onblur="{!c.clearError}"/> 
+            
+             <aura:if isTrue="{!v.showMsg}"> 
+            <p style='color:red; font-size:12px;margin-top: 8px; margin-bottom: 0px;'>
+                Your username will be set to your email address.</p>
+            </aura:if>
+            
+            <lightning:input aura:id="emailField" 
+                             label="Email" 
+                             type="email" 
+                             class=" alignField inputField" 
+                             placeholder="Email"
+                             maxlength="50"
+                             oncontextmenu="{!c.handleContext}"  
+                             value="{!v.email}" 
+                             required="true"
+                             messageWhenValueMissing="Email required."
+                             onblur="{!c.clearError}"
+                             onfocus="{!c.show}"/>
+            
+            <lightning:input aura:id="emailFieldConfirm" 
+                             label="Confirm Email"
+                             type="email" 
+                             maxlength="50"
+                             oncontextmenu="{!c.handleContext}" 
+                             onpaste="{!c.handlePaste}"
+                             ondrop="{!c.handleContext}"
+                             class=" alignField inputField" 
+                             placeholder="Re-type Email"  
+                             value="{!v.emailConfirm}" 
+                             required="true"
+                             messageWhenValueMissing="Confirm Email required."
+                             onblur="{!c.clearError}"/>
+            
+            <lightning:input aura:id="DateOfBirth"
+                             label="Date Of Birth" 
+                             placeholder="MM/DD/YYYY" 
+                             class="alignField inputField"
+                             value="{!v.Dob}" 
+                             required="true"
+                             maxlength="10" 
+                             onchange="{!c.validateAndReplace}"
+                             pattern="(0[1-9]|1[012])[- \/.](0[1-9]|[12][0-9]|3[01])[- \/.](19|20)\d\d"
+                             messageWhenPatternMismatch="Invalid date format, correct one is MM/DD/YYYY."
+                             messageWhenValueMissing="Date of Birth required."
+                             onblur="{!c.clearError}"/>      
+            
+            <lightning:input aura:id="tid"
+                             type="text" 
+                             label="Citizen/Registration ID"
+                             placeholder="Ex: 123402"  
+                             class="alignField inputField"
+                             value="{!v.tribeID}" 
+                             required="true"
+                             maxlength="10"
+                             messageWhenValueMissing="Citizen Id required."
+                             onblur="{!c.clearError}"/>
+            
+            <div class=" text-center">
+                <lightning:button label="Register" disabled="{!v.isActive}" class="btn signUp-button " variant="brand"  onclick="{!c.signup}"/>
+            </div>
+                </div>
+                </div>                
+          </div>
+            </div>
+          </div>
+           <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+    </aura:if>
+    <!--/Registration Form--> 
+    
+    <!--OTP Input Screen-->
+    <aura:if isTrue="{!v.visibleOtpScreen}">  
+        <div class=" main-container">
+            <div class="row justify-content-center">
+                <div class=" col-sm-7 col-md-6"> 
+                    <div class="card otp-b">
+                        <div class="card-body ">
+                            <p> Enter Your Verification Code</p>
+                            <p>A verification code was sent via email to  {!v.email}. Please enter the code below, make sure to check your spam folder.  </p>
+                            <span onkeypress="{!c.NumberCheck}">
+                            <lightning:input type="text" 
+                                             label="Verification Code" 
+                                             class="alignField inputField"
+                                             aura:id='Input_OTP' 
+                                             required="true"
+                                             onblur="{!c.clearError}"
+                                             messageWhenValueMissing="PIN required."/>
+                            </span>
+                            <p style="margin-top: 20px; margin-bottom: -25px;">This window needs to remain open until the verification code is entered.</p>
+                            <br/>
+                    <!--        <p>Time Left <br/>{!v.timeLeft}</p> -->
+                            <div class="text-right">
+                                <lightning:button label="Next" disabled="{!v.isActive}" onclick="{!c.validateOTP}" class="btn signUp-button " variant="brand"  />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <lightning:spinner aura:id="OTPSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+    </aura:if>
+    
+    
+       <aura:if isTrue="{!v.showOtpErrorScreen}"> 
+             <div class=" main-container">
+		 <div class="row justify-content-center">
+             <div class=" col-sm-7 col-md-6"> 
+            <div class="card otp-b">
+                <div class="card-body ">
+                <p> You have exceeded the number of attempts for verification code.</p>   
+             	 <div class="text-right">
+                <lightning:button label="Finish" class="btn signUp-button " variant="brand"  onclick="{!c.finish}"/>
+                </div>
+                      </div>
+             </div>
+             </div>
+            </div>
+         </div>
+               
+                  
+         </aura:if>
+     <!--/OTP Input Screen-->
+    
+    <!--Reset Password Div-->
+    <aura:if isTrue="{!v.visibleResetPasswordFrom}">  
+     <div class="container"> 
+     <h1 class="mainHeading slds-align_absolute-center">Set New Password</h1>
+	  <div class="row justify-content-center">
+          <div class="col-sm-10 col-md-8 col-lg-7" >  
+              <div class="card m-r-box">
+                 <div class="align-content-r">
+                   <p class="textFont-r pM-r">Enter a new password for {!v.email}. 
+                       Your password must be at least 8 characters long and contain at least one each of the following:
+                        </p>
+        
+                        <ul class="slds-list_dotted textFont-r pM-r">
+                          <li> Upper Case Letter</li>
+                          <li> Lower Case Letter</li>
+                          <li>  Special Character 
+                            <lightning:helptext size="large" content="! &quot; # $ % &amp; &#39; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~ " />
+                            </li> 
+                          <li> Numeric Character (0-9) </li>
+                        </ul>
+       <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right"
+          style="margin-bottom: -15px;">  
+           
+           <lightning:input class="inputField-r" 
+                            aura:id="password" 
+                            value="{!v.userPassword}"
+                            placeholder="Password" 
+                            type="{!v.showpassword ? 'text':'password'}"
+                            oncontextmenu="{!c.handleContext}" 
+                            onpaste="{!c.handlePaste}"
+                            onblur="{!c.clearError}"/>
+           <div class="mpI"
+                aura:id="npswrd"> 
+               <lightning:buttonIcon class="slds-button slds-input__icon slds-text-color--default" 
+                                     iconName="{!v.showpassword ? 'utility:hide':'utility:preview'}" 
+                                     alternativeText="{!v.coborrowerSSNCB ? 'Hide':'Show'}" 
+                                     onclick="{!c.togglePassword}"/>
+           </div>          
+                     </div>   
+                     
+      <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right"
+          style="margin-bottom: -20px;">                 
+          
+           <lightning:input class="inputField-r" 
+                            aura:id="confirmPassword" 
+                            value="{!v.userConfirmPassword}"
+                            placeholder="Confirm Password" 
+                            type="{!v.showpassword ? 'text':'password'}"
+                            oncontextmenu="{!c.handleContext}" 
+                            onpaste="{!c.handlePaste}"
+                            onblur="{!c.clearError}"/>   
+          <div class="mpI"
+               aura:id="nCPswrd"> 
+              <lightning:buttonIcon class="slds-button slds-input__icon slds-text-color--default" 
+                                    iconName="{!v.showpassword ? 'utility:hide':'utility:preview'}" 
+                                    alternativeText="{!v.coborrowerSSNCB ? 'Hide':'Show'}" 
+                                    onclick="{!c.togglePassword}"/>
+          </div>          
+                     </div>
+     <div class=" text-center btn-div-r" >
+     	 <lightning:button class="btn resetButton-r"  label="Create Password" disabled="{!v.resetBtnActive}" onclick="{!c.setPassword}" />
+     </div>
+   
+             </div>
+   					 </div>
+            
+        </div> 
+          </div>  
+    
+     </div>
+         <lightning:spinner aura:id="mySpinnerResetScr" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+         </aura:if>
+    <!--/Reset Password Div-->
+    
+    
+        <!--Success Message Div-->
+    <aura:if isTrue="{!v.visibleMessage}">  
+    <div class=" container">
+        <div class="row justify-content-center">
+            <div class="col-sm-10 col-md-8 col-lg-6" >
+                <div class="card sm-box">
+                <div class="align-s-content"> 
+           		 <strong>  <p class="msgTextFont pM" > Account Created Successfully</p> </strong> 
+                <p class="msgTextFont pM" style="text-align: justify;"> Wado for registering, and welcome to Gadugi Portal.
+                    <br/><br/>
+                    Your account has been successfully created for username: {!v.email} and you can access the portal by clicking “Finish” below.
+                    </p>
+                 <div class=" text-center btn-div-r" >
+             <lightning:button class="btn resetButton-r" disabled="{!v.finishBtnActive}" label="Finish" onclick="{!c.login}" />
+     		 <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+                    </div>        
+                </div>
+                </div>    
+                
+               </div>
+        </div>
+          </div> 
+        <lightning:spinner aura:id="mySpinnerFinish" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+         </aura:if>
+    <!--/Success Message Div-->
+</aura:component>

@@ -1,0 +1,2476 @@
+<aura:component  implements="force:lightningQuickAction,forceCommunity:availableForAllPageTypes" access="global" controller="Community_ScholarshipApplication">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <!--Allow Multi Line Space in Toast Messages-->
+    <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        } 
+    </aura:html>
+     <aura:attribute name="addressClicked" type="boolean" default="false"/>
+    <aura:attribute name="CVCase" type="Case"
+                    default="{ 'sobjectType': 'Case'
+                             }"/>
+    <aura:attribute name="CVCaseClone" type="Case"
+                    default="{ 'sobjectType': 'Case'
+                             }"/>
+    <aura:attribute name="Acnt" type="Account"/>
+    
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false"/>
+    <aura:attribute name="showWarningMessage" type="boolean" default="false"/>
+    <aura:attribute name="showPrimaryGuardianSection" type="boolean" default="false"/>
+    <aura:attribute name="showHousingStipend" type="boolean" default="true"/>
+    <aura:attribute name="showReviewScreen" type="boolean" default="false"/>
+    <aura:attribute name="UpdateAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="UpdatePhysicalAddressRequired" type="boolean" default="false"/>
+    
+    <!--Attributes for Mailing Melissa Data-->
+    <aura:attribute name="location" type="string" default=""/>
+    <aura:attribute name="predictions" type="List" default="[]"/>
+    <aura:attribute name="states" type="List" default="[]"/>
+    <aura:attribute name="isManual" type="boolean" default="false"/>
+    <aura:attribute name="selectedAddressIndex" type="Integer" default="0"/>
+    <aura:attribute name="isAddressChanged" type="boolean" default="false"/>
+    <aura:attribute name="selectedAddress" type="string" default=""/>
+    <aura:attribute name="showManualCB" type="boolean" default="false"/>
+    <aura:attribute name="showLookUp" type="boolean" default="false"/>
+    <aura:attribute name="applicationResult" type="string"/>
+    
+    <!--Attributes for Physical Melissa Data-->
+    <aura:attribute name="locationPA" type="string" default=""/>
+    <aura:attribute name="predictionsPA" type="List" default="[]"/>
+    <aura:attribute name="isPAManual" type="boolean" default="false"/>
+    <aura:attribute name="selectedPhyAddressIndex" type="Integer" default="0"/>
+    <aura:attribute name="isPhyAddressChanged" type="boolean" default="false"/>
+    <aura:attribute name="selectedPhyAddress" type="string" default=""/>
+    <aura:attribute name="showPAManualCB" type="boolean" default="false"/>
+    <aura:attribute name="showPALookUp" type="boolean" default="false"/>
+    
+    <aura:attribute name="caseId" type="String"/>
+    <aura:attribute name="requestNumber" type="String"/>
+    
+    <!--Attributes for Students-->
+    <aura:attribute name="StudentsList" type="CA_Student2__c[]" /> 
+    <aura:attribute name="ProcessedStudentsList" type="CA_Student2__c[]" /> 
+    
+    <!--Attributes for HH Members-->
+    <aura:attribute name="HHMembersList" type="HH_Member__c[]" /> 
+    
+    <!--Attributes for Required-->
+    <aura:attribute name="mailingAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="FFAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="physicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="FFPhysicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="HHMembersRequired" type="boolean" default="false"/>
+    
+    <!--Attributes for Physical and Mailing State/Country Picklists-->
+    <aura:attribute name="getMailingParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getMailingChildList" type="list" default="[]"/>
+    <aura:attribute name="getPhysicalParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getPhysicalChildList" type="list" default="[]"/>
+    <aura:attribute name="getPickListMap" type="map"/>
+    
+    <!--Attributes to show hide State/Other State Fields-->
+    <aura:attribute name="showMailingState" type="boolean" default="true"/>
+    <aura:attribute name="showMailingOtherState" type="boolean" default="false"/>
+    <aura:attribute name="showPhysicalState" type="boolean" default="true"/>
+    <aura:attribute name="showPhysicalOtherState" type="boolean" default="false"/>
+    
+    <!--Attributes for Button -->
+    <aura:attribute name="iAccept" type="Boolean" default="false"/>
+    <aura:attribute name="statementUnderstanding" type="Boolean" default="false"/>
+    <aura:attribute name="malingAddressCorrect" type="Boolean" default="false"/>
+    <aura:attribute name="addressUpdate" type="Boolean" default="false"/>
+    <aura:attribute name="physicalAddressCorrect" type="Boolean" default="false"/>
+    <aura:attribute name="physicalAddressUpdate" type="Boolean" default="false"/>
+    <aura:attribute name="isActive2" type="Boolean" default="false"/>
+    <aura:attribute name="isActive" type="Boolean" default="false"/>
+    <aura:attribute name="univ" type="string" default=""/>
+    <aura:attribute name="univName" type="string" default=""/>
+    
+    
+    <!--Attributes for Picklists-->
+    <aura:attribute name="genderList" type="String[]" />
+    <aura:attribute name="maritalList" type="String[]" />
+    <aura:attribute name="tribeList" type="String[]" />
+    <aura:attribute name="districtList" type="String[]" />
+    <aura:attribute name="semesterList" type="String[]" />
+    <aura:attribute name="classificationList" type="String[]" />
+    <aura:attribute name="monthList" type="String[]" />
+    <aura:attribute name="fieldOfStudyList" type="String[]" />
+    <aura:attribute name="degreeList" type="String[]" />
+    <aura:attribute name="studentTypeList" type="String[]" />
+    <aura:attribute name="applicationTypeList" type="String[]" />
+        <aura:attribute name="relationList" type="String[]" />
+     <aura:attribute name="countyList" type="String[]" />
+
+    
+    
+    
+    <aura:attribute name="filetype" type="List" default="['.png', '.jpg', '.jpeg','.pdf']"/>
+    <aura:attribute name="incomeUploadedFilesList" type="List" default="[]" access="public"/>
+    <aura:attribute name="uploadedTranscriptList" type="List" default="[]" access="public"/>
+    <aura:attribute name="uploadedLetterList" type="List" default="[]" access="public"/>
+    <aura:attribute name="uploadedw9List" type="List" default="[]" access="public"/>
+    <aura:attribute name="uploadedOtherList" type="List" default="[]" access="public"/>
+    
+    
+    
+    
+    <aura:attribute name="isLoading" type="boolean" default="false"/>
+    
+    
+    <aura:attribute name="applicationTypes" type="String[]"/>
+    
+    <!--
+    {'label': 'Concurrent Enrollment Scholarship', 'value': 'concurrentEnrollment'},
+    {'label': 'Cherokee Nation Scholarship', 'value': 'cherokeeNation'},
+    {'label': 'Valedictorian and Salutatorian', 'value': 'valSal'}, -->
+    <aura:attribute name="applicationValue" type="String" default=""/>
+    
+    
+    <aura:attribute name="studentTypeValue" type="String" default=""/>
+    
+    
+    <aura:attribute name="degreeValue" type="String" default=""/>
+    
+    
+    <aura:attribute name="semesterValue" type="String" default=""/>
+    <!--Register Events-->
+    <aura:registerEvent name="vendorLookup" type="c:customLookupEvt"/>
+    <aura:attribute name="searchTerm" type="String" default=""/>
+    <aura:attribute name="rows" type="Map[]"/>
+    
+    
+    
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    
+    <aura:if isTrue="{!not(v.showSuccessMessage)}">
+        <div class="main-container"> 
+            <aura:if isTrue="{!v.isLoading}">
+                <lightning:spinner aura:id="mySpinner" variant="brand" />
+                <aura:set attribute="else">
+        <div class="card m-box ">
+                <img src="{!$Resource.Scholarship_AppHeader}" alt=""/>
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #43476A;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                                Online Scholarship Application
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                </div>
+                
+                <div class="m-box-style">
+                    <br/>
+                    <aura:if isTrue="{!v.showWarningMessage}">
+                      <div class="panel-head2">  <h5 class="mainHeading text-center"><aura:unescapedHtml value="{!v.applicationResult}"/><br></br>Please only proceed if you need to submit a second application.</h5> </div>
+
+                    </aura:if>
+                    
+                    <p style="margin-top: 0px;">Osiyo! Welcome to the Cherokee Nation Scholarship Program!</p>
+                    <br/>
+                    <p style="margin-top: 0px;">Please complete the online application to apply for scholarship funding for the upcoming academic year by uploading required documents saved in a PDF format. Applications will be processed in order of receipt. Applications received after posted deadlines will not be processed.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">Note: You will need to complete this application process in a single setting. If you stop before completing the process, you will need to begin again.</p>
+                    <br/>
+                    <p style="margin-top: 0px;"><a href="{!$Label.c.Community_ScholarshipDoc}" target="_blank">Click here</a> to see a list of required documents that must be saved individually in a PDF format to attach to this application.</p>
+                    <br/>
+                    <p style="margin-top: 0px;"><a href="{!$Label.c.Community_ScholarshpDistricts }" target="_blank">Click here</a> to see Higher Education Service Area Map.</p>
+                    <br/>
+                    <p style="margin-top: 0px;"><b>Residency Restrictions:</b></p>
+                    
+                    <p style="margin-top: 0px;">Undergraduate (Not eligible for Federal Pell), Graduate and Valedictorian/Salutatorian: must reside within the Cherokee Nation Reservation Area or contiguous counties (inside the highlighted counties).</p>
+                    <br/>
+                    <p style="margin-top: 0px;">Undergraduate (Pell eligible): must reside within the United States.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">Concurrent Enrollment: must reside within the Cherokee Nation Reservation Area or contiguous counties (inside the highlighted counties).</p>
+                    <br/>
+                    <p style="margin-top: 0px;">The scholarships are intended to supplement educational needs for those pursuing a degree from an accredited post-secondary insitution and shall be contingent on availability of funding.</p>
+                    <br/>
+                    <p style="margin-top: 0px;"><b>Please allow 8 weeks for processing.</b></p>
+                    <br/>
+                    <p style="margin-top: 0px;">Wado,</p>
+                    <p style="margin-top: 0px;">Cherokee Nation College Resource Center</p>
+                    <br/>
+                    
+                    <p style="margin-top: 0px;"><b>Application Enrollment Periods:</b></p>
+                    <p>
+                        <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                            <li>High School Concurrent Enrollment</li>
+                            <ul class="entry-content" style="list-style-type: none;padding-left:20px;">
+                                <li>March 1, 2022 - June 15, 2022 11:59 PM CT.</li>
+                            </ul>
+                            <li>Cherokee Nation Scholarship</li>
+                            <ul class="entry-content" style="list-style-type: none;padding-left:20px;">
+                                <li>March 1, 2022 - June 15, 2022 11:59 PM CT.</li>
+                            </ul>
+                            <li>Valedictorian and Salutatorian (Class of 2022)</li>
+                            <ul class="entry-content" style="list-style-type: none;padding-left:20px;">
+                                <li>March 1, 2022 - March 31, 2022 11:59 PM CT.</li>
+                            </ul>
+                        </ul>
+                    </p>
+                    <br/>
+                    
+                    <!--Application Type-->
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Application Type</h5> </div>
+                    <h1 class="head">Which Scholarship are you applying for?</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-8"> 
+                            <lightning:radioGroup name="applicationRequired"
+                                                  required="true"
+                                                  options="{! v.applicationTypeList }"
+                                                  value="{! v.CVCase.Scholarship_Application__c }"
+                                                  type="radio"
+                                                  aura:id="applicationType"
+                                                  onchange="{!c.radioChange}"
+                                                  
+                                                  
+                                                  />
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!and(v.CVCase.Scholarship_Application__c!='Valedictorian and Salutatorian',v.CVCase.Scholarship_Application__c!='')}">
+                        <h1 class="head">Are you a new or continuing scholarship applicant?</h1>  
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:radioGroup name="studentStatus"
+                                                      aura:id="studentStatus"
+                                                      required="true"
+                                                      options="{! v.studentTypeList }"
+                                                      value="{! v.CVCase.Student_Type__c }"
+                                                      type="radio"
+                                                       onchange="{!c.radioChange}"
+                                                      
+                                                      />
+                            </div>
+                        </div>
+                        <aura:if isTrue="{!(v.CVCase.Scholarship_Application__c!='Concurrent Enrollment Scholarship')}">
+                            <h1 class="head">Are you an undergraduate or graduate student?</h1>  
+                            <div class="row ">
+                                <div class=" col-sm-4"> 
+                                    <lightning:radioGroup name="degreeSeek"
+                                                          aura:id="degreeSeek"
+                                                          required="true"
+                                                          options="{! v.degreeList }"
+                                                          value="{! v.CVCase.Degree__c  }"
+                                                          type="radio"
+                                                           onchange="{!c.radioChange}"
+                                                          />
+                                </div>
+                            </div>
+                        </aura:if>
+                        
+                    </aura:if>
+                    
+                    <!--/Application Type-->    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <!--Personal Information-->
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Personal Information</h5> </div>
+                    <h1 class="head">Legal Name</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="First Name" 
+                                             aura:id="priConFirstName"
+                                             value="{!v.CVCase.Primary_Contact_First_Name__c}"
+                                             class="alignField" 
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Middle Name"
+                                             aura:id="priConMiddleName"
+                                             value="{!v.Acnt.Middle_Name__c}"
+                                             class="alignField"
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Last Name"
+                                             aura:id="priConLastName"
+                                             value="{!v.CVCase.Primary_Contact_Last_Name__c}"
+                                             class="alignField "
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Maiden Name"
+                                             aura:id="priConMaidenName"
+                                             value="{!v.CVCase.Primary_Contact_Maiden_Name__c}"
+                                             class="alignField "
+                                             type="text"
+                                             onchange="{!c.validateLName}"
+                                             disabled="false"/>       
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class=" col-sm-4">
+                            <lightning:input label="Cherokee Nation Citizen Registry ID #"
+                                             aura:id="RegID"
+                                             value="{!v.Acnt.Tribe_Id__c}"
+                                             class="alignField "
+                                             type="text"
+                                             disabled="true"/>
+                        </div>
+                        <div class=" col-sm-4">
+                            <lightning:input label="Social Security #"
+                                             aura:id="ssn"
+                                             value="{!v.Acnt.Social_Security__c}"
+                                             class="alignField "
+                                             type="text"
+                                             required="true"
+                                             onchange = "{!c.formatSSN}"
+                                             disabled="false"/>
+                        </div>
+                        <div class=" col-sm-4">
+                            <lightning:input label="College Student ID #"
+                                             aura:id="studentId"
+                                             value="{!v.CVCase.Student_ID__c}"
+                                             class="alignField "
+                                             type="text"
+                                             required="true"
+                                    
+                                             disabled="false"/>
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input class="alignField"
+                                             label="Date of Birth"
+                                             aura:id="priConDob"
+                                             value="{!v.Acnt.Date_of_Birth__c}"
+                                             disabled="true"
+                                             placeholder="MM/DD/YYYY"/>               
+                        </div> 
+                        <div class=" col-sm-4"> 
+                            <lightning:input aura:id="priConEmail" 
+                                             label="Email" 
+                                             value="{!v.Acnt.Users[0].Email}"
+                                             type="email"
+                                             class=" alignField" 
+                                             disabled="true"/>      
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input aura:id="secondaryEmail" 
+                                             label="Secondary Email" 
+                                             value="{!v.CVCase.Sec_Email__c}"
+                                             type="email"
+                                             class=" alignField"
+                                            onchange="{!c.validateEmail}"
+                                             disabled="false"/>      
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Mobile"
+                                             aura:id="priConCellPhone"
+                                             value="{!v.CVCase.Ebt_Mobile_Phone__c}"
+                                             class="alignField"
+                                             required="true"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             onchange="{!c.formatPhone}"
+                                             />
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="gender" name="gender" label="Gender" required="false" value="{!v.CVCase.Gender__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                
+                            <aura:iteration items="{!v.genderList}" var="gender" indexVar="key" >
+                                    <option text="{!gender.value}" value="{!gender.key}" selected="{!gender.value == v.CVCase.Gender__c}"></option>
+                                </aura:iteration>
+                                </lightning:select>
+                            
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="maritalStatus" name="maritalStatus" label="Marital Status" required="false" value="{!v.CVCase.Marital_Status__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.maritalList}" var="marital" indexVar="key" >
+                                    <option text="{!marital.value}" value="{!marital.key}" selected="{!marital.value == v.CVCase.Marital_Status__c}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                            
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="tribe" name="tribe" label="Tribe" required="false" value="{!v.CVCase.Tribe__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.tribeList}" var="tribe" indexVar="key" >
+                                    <option text="{!tribe.value}" value="{!tribe.key}" selected="{!tribe.value == v.CVCase.Tribe__c}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                            
+                        </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <lightning:textarea name="input1" 
+                                                label="Career Goals" 
+                                                maxlength="1000"
+                                                value="{!v.CVCase.Description}"
+                                                placeholder="Please describe your current Career/Educational goals in 1000 characters or less."/>
+                            
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <lightning:input type="checkbox"
+                                             required="false"
+                                             style = 'margin-top: 22px;'
+                                             label="First generation college student?"
+                                             class="alignField"
+                                             aura:id="firstGen"
+                                             checked="{!v.CVCase.First_Generation_College_Student__c }" />
+                        </div>
+                        <div class="col-sm-4">
+                            <lightning:input type="checkbox"
+                                             required="false"
+                                             style = 'margin-top: 22px;'
+                                             label="Do you speak, read, or write Cherokee?"
+                                             class="alignField"
+                                             aura:id="cherokeeFluency"
+                                             checked="{!v.CVCase.Do_you_speak_read_or_write_Cherokee__c }" />
+                        </div>
+                    </div>
+                    
+                    <!--/Personal Information-->
+                    
+                    
+                    <!--Mailing Address-->  
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Mailing Address</h5> </div>
+                    <h1 class="head" style="margin-bottom: -1%;">Mailing Address (If your mailing address is not correct, please click the update address toggle and use the Address Lookup field that appears):</h1>  
+                    <div class="row">     
+                        <div class="col-sm-12 " >  
+                            <strong>
+                                <lightning:input type="checkbox"  required="true"
+                                                 style = 'margin-top: 22px;'
+                                                 label="I have verified that my mailing address is correct"
+                                                 class="alignField"
+                                                 aura:id="mAddressCheckBox" checked="{!v.malingAddressCorrect}" />
+                            </strong>
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingStreetInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Mailing_Street__c}"
+                                             label="Address Line1: " 
+                                             disabled="{!not(v.isManual)}"
+                                             required="{!v.mailingAddressRequired}" 
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingAddress2Input" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.mailing_address2__c}"
+                                             label="Address Line2: " 
+                                             disabled="{!not(v.isManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingSuiteInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.mailing_suite__c}"
+                                             label="Suite: " 
+                                             disabled="{!not(v.isManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingCityInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Mailing_City__c}"
+                                             label="City: " 
+                                             disabled="{!not(v.isManual)}"
+                                             required="{!v.mailingAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" >
+                            <lightning:select class="alignField "
+                                              name="MailingCountryInput"
+                                              value="{!v.CVCase.Mailing_Countries__c}"
+                                              aura:id="MailingCountryInput"
+                                              label="Country"
+                                              disabled="{!not(v.isManual)}"
+                                              required="{!v.mailingAddressRequired}"
+                                              onblur="{!c.clearErrors}"
+                                              onchange="{!c.onMailingCountryChange}">
+                                
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.getMailingParentList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.CVCase.Mailing_Countries__c}">{!value}</option>
+                                </aura:iteration>
+                                
+                            </lightning:select>    
+                        </div>  
+                        
+                        <aura:if isTrue="{!v.showMailingState}">
+                            <div class="col-sm-6" > 
+                                <lightning:select class="alignField "
+                                                  aura:id="MailingStateInput"
+                                                  value="{!v.CVCase.Mailing_States__c}"
+                                                  name="childField"
+                                                  label="State"
+                                                  disabled="{!not(v.isManual)}"
+                                                  required="{!v.mailingAddressRequired}"
+                                                  onblur="{!c.clearErrors}">
+                                    
+                                    <option value="">--None--</option>
+                                    <aura:iteration items="{!v.getMailingChildList}" var="value">
+                                        <option value="{!value}" selected="{!value==v.CVCase.Mailing_States__c}">{!value}</option>
+                                        
+                                    </aura:iteration>
+                                    
+                                </lightning:select>    
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showMailingOtherState}">
+                            <div class="col-sm-6 " >  
+                                <lightning:input aura:id="MailingOtherState" 
+                                                 class="alignField inputField"
+                                                 value="{!v.CVCase.Other_Mailing_State__c}"
+                                                 label="Other State/Territory:" 
+                                                 disabled="{!not(v.isManual)}"
+                                                 required="{!v.mailingAddressRequired}"
+                                                 onblur="{!c.clearErrors}"/>
+                            </div>
+                        </aura:if>
+                        
+                        <div class="col-sm-6" >               
+                            <lightning:input aura:id="MailingzipInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Mailing_ZipPostal_Code__c}"
+                                             label="Zip Code: "  
+                                             disabled="{!not(v.isManual)}"
+                                             required="{!v.mailingAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" > 
+                            
+                            <Strong>
+                                <label class="slds-form-element__label" style = 'margin-top: 8px;' for="toggle">Update Mailing Address</label>
+                            </Strong>  
+                            <lightning:input class="cell"
+                                             type="toggle" 
+                                             aura:id="addressUpdateCheckBox" 
+                                             checked="{!v.addressUpdate}"
+                                             onchange="{!c.handleAddreesUpdate}"
+                                             messageToggleActive="Yes"
+                                             messageToggleInactive="No"
+                                             required="{!v.UpdateAddressRequired}"/>
+                        </div>
+                        
+                        <aura:if isTrue="{!v.showLookUp}">
+                            <div class="col-sm-6">
+                                <lightning:input aura:id="AddressFreeFormInput" 
+                                                 class="alignField" 
+                                                 label="Address Lookup: "  
+                                                 value="{!v.location}"
+                                                 onchange="{!c.handleAddressChange}"
+                                                 required="{!v.FFAddressRequired}"/>
+                                <aura:if isTrue="{!v.predictions.length > 0}">		 
+                                    <ul class="result" id="addressResult">
+                                        <aura:iteration items="{!v.predictions}" var="prediction" indexVar="indexVar">
+                                            <aura:if isTrue="{!prediction.Address.SuiteCount > 0}">
+                                                <aura:iteration items="{!prediction.Address.SuiteList}" var="suite" indexVar="indexVar2">
+                                                    <li class="slds-listbox__item">
+                                                        <a onclick="{!c.handleAddressClick}" data-placeid="{!indexVar+indexVar2}" data-place="{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}">{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                                    </li>
+                                                </aura:iteration>
+                                                <aura:set attribute="else">
+                                                    <li class="slds-listbox__item">
+                                                        <a onclick="{!c.handleAddressClick}" data-placeid="{!indexVar}" data-place="{!prediction.Address.AddressLine1 + (prediction.Address.SuiteName != ''?' '+prediction.Address.SuiteName:'') +', '+ prediction.Address.City+', '+prediction.Address.State}">
+                                                            {!prediction.Address.AddressLine1} <aura:if isTrue="{!prediction.Address.SuiteName != ''}">{!' '+prediction.Address.SuiteName}</aura:if> {!', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                                    </li>
+                                                </aura:set>
+                                            </aura:if> 
+                                        </aura:iteration>
+                                    </ul> 	 
+                                </aura:if>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="slds-form slds-form_stacked">
+                                    <div class="slds-form-element">
+                                        <aura:if isTrue="{!v.showManualCB == true}">
+                                            <label class="slds-form-element__label" for="toggle">Enter address manually</label>
+                                            <lightning:input class="cell" type="toggle" 
+                                                             aura:id="checkManual" 
+                                                             checked="{!v.isManual}"
+                                                             onchange="{!c.handleToggleChange}"
+                                                             messageToggleActive="Yes"
+                                                             messageToggleInactive="No"/>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                       
+                        <div class=" col-sm-6"> 
+                            
+                            <lightning:select class="alignField" aura:id="countyID" name="county" label="County" required="true" value="{!v.CVCase.County__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.countyList}" var="county" indexVar="key" >
+                                    <option text="{!county.value}" value="{!county.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>   
+                        </div>
+                        <div class=" col-sm-6"> 
+                            
+                            <lightning:select class="alignField" aura:id="districtID" name="district" label="CN District" required="true" value="{!v.CVCase.Council_District__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.districtList}" var="district" indexVar="key" >
+                                    <option text="{!district.value}" value="{!district.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>   
+                            <p><a href="{!$Label.c.Community_ScholarshpDistricts }" target="_blank">Click here to view map</a></p>
+                        </div>
+                    </div>
+                    <!--/Mailing Address-->  
+                    
+                    <!--Education-->
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Education</h5> </div>
+                    
+                    <div class="row ">
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="semesterApply" name="semesterApply" label="Which semester are you applying for?" required="false" value="{!v.CVCase.Semester__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.semesterList}" var="semester" indexVar="key" >
+                                    <option text="{!semester.value}" value="{!semester.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                            
+                        </div>
+                        <aura:if isTrue="{!(v.CVCase.Scholarship_Application__c!='Valedictorian and Salutatorian')}">
+                        <div class="col-sm-4">
+                            <lightning:input type="checkbox"
+                                             required="false"
+                                             label="Currently receiving the Cherokee Nation Scholarship?"
+                                             class="alignField"
+                                             aura:id="currentRec"
+                                             checked="{!v.CVCase.Currently_receiving_Scholarship__c}" />
+                        </div>
+                        </aura:if>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                    </div>
+                    <h1 class="head">High School Information</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Where did you attend high school?" 
+                                             aura:id="highSchool"
+                                             value="{!v.CVCase.High_School__c}"
+                                             class="alignField" 
+                                             type="text"
+                                             disabled="false"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="ACT Score"
+                                             aura:id="actScore"
+                                             value="{!v.CVCase.ACT_Score__c}"
+                                             class="alignField"
+                                             type="text"
+                                             onchange="{!c.formatNumber}"
+                                             required="true"
+                                             disabled="false"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="SAT Score (If Applicable)"
+                                             aura:id="satScore"
+                                             value="{!v.CVCase.SAT_Score__c}"
+                                             class="alignField "
+                                             type="text"
+                                             
+                                             onchange="{!c.formatNumber}"
+                                             disabled="false"/>       
+                        </div>
+                        <div class=" col-sm-4" > 
+                            <lightning:input label="HS Graduation Date"
+                                             aura:id="hsGradDate"
+                                             value="{!v.CVCase.HS_Graduation_Date__c}"
+                                             class="alignField "
+                                             type="date"
+                                             disabled="false"
+                                             />       
+                        </div>
+                        
+                    </div>
+                    <h1 class="head">College/University which you plan to enroll or are currently enrolled</h1>  
+                    <div class="row ">
+                        <div class="col-sm-4">
+                            <lightning:input
+                                             label="College/University Name and Address"
+                                             variant=""
+                                             required="true"
+                                             aura:id="collegeChoice"
+                                             value="{!v.searchTerm}"
+                                             placeholder="Search by University Name"
+                                             onchange="{!c.onSearchTermChange}"/>
+                            <div id="schoolResult">
+                            <aura:iteration  items="{!v.rows}" var="item" indexVar="indexVar" >
+                                <ul >
+                                    <li><a data-placeid="{!indexVar}" onclick="{!c.handleSchoolChoice}">{!item.Name}<br></br> {!item.Physical_Street__c}<br></br>{!item.Physical_City__c}, {!item.Physical_State__c}  {!item.Physical_Zip__c} </a></li>
+                                </ul>
+                                
+                            </aura:iteration>
+                            </div>
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Next Semester Number of Hours Enrolled"
+                                             aura:id="noHours"
+                                             value="{!v.CVCase.Hours_Enrolled_Next_Semester__c}"
+                                             class="alignField"
+                                             type="text"
+                                             required="true"
+												onchange="{!c.formatNumber}"
+
+                                             disabled="false"/> 
+                            
+                        </div>
+                        
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="studentClassification" name="studentClassification" label="Student Classification" required="true" value="{!v.CVCase.Student_Classification__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.classificationList}" var="classification" indexVar="key" >
+                                    <option text="{!classification.value}" value="{!classification.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>      
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="expectedMonth" name="expectedMonth" label="Expected College Graduation (Month)" required="true" value="{!v.CVCase.Expected_College_Graduation_Month__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.monthList}" var="month" indexVar="key" >
+                                    <option text="{!month.value}" value="{!month.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                            
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Expected College Graduation (Year)"
+                                             aura:id="expectedGradYear"
+                                             value="{!v.CVCase.Expected_College_Graduation_Year__c}"
+                                             class="alignField "
+                                             type="text"
+                                             required="true"
+                                             onchange="{!c.formatNumber}"
+                                             disabled="false"/>       
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="background" name="background" label="Background/Field of Study" required="true" value="{!v.CVCase.Background_Field_of_Study__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.fieldOfStudyList}" var="field" indexVar="key" >
+                                    <option text="{!field.value}" value="{!field.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>
+                            
+                        </div>
+                        
+                    </div>
+                    
+                    <!--/Education-->
+                    
+                    <!--Required Documents-->
+                    
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Required Documents</h5> </div>
+                    <p style="font-weight: 500;">Maximum File Size 20 MB with supported types PDF, JPEG, JPG and PNG only</p>
+
+                    <h1 class="head">As part of your application you must submit the following required documents: </h1>  
+                    <aura:if isTrue="{!(v.CVCase.Scholarship_Application__c=='Valedictorian and Salutatorian')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>Most Recent HS Transcript</li>
+                                <li>Counselor Approval Letter</li>
+                                <li>W-9 Form</li>
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent HS Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="hsTranscript" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>          
+                                </div>
+                                
+                                
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Counselor Approval Letter
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="counselorLetter" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleLetterUpload}"
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedLetterList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                                          onremove="{!c.onLetterFileRemove}" onclick="{!c.previewFile}"
+                                              
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>          
+                                </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        W-9 Form
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="w9Form" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished="{!c.handlew9Upload}"
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedw9List}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onw9FileRemove}" onclick="{!c.previewFile}"
+                                              
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>            
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CVCase.Scholarship_Application__c=='Concurrent Enrollment Scholarship', v.CVCase.Student_Type__c=='New')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>Most Recent HS Transcript</li>
+                                <li>Parent Approval Letter</li>
+                                <li>Counselor Approval Letter</li>
+                                <li>Fall 2022 College Class Schedule</li>
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent HS Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="hsTranscript" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+                                                            
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>           
+                                </div>
+                                
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Parent Approval Letter
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="approvalLetter" 
+                                                          name="parentApproval"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleLetterUpload}"
+                                                          />
+                                    <aura:iteration items="{!v.uploadedLetterList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onLetterFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration> 
+                                </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Counselor Approval Letter
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="counselorLetter" 
+                                                          name="conselorApproval"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handlew9Upload}"
+                                                          
+                                                          />
+                                    <aura:iteration items="{!v.uploadedw9List}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                         onremove="{!c.onw9FileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Fall 2022 College Class Schedule
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="classSchedule" 
+                                                          name="classSchedule"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleIncomeFilesUpload}"
+                                                          />
+                                    <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                       onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CVCase.Scholarship_Application__c=='Concurrent Enrollment Scholarship', v.CVCase.Student_Type__c=='Continuing')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>Most Recent College Transcript</li>
+                                <li>Spring 2022 Self Help Service Form</li>
+                                <li>Parent Approval Letter</li>
+                                <li>Counselor Approval Letter</li>
+                                <li>Fall 2022 College Class Schedule</li>
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent College Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="collegeTranscript" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                           onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>          
+                                </div>
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Spring 2022 Self Help Service Form
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="acceptanceLetter" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handlew9Upload}"
+                                                          />
+                                    <aura:iteration items="{!v.uploadedw9List}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onw9FileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>  
+                                </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Parent Approval Letter
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="approvalLetter" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleOtherUpload}"
+                                                                              
+                                                          />
+                                                                              
+                                    <aura:iteration items="{!v.uploadedOtherList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onOtherFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Counselor Approval Letter
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="counselorLetter" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleLetterUpload}"
+                                                          />
+                                    <aura:iteration items="{!v.uploadedLetterList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                         onremove="{!c.onLetterFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>  
+                                </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Fall 2022 College Class Schedule
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="classSchedule" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleIncomeFilesUpload}"
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                           onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>        
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CVCase.Degree__c  =='Graduate', v.CVCase.Student_Type__c=='Continuing')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>Most Recent College Transcript</li>
+                                <li>Spring 2022 Self Help Service Form</li>
+                                
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent College Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="collegeTranscript" 
+                                                          name="collegeTranscript"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Spring 2022 Self Help Service Form
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="selfServiceForm2" 
+                                                          name="selfServiceForm"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleIncomeFilesUpload}"
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                      onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CVCase.Degree__c  =='Graduate', v.CVCase.Student_Type__c=='New')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>Most Recent College Transcript</li>
+                                <li>Graduate Program Acceptance Letter</li>
+                                
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent College Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="collegeTranscript" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>            
+                                </div>
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Graduate Program Acceptance Letter
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="acceptanceLetter" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleIncomeFilesUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                          onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>            
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CVCase.Degree__c  =='Undergraduate', v.CVCase.Student_Type__c=='New')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>2022-2023 Student Aid Report</li>
+                                <li>Most Recent HS Transcript/GED or College Transcript</li>
+                                
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        2022-2023 Student Aid Report
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="aidReport" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleIncomeFilesUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                         onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}"
+                            
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>           
+                                </div>
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent HS Transcript/GED or College Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="hsTranscript" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                           onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>            
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                    </aura:if>
+                    <aura:if isTrue="{!and(v.CVCase.Degree__c  =='Undergraduate', v.CVCase.Student_Type__c=='Continuing')}">
+                        <div >
+                            <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                <li>2022-2023 Student Aid Report</li>
+                                <li>Most Recent College Transcript</li>
+                                <li>Spring 2022 Self Help Service Form</li>
+                                
+                                
+                            </ul>
+                            <div class="row ">
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        2022-2023 Student Aid Report
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="studentAidReport" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleIncomeFilesUpload}"
+                                                          
+                                                          />
+                                    
+                                    
+                                    <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                           onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration> </div>
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Most Recent College Transcript
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="collegeTranscript" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleTranscriptUpload}"
+                                                          
+                                                          />
+                                    
+                                    <aura:iteration items="{!v.uploadedTranscriptList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                     onremove="{!c.onTranscriptFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                                
+                                
+                                <div class=" col-sm-6"> 
+                                    <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                        Spring 2022 Self Help Service Form
+                                    </p>
+                                    <lightning:fileUpload label=""
+                                                          aura:id="acceptanceLetter" 
+                                                          name="fileUploader"
+                                                          variant="label-hidden"
+                                                          multiple="false"
+                                                          accept="{!v.filetype}"
+                                                          required = "true"
+                                                          onuploadfinished = "{!c.handleLetterUpload}"
+                                                          />
+                                    <aura:iteration items="{!v.uploadedLetterList}" var="file">
+                                        <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                            <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                            name="{!file.Id}" label="{!file.Title}"
+                                                            onremove="{!c.onLetterFileRemove}" onclick="{!c.previewFile}"
+
+                                                            >
+                                                <aura:set attribute="media">
+                                                    <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                                </aura:set>
+                                            </lightning:pill>
+                                        </lightning:layoutItem>
+                                    </aura:iteration>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                    </aura:if>
+                    
+                    
+                    
+                    
+                    
+                    <!--/Required Documents-->
+                    
+                    
+                    
+                    
+                    <!--Show Release of Information -->
+                    
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Release of Information</h5> </div>
+                    <h1 class="head">Cherokee College Resource Center has permission to discuss information about my application of scholarship with the following people:</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="First Name" 
+                                             aura:id="releaseFirstName"
+                                             value="{!v.CVCase.ROI_First_Name__c}"
+                                             class="alignField" 
+                                             type="text"
+                                             maxlength="30"
+                                             required="false"
+                                             onchange="{!c.validateLName}"/>    
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Last Name"
+                                             aura:id="releaseLastName"
+                                             value="{!v.CVCase.ROI_Last_Name__c}"
+                                             class="alignField "
+                                             type="text"
+                                             maxlength="40"
+                                             required="false"
+                                             onchange="{!c.validateLName}"
+                                             /> 
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:select class="alignField" aura:id="releaseRelationship" name="releaseRelationship" label="Relationship" required="false" value="{!v.CVCase.Relation__c}" onchange="{!c.clearErrors}">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.relationList}" var="relation" indexVar="key" >
+                                    <option text="{!relation.value}" value="{!relation.key}"></option>
+                                </aura:iteration>
+                            </lightning:select>      
+                        </div>
+                        
+                        
+                        <div class=" col-sm-4">
+                            <lightning:input label="Mobile"
+                                             aura:id="releaseMobile"
+                                             value="{!v.CVCase.ROI_Mobile__c}"
+                                             class="alignField"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             onchange="{!c.formatPhone}"
+                                             default=""
+                                             required="false"
+                                             />   
+                        </div>
+                        <div class=" col-sm-4">
+                            <lightning:input label="Home Phone"
+                                             aura:id="releaseHomePhone"
+                                             value="{!v.CVCase.ROI_Home_Phone__c}"
+                                             class="alignField"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             onchange="{!c.formatPhone}"
+                                             default=""
+                                             required="false"
+                                             />   
+                        </div>
+                        <div class=" col-sm-4">
+                            <lightning:input label="Work Phone"
+                                             aura:id="releaseWorkPhone"
+                                             value="{!v.CVCase.ROI_Work_Phone__c}"
+                                             class="alignField"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             onchange="{!c.formatPhone}"
+                                             default=""
+                                             required="false"
+                                             />   
+                        </div>
+                        <div class=" col-sm-4">
+                            <lightning:input label="Email"
+                                             aura:id="releaseEmail"
+                                             value="{!v.CVCase.ROI_Email__c}"
+                                             class="alignField"
+                                             type="email"
+                                             required="false"
+                                             onchange="{!c.validateEmail}"
+                                             />   
+                        </div>
+                        
+                    </div>
+                    
+                    <aura:if isTrue="{!or(v.CVCase.Scholarship_Application__c=='Concurrent Enrollment Scholarship',v.CVCase.Scholarship_Application__c=='Valedictorian and Salutatorian')}">
+                        <h1 class="head">High School Counselor</h1>  
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="First Name" 
+                                                 aura:id="counselorFirstName"
+                                                 value="{!v.CVCase.HS_Counselor_First_Name__c}"
+                                                 class="alignField" 
+                                                 type="text"
+                                                 maxlength="30"
+                                                 required="false"
+                                                 onchange="{!c.validateLName}"/>    
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Last Name"
+                                                 aura:id="counselorLastName"
+                                                 value="{!v.CVCase.HS_Counselor_Last_Name__c}"
+                                                 class="alignField "
+                                                 type="text"
+                                                 maxlength="40"
+                                                 required="false"
+                                                 onchange="{!c.validateLName}"
+                                                 /> 
+                            </div>
+                            
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Phone"
+                                                 aura:id="counselorPhone"
+                                                 value="{!v.CVCase.HS_Counselor_Phone__c}"
+                                                 class="alignField"
+                                                 onblur="{!c.clearErrors}"
+                                                 maxlength="14"  
+                                                 onchange="{!c.formatPhone}"
+                                                 required="false"
+                                                 />   
+                            </div>
+                            
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Email"
+                                                 aura:id="counselorEmail"
+                                                 value="{!v.CVCase.HS_Counselor_Email__c}"
+                                                 class="alignField"
+                                                 type="email"
+												onchange="{!c.validateEmail}"                                                 
+                                                 />   
+                            </div>
+                            
+                        </div>
+                    </aura:if>
+                    
+                    
+                    
+                    
+                    <!--/Show Primary Guardian Section-->                    
+                    
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Release of Information and User Agreement (Optional)</h5> </div>
+<div class="row ">        
+                        <div class="col-sm-12" > 
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+Consent to Use Name and Picture and Release of Information
+                            </p>    
+                             <lightning:input type="checkbox"
+                                             required="false"
+                                             style = 'margin-top: 22px;'
+                                              label="I hereby give permission to use my name and photograph or photographs for advertising and promotional purpose in the interest of the Cherokee Nation Resource Program, and/or its designates. I understand that this consent extends to photographs and elecctronics images of myself, which may be used in printed materials, television and video productions, web sites, CD ROMS or other technologies. Any use of my image will relate to the College Resource Program only. I also understand that I will receive no compensation for use of my picture and/or name."
+                                             class="alignField"
+                                             aura:id="photoRelease"
+                                             checked="{!v.CVCase.Photo_Consent__c}" />
+                            
+                            <lightning:input type="checkbox"
+                                             required="false"
+                                             style = 'margin-top: 22px;'
+                                              label="I certify that all of the information given here is complete and correct to the best of my knowledge. I understand that submission of false information or academic records is grounds for denial of admission or immediate suspension. I agree to submit all required credentials, including those specifically mentioned, and that failure to do so may result in my being denied admission."
+                                             aura:id="releaseCeritify"
+                                             checked="{!v.CVCase.Information_is_Correct__c}" />
+                             <lightning:input type="checkbox"
+                                             required="false"
+                                             style = 'margin-top: 22px;'
+                                              label="I further agree that upon admission to the Cherokee Nation Resource Program, it is my responsibility to read the College Resource Program's guidelines and abide by its rules and regulations regarding conduct and other obligations which have been made by properly constitued authorities."
+                                             aura:id="acknowledgeResp"
+                                             checked="{!v.CVCase.Acknowledgement_of_Guidelines__c}" />
+                            <lightning:input type="checkbox"
+                                             required="false"
+                                             style = 'margin-top: 22px;'
+                                             label="I understand that the information contained in this application and possible award files at the Cherokee Nation College Resouorce Center, except my social security number, may be reviewed by my parents/guardian or released to persons authorized by the Principal Chief and Tribal Council members. Cherokee Nation may request copies of my grades, transcripts or financial records. Any modifications I wish to make to this Release of Information Agreement must be described in writing by a document bearing my signature and attached to this application."
+                                             aura:id="releaseConfirm"
+                                             checked="{!v.CVCase.Information_May_Be_Released__c}" />
+    </div>
+                    </div>
+                    
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Statement of Understanding</h5> </div>
+                   <aura:if isTrue="{!(v.CVCase.Scholarship_Application__c=='Concurrent Enrollment Scholarship')}">
+                     <div class="row ">        
+                        <div class="col-sm-12" > 
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+Concurrent Enrollment scholarship is available to high school juniors and seniors who are attending college classes while still in high school. Cherokee Nation will pay up to six (6) credit hours per semester. Eligibility criteria are listed below: 
+                            </p>                            
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:10px; color:rgb(90,90,90);">
+                                <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                    <li>The scholarships are intended to supplement financial needs for those pursuing a degree from an accredited post-secondary institution and shall be contingent on the availability of funding. 
+</li>
+                                    <li>Must be a registered Cherokee Nation citizen that resides in the Cherokee Nation Higher Education boundaries. 
+</li>
+                                    <li>Must be currently enrolled in an accredited public institution of higher learning (college or university). 
+</li>
+                                    <li>Private and proprietary college/universities are not eligible to participate in the Cherokee Nation Concurrent Enrollment Scholarship. 
+</li>
+                                    <li>Must submit verification letter from the public high school counselor or home school official verifying student meets concurrent enrollment eligibility. 
+</li>
+                                    <li>Must submit verification letter from the parent and/or guardian verifying student meets concurrent enrollment eligibility and has permission to attend college. 
+</li>
+                                    <li>Must submit a college class schedule for the semester that you are applying.
+</li>
+                                    <li>Must submit a current high school transcript. 
+</li>
+                                    <li>Scholarships will be limited to general education required courses 
+</li>
+                                    <li>General Education Courses: Composition I, Composition II, College Algebra, General Physical Science, General Biology, History, Government, Political Science, Speech, Humanities, Computer Science, or Personal Health 
+</li>
+                                    <li>Scholarship will not pay for repeat classes 
+</li>
+                                    <li>Students must complete 1 hour of self-help community service for each $100 received. Rounding up to the nearest $100. Example $575 would require 6 hours of service. Rules and guidelines for the self-help service will accompany the student award letter. 
+</li>
+                                    <li>Must maintain a minimum cumulative grade point average (GPA) of 2.50.
+</li>
+                                    <li>
+Each high school Junior who meets eligibility requirements will receive funding for up to 6 (six) credit hours per semester, fall and/or spring semester, of tuition, books and required fees for required general education courses. Funding will be paid upon receipt of a detailed invoice from the college/university. No refunds or reimbursements to parents or students will be permitted. 
+</li>
+                                    <li>Each high school Senior who meets eligibility requirements will receive funding for up to 6 (six) credit hours per semester, fall and/or spring semester, of books and required fees for required general education courses. Tuition will not be paid for Seniors attending Oklahoma college or universities. Funding will be paid upon receipt of a detailed invoice from the college/university. No refunds or reimbursements to parents or students will be permitted. 
+</li>
+                                    <li>Students that wish to take more than six hours will be responsible for payment.
+</li>
+                                    <li>All communication between advisor and student is done through email. I will keep my email updated to receive scholarship notifications.
+</li>
+                                    <li>Students/Parents will be responsible for charges not appearing on the invoice. 
+</li>
+                                </ul>
+                            </p>  
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+                                <b>
+                                Books must be charged at the college/univerity's <u>on-campus bookstore</u> only. Book charges not appearing on college/university invoices will not be paid. No reimbursements permitted if books are purchased off site or purchased before student's Concurrent Enrollment application is approved.
+                            </b>
+                                </p> 
+                            
+                            
+                            <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndCons"
+                                             checked="{!v.iAccept}" />
+                        </div>
+                        
+                    </div>  
+
+                    </aura:if>
+                    <aura:if isTrue="{!(v.CVCase.Degree__c=='Undergraduate')}">
+                     <div class="row ">        
+                        <div class="col-sm-12" > 
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+The following guidelines have been developed to ensure that your needs are met according to the policies of the Cherokee Nation’s College Resources Program. 
+                            </p>                            
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:10px; color:rgb(90,90,90);">
+                                <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                    <li>The scholarships are intended to supplement financial needs for those pursuing a degree from an accredited post-secondary institution and shall be contingent upon the availability of funding.
+</li>
+                                    <li>I understand that satisfactory progress of any scholarship program must be maintained in order to continue financial assistance from the College Resource Center. I will seek assistance if my grades fall below satisfactory progress from either my college/university or from the College Resource Center. 
+</li>
+                                    <li>I understand that if any of the mentioned guidelines below have not been met, I will forfeit any financial assistance from the Cherokee Nation. 
+</li>
+                                    <li>Recipients are required to volunteer one hour of service to the tribe (Cherokee Nation) or a non-profit organization for every $100 they receive in scholarship funding. Official written verification will be required. Service is to be done during the semester that they are funded for. 
+</li>
+                                    <li>You must meet the minimum cumulative GPA Of 2.00 to remain eligible for the scholarship program. 
+</li>
+                                    <li>Full time undergraduate students are expected to earn a minimum of twelve (12) credit hours per semester, six (6) credit hours for part-time. If hours earned are less than twelve (12), part-time funding will be offered for the next semester. If hours earned are between six (6) and eleven (11), the next semester award will be reduced by 50%. Funding is not available to students passing less than six (6) credit hours. 
+</li>
+                                    <li>Students who are pursuing a second associate’s degree, a second bachelor’s degree, a second master’s degree, or a second doctoral degree, are not eligible. 
+</li>
+                                    <li>Students enrolled in or receiving an Associate’s in Applied Science degree, license, certificate or diploma or attending vocational schools are not eligible. 
+</li>
+                                    <li>All information you submit to the Cherokee Nation College Resource Center must be true and accurate. Any misrepresentation, whether intentional or accidental, will result in the forfeiture of scholarship funding and expulsion from the scholarship program. 
+</li>
+                                    <li>You must submit renewal documents at the end of each semester. 
+</li>
+                                    <li>You must be a registered tribal citizen of the Cherokee Nation. 
+</li>
+                                    <li>You must attend an accredited public or private institution within the United States. Proprietary schools are not eligible.
+</li>
+                                    <li>Funding is not available for equal or lower degree.
+</li>
+                                    <li>Undergraduate Students with 140 or more earned credit hours are not eligible. 
+</li>
+                                    <li>Scholarships are limited to ten (10) semesters or 140 earned credit hours, whichever comes first for undergraduate students. All earned credit hours, from all institutions will apply.
+</li>
+                                    <li>Undergraduate students not eligible for the PELL grant must live within the 14 county area or contiguous area. Undergraduate students eligible for the PELL grant can live anywhere in US. 
+</li>
+                                    <li>Students receiving assistance from other Cherokee Nation Programs are not eligible (Career Services, Vocational Rehab, Employee Reimbursement, etc…)
+</li>
+                                    <li>All communication between advisor and student is done through email. I will keep my email updated to receive scholarship notifications.
+</li>
+                                    <li>Student is responsible for remaining balance at college/university. 
+</li>
+                                </ul>
+                            </p>  
+                            
+                            
+                            
+                            <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndCons"
+                                             checked="{!v.iAccept}" />
+                        </div>
+                        
+                    </div>  
+
+                    </aura:if>
+                    <aura:if isTrue="{!(v.CVCase.Degree__c=='Graduate')}">
+                     <div class="row ">        
+                        <div class="col-sm-12" > 
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+The following guidelines have been developed to ensure that your needs are met according to the policies of the Cherokee Nation’s College Resources Program.
+                            </p>                            
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:10px; color:rgb(90,90,90);">
+                                <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                    <li>The scholarships are intended to supplement financial needs for those pursuing a degree from an accredited post-secondary institution and shall be contingent on the availability of funding. 
+</li>
+                                    <li>I understand that satisfactory progress of any scholarship program must be maintained in order to continue financial assistance from the College Resource Center. I will seek assistance if my grades fall below satisfactory progress from either my college/university or from the College Resource Center. 
+</li>
+                                    <li>I understand that if any of the mentioned guidelines below have not been met, I will forfeit any financial assistance from the Cherokee Nation. 
+</li>
+                                    <li>Recipients are required to volunteer one hour of service to the tribe (Cherokee Nation) or a non-profit organization for every $100 they receive in scholarship funding. Official written verification will be required. Service is to be done during the semester that they are funded for. 
+</li>
+                                    <li>Full time graduate students are expected to earn a minimum of six (6) credit hours per semester but not less than three (3) credit hours for part-time and remain in good standing with teh university. If hours earned are less than six (6), part-time funding will be offered for the next semester. If hours earned are between three (3) and five (5), the next semester award will be reduced by 50%. Funding is not available to students earning less than three (3) credit hours. 
+</li>
+                                    <li>Students who are pursuing a second associate’s degree, a second bachelor’s degree, a second master’s degree, or a second doctoral degree are not eligible. 
+</li>
+                                    <li>Students enrolled in or receiving an Associate’s in Applied Science degree, license, certificate or diploma or attending vocational schools are not eligible. 
+</li>
+                                    <li>All information you submit to the Cherokee Nation College Resource Center must be true and accurate. Any misrepresentation, whether intentional or accidental, will result in the forfeiture of scholarship funding and expulsion from the scholarship program. 
+</li>
+                                    <li>You must submit renewal documents at the end of each semester. 
+</li>
+                                    <li>Graduate Scholarships for a Masters Degree are limited to a total of six (6) semesters. 
+</li>
+                                    <li>Graduate Scholarships for a Doctoral Degree are limited to a total of six (6) semesters. Dissertation work can only be used for a total six (6) credit hours (dissertation hours include research and/or writing). Funding will be exhausted when student reaches the semester or dissertation hour limit, whichever comes first. 
+</li>
+                                    <li>You must be a registered tribal citizen of the Cherokee Nation. 
+</li>
+                                    <li>You must attend an accredited public or private institution within the United States. Proprietary schools are not eligible. 
+</li>
+                                    <li>Graduate students must live within the 14 county area or contiguous area. 
+</li>
+                                    <li>Students must be working toward an approved degree program. Coursework for license and certifications are not eligible. 
+</li>
+                                    <li>All communication between advisor and student is done through email. I will keep my email updated to receive scholarship notifications.
+</li>
+                                    <li>Student is responsible for remaining balance at college/university.
+</li>
+                                </ul>
+                            </p>  
+                            
+                            
+                            
+                            <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndCons"
+                                             checked="{!v.iAccept}" />
+                        </div>
+                        
+                    </div>  
+
+                    </aura:if>
+                    <aura:if isTrue="{!(v.CVCase.Scholarship_Application__c=='Valedictorian and Salutatorian')}">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">The following guidelines have been developed to ensure that your needs are met according to the policies of the Cherokee Nation’s College Resources Program. 
+</p>
+                                <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+                                  <ul class="entry-content" style="list-style-type: square;padding-left:20px;">
+                                      <li>Must attend a high school located within the Cherokee Nation Service Area or contiguous counties. </li>
+                                      <li>Must have a GPA of 3.50 or higher to qualify.</li>
+                                      <li>Must be named a Valedictorian or Salutatorian or have a class rank of 1 or 2.
+</li>
+                                      <li>In the case of a tie or multiple students named as Valedictorian or Salutatorian the award will be divided between all eligible students. 
+</li>
+                                      <li>I understand the Cherokee Nation Undergraduate scholarship is a separate application.
+</li>
+                                    </ul>
+
+                                </p>
+                                <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndCons"
+                                             checked="{!v.iAccept}" />
+                            </div>
+                        </div>
+                    </aura:if>
+
+                    
+                                       
+                    <!--/Parent / Legal Guardian-->
+                    
+                    <div class=" text-center">
+                        <lightning:button label="Review Application" disabled="{!v.isActive}" class="btn sr-button " variant="brand" onclick="{!c.reviewInformation}"/>
+                        <div class="slds-is-relative"> 
+                            <lightning:spinner aura:id="saveSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                        </div>  
+                    </div> 
+                </div>
+            </div>
+    </aura:set>
+            </aura:if>
+            
+        </div>
+        
+    </aura:if> 
+    <!--Clothing Assistance Form Div-->
+    
+    <!--Success Message Div-->
+    <aura:if isTrue="{!v.showSuccessMessage}">  
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left;"> 
+                                <aura:unescapedHtml value="{!v.applicationResult}"/>
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700;">   
+                                <!--<aura:unescapedHtml value="{!v.requestNumber}"/>-->
+                               
+                                
+                            </p>
+                            
+                            
+                            <!--<div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                            </div> -->
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+									If you have any questions or concerns regarding your 2022-23 CN Scholarship application, please contact your scholarship advisor:
+
+                            </p>
+                           <p class="msgTextFont " style="text-align: left; padding-bottom: 5px;">
+
+                                                                <ul>
+                                    <li>A-D: Shayna Macias <a mailto="shayna-macias@cherokee.org">shayna-macias@cherokee.org</a>
+                                    </li>
+                                    <li>E-K: Kakiley Workman <a mailto="kakiley-workman@cherokee.org">kakiley-workman@cherokee.org</a>
+                                    </li>
+                                    <li>L-R: Kaitlin Napier <a mailto="kaitlin-napier@cherokee.org">kaitlin-napier@cherokee.org</a>
+                                    </li>
+                                    <li>S-Z: Blaise Glory <a mailto="blaise-glory@cherokee.org">blaise-glory@cherokee.org</a>
+                                    </li>
+                                     <li>Concurrent Enrollment: Brenda Butler <a mailto="brenda-butler@cherokee.org">brenda-butler@cherokee.org</a>
+                                    </li>
+                                     <li>Valedictorian and Salutatorian: Chrissy Marsh <a mailto="chrissy-marsh@cherokee.org">chrissy-marsh@cherokee.org</a>
+                                    </li>
+                                </ul>
+                            </p>
+
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+							Please allow 8 weeks for processing.  Any inconsistent or missing data may delay processing, and further action by Cherokee Nation staff may take additional time before processing is complete.
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+							For general scholarship questions please email <a mailto="collegeresources@cherokee.org">collegeresources@cherokee.org</a> or call 918-453-5465.
+
+
+
+                            </p>
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+    <!--/Success Message Div-->
+    
+    <!--Review Section-->
+    <aura:if isTrue="{!v.showReviewScreen}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+            <div class="slds-modal__container">
+                <!--Modal Header-->
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon iconName="utility:close"
+                                          size="large"
+                                          variant="bare-inverse"
+                                          onclick="{! c.hideModal }"
+                                          alternativeText="Close" 
+                                          class="slds-modal__close" />
+                    <h2 id="modal-heading-01" class="mH">Review Information</h2>
+                </header>  <!--/Modal Header-->
+                
+                <!--Modal Body-->
+                <div class="slds-modal__content slds-p-around_small modal__padding" id="modal-content-id-1">
+                    
+                    <form class="slds-form--stacked" >
+                        <div class="panel-head2" >  <h5 class="mainHeading text-center">Application Information</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4 "> 
+                                <lightning:input label="Which Scholarship are you applying for?" 
+                                                 value="{!v.CVCase.Scholarship_Application__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            <aura:if isTrue="{!and(v.CVCase.Scholarship_Application__c!='Valedictorian and Salutatorian',v.CVCase.Scholarship_Application__c!='')}">
+                            <div class=" col-sm-4 "> 
+                                <lightning:input label="Are you a new or continuing student?" 
+                                                 value="{!v.CVCase.Student_Type__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                                </aura:if>
+                            <aura:if isTrue="{!and(v.CVCase.Scholarship_Application__c!='Valedictorian and Salutatorian',v.CVCase.Scholarship_Application__c!='Concurrent Enrollment Scholarship')}">
+
+                            <div class=" col-sm-4 "> 
+                                <lightning:input label="Are you an undergraduate or graduate student?" 
+                                                 value="{!v.CVCase.Degree__c  }"
+                                                 class="alignField modal__FontSize" 
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            
+                            </aura:if>
+                            
+                            
+                        </div>
+                        <div class="panel-head2" >  <h5 class="mainHeading text-center">Personal Information</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4 "> 
+                                <lightning:input label="First Name" 
+                                                 value="{!v.CVCase.Primary_Contact_First_Name__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Middle Name"
+                                                 value="{!v.Acnt.Middle_Name__c}"
+                                                 class="alignField modal__FontSize"
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Last Name"
+                                                 value="{!v.CVCase.Primary_Contact_Last_Name__c}"
+                                                 class="alignField modal__FontSize"
+                                                 type="text"
+                                                 disabled="true"/>       
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Maiden Name"
+                                                 value="{!v.CVCase.Primary_Contact_Maiden_Name__c}"
+                                                 class="alignField modal__FontSize"
+                                                 type="text"
+                                                 disabled="true"
+                                                 />       
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class=" col-sm-4">
+                                <lightning:input label="Cherokee Nation Citizen Registry ID #"
+                                                 value="{!v.Acnt.Tribe_Id__c}"
+                                                 class="alignField modal__FontSize"
+                                                 type="text"
+                                                 disabled="true"/>
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Social Security #"
+                                                 value="{!v.Acnt.Social_Security__c}"
+                                                 class="alignField modal__FontSize"
+                                                 type="text"
+                                                 disabled="true"/>
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Student ID #"
+                                                 value="{!v.CVCase.Student_ID__c}"
+                                                 class="alignField modal__FontSize"
+                                                 type="text"
+                                                 disabled="true"/>
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Date of Birth"
+                                                 value="{!v.Acnt.Date_of_Birth__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"/>               
+                            </div> 
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Email" 
+                                                 type="email"
+                                                 value="{!v.Acnt.Users[0].Email}"
+                                                 class=" alignField modal__FontSize" 
+                                                 disabled="true"/>      
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Secondary Email" 
+                                                 type="email"
+                                                 value="{!v.CVCase.Sec_Email__c}"
+                                                 class=" alignField modal__FontSize" 
+                                                 disabled="true"/>      
+                            </div>
+                            
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Mobile"
+                                                 value="{!v.CVCase.Ebt_Mobile_Phone__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 />
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Gender"
+                                                 value="{!v.CVCase.Gender__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 />
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Marital Status"
+                                                 value="{!v.CVCase.Marital_Status__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 />
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Tribe"
+                                                 value="{!v.CVCase.Tribe__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 />
+                            </div>
+                            <div class=" col-sm-12"> 
+                                <lightning:input label="Career Goals"
+                                                 value="{!v.CVCase.Description}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 />
+                            </div>
+                            <div class=" col-sm-4"> 
+                                
+                                <lightning:input label="First generation college student?"
+                                                 checked="{!v.CVCase.First_Generation_College_Student__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 type="checkbox"
+                                                 />
+                            </div>
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Do you speak, read, or write Cherokee?"
+                                                 checked="{!v.CVCase.Do_you_speak_read_or_write_Cherokee__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 type="checkbox"
+                                                 />
+                            </div>
+                        </div>
+                        <!--Mailing Address-->
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Mailing Address</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Address Line1" 
+                                                 value="{!v.CVCase.Mailing_Street__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 disabled = "true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Address Line2"
+                                                 value="{!v.CVCase.mailing_address2__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Suite"
+                                                 value="{!v.CVCase.mailing_suite__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="City"
+                                                 value="{!v.CVCase.Mailing_City__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Country"
+                                                 value="{!v.CVCase.Mailing_Countries__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <aura:if isTrue="{!v.showMailingState}">
+                                <div class=" col-sm-4">
+                                    <lightning:input label="State"
+                                                     value="{!v.CVCase.Mailing_States__c}"
+                                                     class="alignField modal__FontSize"
+                                                     disabled = "true"/>   
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.showMailingOtherState}">
+                                
+                                <div class=" col-sm-4">
+                                    <lightning:input label="Other State"
+                                                     value="{!v.CVCase.Other_Mailing_State__c}"
+                                                     class="alignField modal__FontSize"
+                                                     disabled = "true"/>   
+                                </div>
+                            </aura:if>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Zip Code"
+                                                 value="{!v.CVCase.Mailing_ZipPostal_Code__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="County"
+                                                 value="{!v.CVCase.County__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="CN District"
+                                                 value="{!v.CVCase.Council_District__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            
+                        </div>
+                        <!--/Mailing Address-->
+                        <!--Education Information-->
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Education</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Which semester are you applying for?" 
+                                                 value="{!v.CVCase.Semester__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 disabled = "true"/>       
+                            </div>
+                            
+                            <aura:if isTrue="{!(v.CVCase.Scholarship_Application__c!='Valedictorian and Salutatorian')}">
+                        <div class="col-sm-4">
+                            <lightning:input type="checkbox"
+                                             required="false"
+                                             label="Currently receiving the Cherokee Nation Scholarship?"
+                                             class="alignField"
+                                             aura:id="currentRec"
+                                             disabled="true"
+                                             checked="{!v.CVCase.Currently_receiving_Scholarship__c}" />
+                        </div>
+                        </aura:if>
+                        </div>
+                        <h1 class="head">High School Information</h1>  
+
+                        <div class="row">
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Where did you attend high school?"
+                                                 value="{!v.CVCase.High_School__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="ACT Score"
+                                                 value="{!v.CVCase.ACT_Score__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="SAT Score (If Applicable)"
+                                                 value="{!v.CVCase.SAT_Score__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                           
+                                <div class=" col-sm-4" >
+                                    <lightning:input label="HS Graduation Date"
+                                                     value="{!v.CVCase.HS_Graduation_Date__c}"
+                                                     class="alignField modal__FontSize"
+                                                     disabled = "true"/>   
+                                </div>
+                            
+                            
+                        </div>
+                        <h1 class="head">College/University which you plan to enroll or are currently enrolled</h1>  
+                        <div class="row">
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="College/Unviersity Name and Address"
+                                                 value="{!v.univName}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Next Semester Number of Hours Enrolled"
+                                                 value="{!v.CVCase.Hours_Enrolled_Next_Semester__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Student Classification"
+                                                 value="{!v.CVCase.Student_Classification__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Expected College Graduation (Month)"
+                                                 value="{!v.CVCase.Expected_College_Graduation_Month__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+
+                            <div class=" col-sm-4">
+                                <lightning:input label="Expected College Graduation (Year)"
+                                                 value="{!v.CVCase.Expected_College_Graduation_Year__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                             <div class=" col-sm-4">
+                                 <lightning:input label="Background/Field of Study"
+                                                 value="{!v.CVCase.Background_Field_of_Study__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                        </div>
+                        <!--/Education Information-->
+                        <!--Release of Information-->
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Release of Information</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="First Name" 
+                                                 value="{!v.CVCase.ROI_First_Name__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 disabled = "true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Last Name"
+                                                 value="{!v.CVCase.ROI_Last_Name__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Relationship"
+                                                 value="{!v.CVCase.Relation__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Mobile"
+                                                 value="{!v.CVCase.ROI_Mobile__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Home Phone"
+                                                 value="{!v.CVCase.ROI_Home_Phone__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            
+                            
+                          
+                            <div class=" col-sm-4">
+                                <lightning:input label="Work Phone"
+                                                 value="{!v.CVCase.ROI_Work_Phone__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Email"
+                                                 value="{!v.CVCase.ROI_Email__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                        </div>
+                    <aura:if isTrue="{!or(v.CVCase.Scholarship_Application__c=='Concurrent Enrollment Scholarship',v.CVCase.Scholarship_Application__c=='Valedictorian and Salutatorian')}">
+ 
+                        <h1 class="head">High School Counselor</h1> 
+                        <div class="row">
+                            <div class=" col-sm-4">
+                                <lightning:input label="First Name"
+                                                 value="{!v.CVCase.HS_Counselor_First_Name__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Last Name"
+                                                 value="{!v.CVCase.HS_Counselor_Last_Name__c }"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Phone"
+                                                 value="{!v.CVCase.HS_Counselor_Phone__c }"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Email"
+                                                 value="{!v.CVCase.HS_Counselor_Email__c }"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                        </div>
+                        </aura:if>
+                            
+                        
+                        <!--/Mailing Address-->
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <div class=" text-center">
+                            <lightning:button label="Edit" class="btn mBtn " variant="brand" onclick="{!c.hideModal}"/>     
+                            <lightning:button label="Submit" disabled="{!v.isActive2}" class="btn mBtn " variant="brand" onclick="{!c.save}"/>
+                        </div> 
+                        <lightning:spinner aura:id="Spinner2" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                    </form>
+                    
+                    
+                </div> <!--/Modal Body-->
+                
+            </div>
+        </section>
+        
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        
+    </aura:if> 
+    <!--/Review Section-->  
+</aura:component>

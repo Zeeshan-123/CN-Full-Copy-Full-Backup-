@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Hepatitis C RNA</label>
+    <protected>false</protected>
+    <values>
+        <field>Community_Page_URL__c</field>
+        <value xsi:type="xsd:string">/hepatitisc-test-result</value>
+    </values>
+    <values>
+        <field>Is_Active__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Messaging_Template_API_Name__c</field>
+        <value xsi:type="xsd:string">EHR_Hepatitis_C_RNA_Positive</value>
+    </values>
+    <values>
+        <field>Name_of_Disease__c</field>
+        <value xsi:type="xsd:string">Hepatitis C RNA</value>
+    </values>
+    <values>
+        <field>Result_URL_Parameter__c</field>
+        <value xsi:type="xsd:string">&amp;test=pHepatitis_C_RNA</value>
+    </values>
+    <values>
+        <field>Skip_Account_Trigger__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Skip_Flows__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Test_Result__c</field>
+        <value xsi:type="xsd:string">Positive</value>
+    </values>
+</CustomMetadata>

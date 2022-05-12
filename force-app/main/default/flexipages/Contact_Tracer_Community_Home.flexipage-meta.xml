@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlexiPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;div class=&quot;slds-grid slds-wrap slds-gutters bannerStyle&quot;&gt;
+  &lt;div class=&quot;slds-col slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_8-of-12 slds-large-size_8-of-12 slds-p-bottom_xx-large&quot;&gt;
+      &lt;div class=&quot;headBanner&quot;&gt;Thanks for helping your community to stay healthy!&lt;/div&gt;
+      &lt;br/&gt;
+     &lt;div class=&quot;subheadBanner slds-p-bottom_xx-large&quot;&gt;Getting started is easy. View your current tasks or jump in and assign yourself new assessments or contact tracing calls.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;slds-col slds-size_12-of-12 slds-samll-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_4-of-12&quot;&gt;
+     &lt;div class=&quot;imgBanner&quot;&gt;
+      &lt;img src=&quot;/sfsites/c/resource/hero_image/hero_image.png&quot;&gt;
+      &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:htmlBlock</componentName>
+                <identifier>forceCommunity_htmlBlock</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>header</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;div class=&quot;slds-grid slds-gutters slds-wrap slds-grid_vertical-align-center cardAlignment&quot; style=&quot;text-align:center;word-wrap: break-word;margin-bottom: 51px;margin-top: 17px;&quot;&gt;
+    &lt;div class=&quot;slds-col slds-size_1-of-1 slds-small-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_4-of-12&quot;&gt;
+            &lt;div  class=&quot;cardAlignmentStyle&quot; style=&quot;border:none;&quot;&gt;
+                &lt;div class=&quot;cardStyle&quot;&gt;
+                    &lt;a target=&quot;&quot; href=&quot;my-tasks&quot; style=&quot;text-decoration:none&quot;&gt;
+                        &lt;div style=&quot;height: 100%&quot;&gt;
+                            &lt;p class=&quot;cardNumber slds-p-top_medium&quot;&gt; &lt;/p&gt;
+                            &lt;br/&gt;
+                            &lt;p class=&quot;cardTitle slds-p-top_medium&quot;&gt;&lt;b&gt;My Tasks&lt;/b&gt;&lt;/p&gt;
+                            &lt;br/&gt;
+                            &lt;p class=&quot;cardDescStyle slds-p-horizontal_medium&quot;&gt;Your to-do list of tasks that you own.&lt;/p&gt;
+                        &lt;/div&gt;
+                     &lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;slds-col slds-size_1-of-1 slds-small-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_4-of-12&quot;&gt;
+        &lt;div  class=&quot;cardAlignmentStyle&quot; style=&quot;border:none;&quot;&gt;
+            &lt;div class=&quot;cardStyle&quot;&gt;
+                &lt;a target=&quot;&quot; href=&quot;incoming-tasks-queue&quot; style=&quot;text-decoration:none&quot;&gt;
+                    &lt;div style=&quot;height: 100%&quot;&gt;
+                        &lt;p class=&quot;cardNumber slds-p-top_medium&quot;&gt; &lt;/p&gt;
+                        &lt;br/&gt;
+                        &lt;p class=&quot;cardTitle slds-p-top_medium&quot;&gt;&lt;b&gt;Incoming Tasks Queue&lt;/b&gt;&lt;/p&gt;
+                        &lt;br/&gt;
+                        &lt;p class=&quot;cardDescStyle slds-p-horizontal_medium&quot;&gt;Make intake assessment calls or call exposed individuals&lt;br&gt; and capture details about their interactions.&lt;/p&gt;
+                    &lt;/div&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;slds-col slds-size_1-of-1 slds-small-size_12-of-12 slds-medium-size_4-of-12 slds-large-size_4-of-12&quot;&gt;
+            &lt;div class=&quot;cardAlignmentStyle&quot; style=&quot;border:none;&quot;&gt;
+                &lt;div class=&quot;cardStyle&quot;&gt;
+                    &lt;a target=&quot;&quot; href=&quot;no-response-tasks-queue&quot; style=&quot;text-decoration:none&quot;&gt;
+                        &lt;div style=&quot;height: 100%&quot;&gt;
+                            &lt;p class=&quot;cardNumber slds-p-top_medium&quot;&gt; &lt;/p&gt;
+                            &lt;br/&gt;
+                            &lt;p class=&quot;cardTitle slds-p-top_medium&quot;&gt;&lt;b&gt;No Response Tasks Queue&lt;/b&gt;&lt;/p&gt;
+                            &lt;br/&gt;
+                            &lt;p class=&quot;cardDescStyle slds-p-horizontal_medium&quot;&gt;Call individuals who have been called one or more times &lt;br&gt; without a response.&lt;/p&gt;
+                        &lt;/div&gt;
+                    &lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:htmlBlock</componentName>
+                <identifier>forceCommunity_htmlBlock2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>content</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>display</name>
+                    <value>LEVELS_POINTS</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>excludeInternalUsers</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>knowledgeLabel</name>
+                    <value>Knows about</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>numberOfUsers</name>
+                    <value>5</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showContextUser</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showTooltip</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showUserRank</name>
+                    <value>false</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Leaderboard</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>tooltipText</name>
+                    <value>Earn points and climb to new levels when you contribute in the community!</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:reputationLeaderboard42</componentName>
+                <identifier>forceCommunity_reputationLeaderboard42</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>numberOfTopics</name>
+                    <value>5</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>showTopicsMetric</name>
+                    <value>true</value>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Trending Topics</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:trendingTopics</componentName>
+                <identifier>forceCommunity_trendingTopics</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>sidebar</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>richTextValue</name>
+                    <value>&lt;div class=&quot;slds-card slds-box topResources&quot;&gt;
+    &lt;h2 style=&quot;color:#333333; font-size: 21px;&quot;&gt;Top Resources&lt;/h2&gt;
+    &lt;div class=&quot;slds-grid slds-wrap slds-p-top_small&quot;&gt;
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                Where can I find coronavirus resources on Benefits.gov?
+            &lt;/a&gt;
+        &lt;/div&gt;    
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                Where can I find resources for my business?
+            &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                Where can I find unemployment resources?
+            &lt;/a&gt;
+        &lt;/div&gt;    
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+               &lt;!-- Email Bounce--&gt;Find the latest information on COVID-19
+            &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                Where can I find healthcare resources?
+            &lt;/a&gt;
+        &lt;/div&gt;    
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                How can I get my economic impact payment (stimulus check)?
+            &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                How can I help during the coronavirus pandemic?
+            &lt;/a&gt;
+        &lt;/div&gt;    
+        &lt;div class=&quot;slds-size_1-of-1 slds-medium-size--1-of-2 slds-p-top_x_small slds-p-top_small&quot;&gt;
+            &lt;a href=&quot;#&quot; style=&quot;color:#0070d2 !Important;&quot;&gt;
+                Hotline Support
+            &lt;/a&gt;
+        &lt;/div&gt;
+
+            
+    &lt;/div&gt;
+&lt;/div&gt;</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:htmlBlock</componentName>
+                <identifier>forceCommunity_htmlBlock3</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>footer</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <itemInstances>
+            <componentInstance>
+                <componentInstanceProperties>
+                    <name>description</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>metaTags</name>
+                </componentInstanceProperties>
+                <componentInstanceProperties>
+                    <name>title</name>
+                    <value>Home</value>
+                </componentInstanceProperties>
+                <componentName>forceCommunity:seoAssistant</componentName>
+                <identifier>forceCommunity_seoAssistant</identifier>
+            </componentInstance>
+        </itemInstances>
+        <name>sfdcHiddenRegion</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
+        <appendable>enabled</appendable>
+        <name>featured</name>
+        <prependable>enabled</prependable>
+        <replaceable>enabled</replaceable>
+        <type>Region</type>
+    </flexiPageRegions>
+    <masterLabel>Home</masterLabel>
+    <template>
+        <name>siteforce:sldsOneColLayout</name>
+    </template>
+    <type>CommAppPage</type>
+</FlexiPage>

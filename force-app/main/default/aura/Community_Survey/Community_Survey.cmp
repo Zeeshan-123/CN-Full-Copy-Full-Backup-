@@ -1,0 +1,52 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global" controller="Community_Home">
+    <aura:attribute name="close" type="Aura.Action"/>
+    <aura:attribute name="showSurveyPopup" type="boolean" default="false"/>
+    <aura:attribute name="accntId" type="String" default=""/>
+    <!--Survey Popup-->
+   <aura:if isTrue="{!v.showSurveyPopup}">
+    <section role="dialog" aria-hidden="false" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+    <div class="slds-modal__container">
+    <!--Modal Header-->
+    
+        <header class="slds-modal__header">
+            <lightning:buttonIcon iconName="utility:close"
+                                  size="large"
+                                  variant="bare-inverse"
+                                  onclick="{!v.close}"
+                                  alternativeText="Close" 
+                                  class="slds-modal__close" />
+            <h2 id="modal-heading-01" class="mH"></h2>
+        </header>  <!--/Modal Header-->
+                  
+                  
+         <!--###### MODAL BOX BODY Part Start######-->
+         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="padding: 8%;">
+            <h1 style="text-align: center; font-size: xx-large;"><b>Osiyo, we value your input
+                </b>
+            </h1>
+            <p style="text-align: center;">Help us determine the best use of programs to help citizens respond to the impacts of COVID-19 with our funds.</p>
+        </div>
+        <!--###### MODAL BOX FOOTER Part Start ######-->
+        <footer class="slds-modal__footer" style="text-align: center; padding: 15px;">
+            <lightning:button variant="neutral" 
+                              class="btn not-interested-button "
+                              label="Not Interested"
+                              title="Not Interested"
+                              onclick="{! c.dontSHowAgain }"/>
+            <lightning:button variant="brand" 
+                              class="btn submit-button "
+                              label="Take Survey"
+                              title="Take Survey"
+                              onclick="{! c.takeToSurvey }"/>
+        </footer>
+                      
+                           
+
+        
+</div>
+</section>
+
+<div class="slds-backdrop slds-backdrop_open" aura:id="backGroundSectionId"></div>
+    </aura:if>
+<!--/Survey Popup-->
+</aura:component>

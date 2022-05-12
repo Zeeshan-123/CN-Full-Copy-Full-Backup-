@@ -1,0 +1,60 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	 <ltng:require styles="{!$Resource.CN_Boot}"/>
+    
+     <div class="cFooterPanel">
+    <div class="main-container"> 
+        <!-- main box --> 
+         
+    <div class="footer">
+       <div class="alignment">
+         <div class="row justify-content-center">  
+    <div class="col-6 col-sm-6 col-md-4 col-lg-2 ">            
+  <a href="{!$Label.c.Community_CherokeePeopleUrl}" target="_blank">
+        <img class="footer-img"  src="/resource/1599731120000/homePageFooterImgs/homePageFooterImgs/cherokee-people.png"/>  
+   </a> 		
+        </div>
+        
+   <div class="col-6 col-sm-6 col-md-4 col-lg-2">    
+    <a href="{!$Label.c.CommunityFishAndWildLife}" target="_blank">
+   <img class="footer-img"  src="/resource/1599731120000/homePageFooterImgs/homePageFooterImgs/cn-fish-wildlife.png"/>     
+       </a>
+             </div>  
+             
+   <div class="col-6 col-sm-6 col-md-4 col-lg-2">            
+   <a href="{!$Label.c.CommunityFilmOffice}" target="_blank">
+       <img class="footer-img"  src="/resource/1599731120000/homePageFooterImgs/homePageFooterImgs/cherokee-film.png"/>
+       </a>
+   </div>
+             
+             
+   <div class="col-6 col-sm-6 col-md-4 col-lg-2">    
+   <a href="{!$Label.c.CommunityAnadisgoi}" target="_blank">
+   <img class="footer-img"  src="/resource/1599731120000/homePageFooterImgs/homePageFooterImgs/anadisgoi.png"/>     
+       </a>
+             </div>
+
+             
+   <div class="col-6 col-sm-6 col-md-4 col-lg-2">  
+    <a href="{!$Label.c.CommunityCNBusinesses}" target="_blank">    
+   <img class="footer-img"  src="/resource/1599731120000/homePageFooterImgs/homePageFooterImgs/cnb.png"/>       
+       </a>
+             </div>
+             
+             
+    <div class="col-6 col-sm-6 col-md-4 col-lg-2">   
+	 <a href="{!$Label.c.CommunityCNPheonix}" target="_blank">        
+   <img class="footer-img"  src="/resource/1599731120000/homePageFooterImgs/homePageFooterImgs/phoenix-footer.png"/>         
+        </a>
+             </div>      
+           
+           
+           </div>
+            </div>     
+       
+           <p class="footer-para slds-align_absolute-center">
+               <aura:unescapedHtml value="{!$Label.c.About_Us_Message}"/></p>       
+            </div>    
+         </div>
+
+    </div>
+</aura:component>

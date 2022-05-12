@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Event template" >
+    <aura:attribute name="vendorLookup" type="Vendor__c[]"/>
+</aura:event>

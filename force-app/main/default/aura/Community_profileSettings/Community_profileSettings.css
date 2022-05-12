@@ -1,0 +1,158 @@
+.THIS abbr[title] {
+     cursor: none; 
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+
+.THIS p{
+    margin-bottom:5px;
+}
+
+.THIS .anchr{
+    color: rgb(37, 116, 169) !important;
+    font-size: 12px;
+}
+
+.THIS .alignment-s1{
+    margin: 10px 30px 30px 0px;
+}
+
+.THIS .align-content-1{
+    margin: 15px 25px 0px 25px;
+}
+
+.THIS .align-content-2{
+    margin: 0px 25px;
+}
+
+.THIS .alignment-s2{
+    margin: 10px 30px 30px 0px;
+}
+
+.THIS .submit-button {
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin-top: 2%;
+}
+
+.THIS  .submit-button:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+.THIS .m-ht{
+ 	color: #fff;
+    margin-bottom:0px !important;
+}
+
+
+.THIS .m-br {
+    border:1px solid rgb(37, 116, 169);
+}
+
+.THIS .mrgn {
+    margin-bottom: 15px !important;
+}
+
+.THIS .m-tp {
+	margin-top:40px;
+}
+
+.THIS .equal {
+    border: 1px solid rgba(0,0,0,.125);
+    height: 100%;
+    width: 100%;
+}
+.THIS .panel-head
+{
+    background-color:#343a40;  
+    padding: 12px;
+}
+
+.THIS .inputField{
+
+  font-size: 12px !important;   
+}
+
+.THIS .m-box {
+ 	margin:30px 35px;
+  border:0px;
+ 
+}
+
+            
+@media screen and (min-width:280px) and (max-width: 767px)
+{
+.THIS .m-box {
+ 	margin:10px 0px 0px 0px;
+    border:0px;
+ 
+}           
+
+.THIS .m-ht{
+ 	color: #fff;
+    margin-bottom:0px !important;
+    font-size: 15px;
+}
+    
+.THIS .p-t{
+
+    font-size: 14px;
+}
+       
+.THIS .mrgn{
+    margin-bottom: 10px !important;
+} 
+    
+.THIS .m-tp {
+	margin-top:25px;
+}
+    
+.THIS .dwn {
+    margin-bottom: 25px !important;
+}     
+    
+.THIS .panel-head
+{
+    background-color:#343a40;  
+    padding: 10px;
+}    
+}
+
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1024px)
+{
+.THIS .m-box {
+        margin:10px 10px;
+        border:0px;
+    }
+    
+.THIS .p-t{
+
+    font-size: 14px;
+}
+ 
+.THIS .mrgn{
+    margin-bottom: 13px !important;
+}     
+    
+.THIS .m-ht{
+ 	color: #fff;
+    margin-bottom:0px !important;
+    font-size: 15px;
+}        
+
+.THIS .panel-head
+{
+    background-color:#343a40;  
+    padding: 10px;
+}
+}

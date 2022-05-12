@@ -1,0 +1,170 @@
+.THIS .multiSelect .slds-form-element__control
+{
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+}
+
+.THIS .result{
+            overflow: scroll;
+    height: 190px;
+    overflow-x: hidden;
+    }
+
+.THIS .m-box
+{
+ margin:30px 35px;
+}
+
+.THIS .m-box-style
+{
+ 	background-color: rgb(248,248,248);
+    padding:0 85px 20px 85px;
+}
+
+.THIS p{
+    font-size:12px !important;
+    }
+
+.THIS abbr[title] {
+     cursor: none; 
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+
+.THIS .head{
+    margin-top:35px;
+    margin-bottom:1%;
+    font-family: sans-serif,tahoma;
+    font-size:16px;
+}
+
+.THIS .submit-button {
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.THIS  .submit-button:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+/*For input fields place holder*/
+.THIS .inputField{
+
+  font-size: 12px !important;   
+}
+
+.THIS ::placeholder {
+    color: #e6dbdb;
+    font-family: sans-serif,tahoma;
+}
+
+.THIS .alignField
+{
+    padding: 2px; 
+}
+
+
+/*End*/
+
+.THIS .panel-head
+{
+    background-color:#343a40;  
+    padding: 15px;
+}
+
+.THIS .mainHeading{
+    color: #fff;
+    margin-bottom:0px !important;
+}
+
+.THIS .m-Border {
+    border:2px solid rgb(37, 116, 169);
+}
+
+ 
+
+@media screen and (min-width:280px) and (max-width: 767px)
+{
+   
+    .THIS .multiSelect .slds-form-element__control
+{
+    display: block !important;
+}        
+    .THIS .m-box {
+ 	margin:10px -3px 0 -3px;
+    border:0px;
+ 
+}
+    .THIS .m-box-style
+{
+ 	background-color: rgb(248,248,248);
+    padding:0px 10px 15px 10px;
+}
+    
+   .THIS .slds-truncate {
+    display: table-row  !important;
+    vertical-align: middle;
+    font-size: 11px  !important;
+}
+   .THIS .slds-dueling-list__column {
+    display: inline-flex;
+    flex-direction: column;
+    width: 10% !important;
+} 
+   
+    
+    .THIS .head{
+    margin-top: 30px;
+    font-family: sans-serif,tahoma;
+    font-size:14px;
+    text-align: center;
+}
+   
+
+    .THIS .mainHeading{
+        font-size: 16px !important;
+    }
+    
+    .THIS .submit-button {
+        font-size: 12px;
+    }
+    
+  
+}
+
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1024px)
+{ 
+
+     .THIS .m-box {
+        margin:10px 10px;
+        border:0px;
+    }
+    
+    .THIS .m-box-style
+{
+ 	background-color: rgb(248,248,248);
+    padding:5px 50px 25px 50px;
+}
+
+    
+    .THIS .mainHeading{
+        font-size: 18px !important;
+    }
+    
+    .THIS .head{
+    font-size:16px;
+    margin-top: 30px;
+}
+  
+}

@@ -1,0 +1,15 @@
+<aura:component implements="forceCommunity:profileMenuInterface" access="global" controller="Community_CustomProfileMenuController">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="userName" type="String"/> 
+    <!--Handler 	-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <ui:menu class="selfServiceUserProfileMenu ts">
+        <ui:menuTriggerLink aura:id="trigger" class="profileName stl" >  {!v.userName}
+        &nbsp;
+        <lightning:icon class="pinIcon" iconName="utility:chevrondown" size="x-small" alternativeText="Connected" title="Connected" /></ui:menuTriggerLink>
+        <ui:menuList  class="actionMenu stl" aura:id="actionMenu">
+                <ui:actionMenuItem class="uiMenuItem b-d" label="Profile Settings" click="{!c.handleClick}"/>
+                <ui:actionMenuItem class="uiMenuItem" label="Logout" click="{!c.handleClick}"/>
+        </ui:menuList>
+    </ui:menu>
+</aura:component>

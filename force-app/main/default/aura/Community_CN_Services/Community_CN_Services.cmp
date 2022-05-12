@@ -1,0 +1,51 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" >
+	 <ltng:require styles="{!$Resource.CN_Boot}"/>
+     <div class="main-container"> 
+        <!-- main box -->
+          <div class="card m-box ">
+              <div class="row ">
+            <div class="col" >      
+              <div class="panel-head">  <h5 class="mainHeading">Services</h5> </div>
+              <div class="m-Border "></div>
+            <p class="paragraph d-s">
+                  {!$Label.c.CommunitySerivcesPageMessage}
+             </p> 
+                  </div>
+                  </div>
+              
+            <div class="row alignment">
+            <div class="col-sm-6" >  
+            <a href="{!$Label.c.CommunityVeteranAffairsUrl}" target="_blank">
+            <div class="slds-box mBox">
+                <h1 class="subHeading slds-p-vertical_small">
+           <lightning:icon  iconName="utility:shield" size="small"/>   
+             &nbsp; Office of Veteran Affairs</h1>
+                   <p class=" paragraph" >
+                       {!$Label.c.CommunityServicePageVAMessage}
+                </p> 
+            </div>
+               </a> 
+              </div>
+                
+             <div class="col-sm-6" >  
+           <a href="{!$Label.c.CommunityTribalRegistrationUrl}" target="_blank">  
+           <div class="slds-box mBox">
+           <h1 class="subHeading slds-p-vertical_small">
+           <lightning:icon  iconName="utility:priority" size="small"/>   
+             &nbsp; Tribal Registration</h1>
+                   <p class=" paragraph spacing"> 
+                      {!$Label.c.CommunityServicePageTRMessage}
+                 </p> 
+            </div>
+                 </a>
+                 </div>
+                  </div>
+              
+                <p class="paragraph"  style="font-weight: 700;">
+                  {!$Label.c.CommunityServicePageMessageTwo}
+                </p>
+              
+              
+            </div>
+    </div>
+</aura:component>

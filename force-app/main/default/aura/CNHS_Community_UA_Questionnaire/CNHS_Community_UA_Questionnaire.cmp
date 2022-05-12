@@ -1,0 +1,474 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_UA_TestResultsCntrl">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="AccountId" type="string" default=""/>
+    <aura:attribute name="rId" type="String" default=""/>
+    <aura:attribute name="IsolationEndDate" type="String" default=""/>
+    <aura:attribute name="EmailToSendIsolationNote" type="string" default=""/>
+    <aura:attribute name="ClinicalAssessmentToMakeCall" type="HealthCloudGA__Clinical_Assessment_Response__c" 
+                    default="{ 'sobjectType': 'HealthCloudGA__Clinical_Assessment_Response__c',
+                             'HealthCloudGA__SubjectiveFever__c' : '',
+                             'HealthCloudGA__Chills__c' : '',
+                             'HealthCloudGA__Cough__c' : '',
+                             'HealthCloudGA__ShortnessOfBreath__c' : '',
+                             'Fatigue__c' : '',
+                             'HealthCloudGA__MuscleAches__c' : '',
+                             'HealthCloudGA__Headache__c' : '',
+                             'New_Lost_of_Taste_Smell__c' : '',
+                             'HealthCloudGA__SoreThroat__c' : '',
+                             'HealthCloudGA__RunnyNose__c' : '',
+                             'HealthCloudGA__NauseaOrVomiting__c' : '',
+                             'HealthCloudGA__Diarrhoea__c' : '',
+                             'HealthCloudGA__OtherSymptoms__c' : ''}"/>
+    <aura:attribute name="ClinicalAssessment" type="HealthCloudGA__Clinical_Assessment_Response__c" 
+                    default="{ 'sobjectType': 'HealthCloudGA__Clinical_Assessment_Response__c',
+                             'HealthCloudGA__SubjectiveFever__c' : false,
+                             'HealthCloudGA__Chills__c' : false,
+                             'HealthCloudGA__Cough__c' : false,
+                             'HealthCloudGA__ShortnessOfBreath__c' : false,
+                             'Fatigue__c' : false,
+                             'HealthCloudGA__MuscleAches__c' : false,
+                             'HealthCloudGA__Headache__c' : false,
+                             'New_Lost_of_Taste_Smell__c' : false,
+                             'HealthCloudGA__SoreThroat__c' : false,
+                             'HealthCloudGA__RunnyNose__c' : false,
+                             'HealthCloudGA__NauseaOrVomiting__c' : false,
+                             'HealthCloudGA__Diarrhoea__c' : false,
+                             'HealthCloudGA__OtherSymptoms__c' : ''}"/>
+     <aura:attribute name="Acnt" type="Account"
+                    default="{ 'sobjectType': 'Account',
+                             'PersonDepartment': '',
+                             'Other_Place_of_Employment__c' : '',
+                             'Employment_Details__c' : ''}"/> 
+    <aura:attribute name="CovidVaccineType" type="list" 
+                    default="[{'label': 'Moderna', 'value': 'Moderna'},
+                             {'label': 'Pfizer', 'value': 'Pfizer'},
+                             {'label': 'Johnson and Johnson', 'value': 'Johnson and Johnson'},
+                             {'label': 'Don’t know', 'value': 'Don’t know/Not sure'}]"/>
+    <aura:attribute name="ConditionDetailsList" type="list" 
+                    default="[{'label': 'Better', 'value': 'Better'},
+                             {'label': 'Same', 'value': 'Same'},
+                             {'label': 'Worse', 'value': 'Worse'}]"/>
+    <aura:attribute name="lastCOVID19Diagnosed" type="list" 
+                    default="[{'label': 'Within the last 90 days', 'value': 'Within the last 90 days'},
+                             {'label': '91 days or longer', 'value': '91 days or longer'}]"/>
+    <aura:attribute name="CovidVaccineDoses" type="list" 
+                    default="[{'label': '1', 'value': '1 dose'},
+                             {'label': '2', 'value': '2 doses	'},
+                             {'label': '3', 'value': '3'},
+                             {'label': '4 or More', 'value': 'More'},
+                             {'label': 'Don’t know', 'value': 'Don’t know/Not sure'}]"/>
+    <aura:attribute name="EmploymentDetailsList" type="list" 
+                    default="[{'label': 'Cherokee Nation Government', 'value': 'CN Government'},
+                             {'label': 'Cherokee Nation Business', 'value': 'CN Business Employee'},
+                             {'label': 'Other', 'value': 'Other'}]"/>
+    <aura:attribute name="OtherSymptoms" type="Boolean" default="false"/>
+    <aura:attribute name="showSympOnsetDate" type="Boolean" default="false"/>
+    <aura:attribute name="showOtherPlaceOfEmployment" type="Boolean" default="false"/>
+    <aura:attribute name="showWhichDept" type="Boolean" default="false"/>
+    <aura:attribute name="showDayCareTT" type="Boolean" default="false"/>
+    <aura:attribute name="showConditionDetails" type="Boolean" default="false"/>
+    <aura:attribute name="showVaxQs" type="Boolean" default="false"/>
+    <aura:attribute name="IsolationNoteRequested" type="Boolean" default="false"/>
+    <aura:attribute name="IsOptIn" type="Boolean" default="false"/>
+    <aura:attribute name="CovidDiagnosed" type="Boolean" default="false"/>
+    <aura:attribute name="isActive" type="Boolean" default="false"/>
+    <aura:attribute name="isSymptomatic" type="Boolean" default="false"/>
+    
+    <aura:attribute name="QS1" type="Boolean" default="true"/>
+    <aura:attribute name="QS2" type="Boolean" default="false"/>
+    <aura:attribute name="QS3" type="Boolean" default="false"/>
+    <aura:attribute name="Msg" type="Boolean" default="false"/>
+
+    <div id="homeBanner"  data-e2e="banner" style="background-image:url('/resource/1630331349000/Test_Result_BG');
+                                                     background-repeat: no-repeat;
+                                                     height: 100%;">
+    <div class="main-container " > 
+        <div class="card m-box bg-white">
+            <div class="m-box-style">
+                <aura:if isTrue="{!v.QS1}">
+                    <div class="row" >
+                        <div class="col-sm-12" > 
+                            <p>Symptom Checker: If you have NO SYMPTOMS, please DO NOT check any boxes.</p>
+                                <lightning:input  type="checkbox" 
+                                                 label="Subjective/Objective Fever (= or > than 100.00)"
+                                                 class="alignField"
+                                                 aura:id="SubjectiveFever"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__SubjectiveFever__c}"
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Chills"
+                                                 class="alignField"
+                                                 aura:id="Chills"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__Chills__c}"
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="New or Worsening Cough"
+                                                 class="alignField"
+                                                 aura:id="WorseningCough"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__Cough__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Shortness of Breath (or Difficulty Breathing)"
+                                                 class="alignField"
+                                                 aura:id="ShortnessOfBreath"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__ShortnessOfBreath__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Fatigue"
+                                                 class="alignField"
+                                                 aura:id="Fatigue"
+                                                 checked="{!v.ClinicalAssessment.Fatigue__c}"
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Muscle or Body Aches"
+                                                 class="alignField"
+                                                 aura:id="MuscleAches"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__MuscleAches__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Headache"
+                                                 class="alignField"
+                                                 aura:id="Headache"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__Headache__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Loss of Taste or Smell"
+                                                 class="alignField"
+                                                 aura:id="LossOfTaste"
+                                                 checked="{!v.ClinicalAssessment.New_Lost_of_Taste_Smell__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Sore Throat"
+                                                 class="alignField"
+                                                 aura:id="SoreThroat"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__SoreThroat__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Congestion or Runny Nose"
+                                                 class="alignField"
+                                                 aura:id="RunnyNose"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__RunnyNose__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Nausea or Vomiting"
+                                                 class="alignField"
+                                                 aura:id="Nausea"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__NauseaOrVomiting__c}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Diarrhea"
+                                                 class="alignField"
+                                                 aura:id="Diarrhea"
+                                                 checked="{!v.ClinicalAssessment.HealthCloudGA__Diarrhoea__c}"
+                                                 onchange="{!c.onSymptomChange}"/>
+                                <lightning:input  type="checkbox" 
+                                                 label="Other"
+                                                 class="alignField"
+                                                 aura:id="Other"
+                                                 checked="{!v.OtherSymptoms}" 
+                                                 onchange="{!c.onSymptomChange}"/>
+                            
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.OtherSymptoms}">
+                        <div class="row" >
+                            <div class="col-sm-12 col-md-6" >
+                                <p>Please Specify</p>
+                                <lightning:textarea value="{!v.ClinicalAssessment.HealthCloudGA__OtherSymptoms__c}"
+                                                    aura:id="OtherSymptom"
+                                                    label="Enter Other Symptoms"
+                                                    maxlength="50"/>
+                                
+                            </div>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showSympOnsetDate}">
+                        <div class="row" >
+                            <div class="col-sm-12 col-md-6" >             
+                                <p>What day did your symptoms begin?</p>
+                                <lightning:input type="date"
+                                                 value="{!v.Acnt.Date_of_when_symptoms_onset__c}"
+                                                 aura:id="SymptomOnsetDate"
+                                                 label="Date"
+                                                 required="true"
+                                                 onchange="{!c.onSymptomsOnsetDateChange}"/>
+                                
+                            </div>
+                        </div>
+                        <aura:if isTrue="{!v.showConditionDetails}">
+                            <div class="row" >
+                                <div class="col-sm-12 col-md-6" >
+                                    <p>Compared to yesterday, how are you feeling today?</p>
+                                    <lightning:select class="alignField "
+                                                      value="{!v.ClinicalAssessment.How_are_you_feeling_today__c}"
+                                                      aura:id="ConditionDetails"
+                                                      label="Select One">
+                                        
+                                        <option value="">--None--</option>
+                                        <aura:iteration items="{!v.ConditionDetailsList}" var="val">
+                                            <option value="{!val.value}">{!val.label}</option>
+                                        </aura:iteration>
+                                    </lightning:select> 
+                                </div>
+                            </div>
+                        </aura:if>
+                        
+                    </aura:if>
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Employment Details:</p>
+                            <lightning:select class="alignField "
+                                              value="{!v.Acnt.Place_of_Employment__c}"
+                                              aura:id="EmploymentDetails"
+                                              label="Select One"
+                                              required="true"
+                                              onchange="{!c.onEmploymentDetailsChange}">
+                                
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.EmploymentDetailsList}" var="val">
+                                    <option value="{!val.value}">{!val.label}</option>
+                                </aura:iteration>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.showWhichDept}">
+                        <div class="row" >
+                            <div class="col-sm-12 col-md-6" >
+                                <lightning:input type="text"
+                                                 value="{!v.Acnt.PersonDepartment}"
+                                                 aura:id="EmploymentDepartment"
+                                                 label="Which Department"
+                                                 maxlength="30"/>
+                            </div>
+                        </div>
+                    </aura:if>
+                    <aura:if isTrue="{!v.showOtherPlaceOfEmployment}">
+                        <div class="row" >
+                            <div class="col-sm-12 col-md-6" >
+                                <lightning:input type="text"
+                                                 value="{!v.Acnt.Other_Place_of_Employment__c}"
+                                                 aura:id="OtherPlaceOfEmployment"
+                                                 label="Place of Employment"
+                                                 maxlength="30"/>
+                            </div>
+                        </div>
+                    </aura:if>
+                    
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Do you have direct contact with healthcare patients?</p>
+                            <lightning:select class="alignField "
+                                              aura:id="patientCare"
+                                              value="{!v.Acnt.Is_a_Healthcare_Worker__c}"
+                                              label="Select One"
+                                              required="true">
+                                
+                                <option value="">--None--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                    
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Do you attend in-person School or a Daycare:</p>
+                            <lightning:select class="alignField "
+                                              aura:id="dayCare"
+                                              value="{!v.Acnt.Do_you_attend_in_person_school_Daycare__c}"
+                                              label="Select One"
+                                              required="true"
+                                              onchange="{!c.onDayCareChange}">
+                                
+                                <option value="">--None--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.showDayCareTT}">
+                        <div class="row" >
+                            <div class="col-sm-12 col-md-6" >
+                                <lightning:input class="alignField "
+                                                 type="text"
+                                                 aura:id="NameOfDayCare"
+                                                 value="{!v.Acnt.NameofEducationCenter__c}"
+                                                 maxlength="50"
+                                                 label="Name of School or Daycare"/>
+                            </div>
+                        </div>
+                    </aura:if> 
+                    
+                    
+                    
+                    <div class="row" >
+                        <div class=" col-sm-12"> 
+                            <div class="btn-alignment" style="margin-top:11px;">
+                                <lightning:button label="Next" disabled="{!v.isActive}" class="btn a-btn" variant="brand" onclick="{!c.submitQS1}"/>
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.QS2}">
+                    <p>
+                        Based on the details you have entered, you must self-isolate through <lightning:formattedDateTime class="dateFmt" value="{!v.IsolationEndDate}"/>.
+                    </p>
+                    <p>
+                    If you are feeling better, symptoms have improved, and you are fever free, you may be released but we ask that you wear a mask through 10 days after the day of symptom onset. 
+                        If you are a healthcare worker, please know that you need to retest 1 time on days 5-7 and test negative before being released. If you retest positive, you should isolate through day 10. 
+                        If you would like to report additional close contacts, including household members or have additional questions, please contact our COVID19 Hotline at 1-833-528-0063.   
+                    </p>
+                    <div style="margin-top:10px">  <a class="blink" href="{!'/cnhs/s/isolation-note?Id='+v.rId}" target="_blank">Click here to access your isolation note</a></div>
+                    <!--
+                    <div class="row" style="margin-top:15px " >
+                        <div class="col-1 c1" >
+                            <lightning:input  type="checkbox" 
+                                             class="alignField"
+                                             aura:id="INRequested"
+                                             checked="{!v.IsolationNoteRequested}"
+                                             onchange="{!c.onIsolationNoteAsk}"/>
+                        </div>
+                        <div class="col-9" style="padding-left:0px !important;" >
+                            <p style="margin-top:0px !important; ">Would you like to receive an Isolation Note?</p>
+                        </div>
+                    </div>
+                    
+                    <aura:if isTrue="{!v.IsolationNoteRequested}">
+                        <div class="row" >
+                                <div class="col-sm-12 col-md-6" >
+                        <lightning:input aura:id="EmailToSendIN" 
+                                         label="Email" 
+                                         type="email" 
+                                         class=" alignField" 
+                                         maxlength="30"
+                                         oncontextmenu="{!c.handleContext}"  
+                                         value="{!v.EmailToSendIsolationNote}" 
+                                         required="true"/>
+                            </div>
+                        </div>
+                    </aura:if>
+                    -->
+                    
+                    <div class="row" >
+                        <div class=" col-sm-12"> 
+                            <div class="btn-alignment" style="margin-top:11px;">
+                                <lightning:button label="Next" disabled="{!v.isActive}" class="btn a-btn" variant="brand" onclick="{!c.submitQS2}"/>
+                            </div>
+                        </div>
+                    </div>
+                 <p><strong>NEXT - We have a few additional questions to help our contact tracing efforts… </strong></p>   
+                </aura:if>
+                <aura:if isTrue="{!v.QS3}">
+                    <p class="mHeading">Cherokee Nation Public Health would like to check in on you to see how you are doing throughout your isolation period. </p>
+                     <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Can Cherokee Nation Public Health text you a short survey daily throughout your isolation period? IF YES, Please check the box below.</p>
+                            <lightning:input  type="checkbox" 
+                                             class="alignField "
+                                             aura:id="OtpInOtpOut"
+                                             checked="{!v.IsOptIn}"/>
+                         </div>
+                    </div>
+                    
+                    <p class="mHeading">Please answer the following questions to help us better understand how COVID is affecting individuals who have previously had COVID or have been vaccinated. </p>
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Have you previously been diagnosed with COVID-19?</p>
+                            <lightning:select class="alignField "
+                                              aura:id="covid19Diagnosed"
+                                              value="{!v.ClinicalAssessmentToMakeCall.Previously_diagnosed_with_COVID_19__c}"
+                                              label="Select One"
+                                              onchange="{!c.onDiagnosedWithCovid}">
+                                <option value="">--None--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </lightning:select>  
+                            
+                            <aura:if isTrue="{!v.CovidDiagnosed}">
+                                <lightning:select class="alignField "
+                                                  aura:id="whenDiagnosedWithCovid"
+                                                  value="{!v.ClinicalAssessmentToMakeCall.How_long_ago_did_you_have_COVID_19__c}"
+                                                  label="When were you last diagnosed with COVID-19?">
+                                    <option value="">--None--</option>
+                                        <aura:iteration items="{!v.lastCOVID19Diagnosed}" var="val">
+                                            <option value="{!val.value}">{!val.label}</option>
+                                        </aura:iteration>
+                                </lightning:select> 
+                            </aura:if>
+                            
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Have you received the COVID-19 vaccination?</p>
+                            <lightning:select class="alignField "
+                                              aura:id="receivedVaccine"
+                                              value="{!v.ClinicalAssessmentToMakeCall.Recieved_COVID19_vaccination__c}"
+                                              label="Select One"
+                                              onchange="{!c.onReceivedVaccine}">
+                                
+                                <option value="">--None--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                    <aura:if isTrue="{!v.showVaxQs}">
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>Which COVID-19 vaccination did you receive?</p>
+                            <lightning:select class="alignField "
+                                              aura:id="whichVaccine"
+                                              value="{!v.ClinicalAssessmentToMakeCall.COVID19_vaccination_type__c}"
+                                              label="Select One">
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.CovidVaccineType}" var="val">
+                                    <option value="{!val.value}">{!val.label}</option>
+                                </aura:iteration>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p>How many doses of the COVID-19 vaccination have you received?</p>
+                            <lightning:select class="alignField "
+                                              aura:id="doses"
+                                              value="{!v.ClinicalAssessmentToMakeCall.How_many_doses_recieved__c}"
+                                              label="Select One">
+                                
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.CovidVaccineDoses}" var="val">
+                                    <option value="{!val.value}">{!val.label}</option>
+                                </aura:iteration>
+                            </lightning:select>  
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="col-sm-12 col-md-6" >
+                            <p> How long ago was your last COVID-19 vaccination? If you are unsure, please enter an estimated date.</p>
+                            <lightning:input type="date"
+                                             aura:id="dte"
+                                             value="{!v.ClinicalAssessmentToMakeCall.Last_COVID_19_Vaccination_Date__c}"
+                                             label="Date"/>
+                            
+                        </div>
+                    </div>
+                    </aura:if>
+                    <div class="row" >
+                        <div class=" col-sm-12"> 
+                            <div class="btn-alignment" style="margin-top:11px;">
+                                <lightning:button label="Finish" disabled="{!v.isActive}" class="btn a-btn" variant="brand" onclick="{!c.submitQS3}"/>
+                            </div>
+                        </div>
+                    </div>
+                </aura:if>
+                <aura:if isTrue="{!v.Msg}">
+                <p><strong>Thank you for answering our questions. If you have further needs, please call the COVID19 Hotline at 1-833-528-0063. </strong></p>
+                      <p><strong>If you need to access your isolation note, you may access it anytime from the link you were texted that provided your test result.</strong></p>
+                </aura:if>
+            </div>
+        </div>
+        </div>
+    </div>
+	<lightning:spinner aura:id="spinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>          
+</aura:component>

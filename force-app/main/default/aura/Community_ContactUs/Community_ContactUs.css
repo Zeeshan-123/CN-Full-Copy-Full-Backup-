@@ -1,0 +1,198 @@
+.THIS .m-box {
+ 	margin:30px 35px;
+    border:0px;
+ 
+}
+
+.THIS .card-body {
+
+     padding: 0px; 
+}
+
+.THIS .c-alignment {
+	margin: 15px 0px 40px 0px;
+}
+
+.THIS .panel-head
+{
+    background-color:#343a40;  
+    padding: 12px;
+}
+
+.THIS .mainHeading{
+    color: #fff;
+    margin-bottom:0px !important;
+}
+
+.THIS .m-Border {
+    border:2px solid rgb(37, 116, 169);
+    margin-bottom:20px;
+}
+
+
+.THIS .head-1
+{
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: bold;
+    font-size: 32px;
+    color: rgb(37, 116, 169);
+    margin-bottom: 18px;
+}
+
+.THIS .head-2
+{
+
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: bold;
+    font-size:18px;
+    color: #585d65;
+    margin-bottom: 16px;
+    
+}
+
+.THIS .c-para
+{
+    margin:3px 0px !important;
+    text-align: justify;
+}
+
+.THIS .l-para
+{
+	margin-bottom:18px;
+}
+
+.THIS .icn svg
+{ 
+    margin-bottom:5px !important; 
+    margin-right: 5px;
+    height: 20px;
+    fill:#585d65;
+}
+
+
+.THIS .p-align
+{ 	white-space: pre;
+    margin-left:10px;
+	display:inline !important;
+}
+
+
+.THIS .d-row
+{
+    margin-bottom:30px;
+}
+
+.THIS .d-Box
+{
+    padding: 25px 100px 39px 30px;
+	border-left: 15px solid #1f4b72 !important;
+    border:1px solid #c0c2c5;
+}
+
+.THIS .c-link
+{
+	color: rgb(37, 116, 169);
+}
+
+@media screen and (min-width:280px) and (max-width: 767px)  {
+	.THIS .crd-block{
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 30px;
+    border: 1px solid #d4d6da;
+}
+    
+	.THIS .m-box {
+ 	margin:10px 0px 0px 0px;
+    border:0px;
+ }
+    
+   .THIS .c-alignment {
+	margin: 10px 0px 20px 0px;
+}
+    
+   .THIS .mainHeading{
+      	font-size: 16px;
+		}
+    
+    .THIS p{
+      	font-size: 14px;
+		}
+    
+   .THIS .head-2 {
+    font-size: 14px;
+}
+    
+    .THIS .d-Box
+{
+    padding: 25px 40px 39px 30px;
+    margin-bottom:10px;
+}
+    
+     .THIS .c-para
+{
+    margin:3px 0px !important;
+    text-align: initial;
+}
+    .THIS .icn svg
+{ 
+    margin-bottom:5px !important; 
+    margin-right: 5px;
+    height: 17px;
+    fill:#585d65;
+}
+}
+/*ipad devices */
+@media screen and (min-width: 768px)  and (max-width: 1199px)
+{     
+    .THIS .crd-block{
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 30px;
+    border: 1px solid #d4d6da;
+}
+     .THIS .c-alignment {
+	margin: 10px 0px 20px 0px;
+}
+
+      .THIS .m-box {
+        margin:10px 10px;
+        border:0px;
+    }
+    
+      .THIS .mainHeading{
+      	font-size: 18px;
+		}
+      
+      .THIS p{
+      	font-size: 14px;
+		}
+    
+    .THIS .head-2 {
+    font-size: 14px;
+}
+    
+      .THIS .d-Box
+{
+    padding: 25px 40px 39px 30px;
+    margin-bottom:10px;
+}
+    
+    
+    .THIS .c-para
+{
+    margin:3px 0px !important;
+    text-align: initial;
+}
+    .THIS .icn svg
+{ 
+    margin-bottom:5px !important; 
+    margin-right: 5px;
+    height: 17px;
+    fill:#585d65;
+}
+}

@@ -1,0 +1,78 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global" controller="Community_Home">
+    <aura:attribute name="close" type="Aura.Action"/>
+    <aura:attribute name="showOptIn" type="boolean" default="true"/>
+    <aura:attribute name="Accnt" type="object"/>
+    <aura:attribute name="emailChoice" type="boolean" default="false"/>
+    <aura:attribute name="smsChoice" type="boolean" default="false"/>
+    
+    <!--Events-->
+    <aura:registerEvent name="ReturnAccountObj" type="c:Community_ReturnAccount"/>
+    <!--Survey Popup-->
+   <aura:if isTrue="{!v.showOptIn}">
+    <section role="dialog" aria-hidden="false" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+    <div class="slds-modal__container">
+    <!--Modal Header-->
+    
+        <header class="slds-modal__header">
+            <lightning:buttonIcon iconName="utility:close"
+                                  size="large"
+                                  variant="bare-inverse"
+                                  onclick="{!c.dontSHowAgain}"
+                                  alternativeText="Close" 
+                                  class="slds-modal__close" />
+            <h2 id="modal-heading-01" class="mH">Communication Preferences</h2>
+        </header>  <!--/Modal Header-->
+                  
+                  
+         <!--###### MODAL BOX BODY Part Start######-->
+         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="padding: 8%;">
+             <!--h1 style="text-align: center; font-size: xx-large;"><b>Osiyo, we value your input
+                </b>
+            </h1-->
+            <p style="text-align: justify;">Please take a moment to confirm whether you prefer to receive future Cherokee Nation communications via email, SMS (short text message), or both. You can opt in by checking the boxes that appear next to your selection(s) below:</p>
+             <p>&nbsp;</p>
+             <div class="row row-no-gutters">
+             <div class="col-sm-4"> 
+                               <label class="slds-form-element__label">Opt In to Email</label>
+
+                                <lightning:input class="field-alignment"
+                                                 checked="{!v.Accnt.Opt_In_to_Email__c}"
+                                                 aura:id="optInToEmail"
+                                                 readonly="false"
+                                                 
+                                                 type="checkbox"
+                                                
+                                                 />   
+                            </div>
+             </div>
+            <div class="row row-no-gutters">                
+                            <div class=" col-sm-4"> 
+                                <label class="slds-form-element__label">Opt In to SMS</label>
+
+                                <lightning:input class="field-alignment"
+                                                 checked="{!v.Accnt.Opt_In_to_SMS__c}"
+                                                 aura:id="optInToSMS"
+                                                
+                                                 readonly="false"
+                                                 type="checkbox"
+                                                 />  
+                            </div>  
+                 </div>
+        </div>
+        <!--###### MODAL BOX FOOTER Part Start ######-->
+        <footer class="slds-modal__footer" style="text-align: center; padding: 15px;">
+           <lightning:button class="submit-btn btn" variant="brand" onclick="{!c.UpdateAccount}">Update</lightning:button>            
+            <lightning:button class="cancel-btn btn" variant="brand" onclick="{!c.dontSHowAgain}">Cancel</lightning:button>
+                    
+        </footer>
+                      
+                           
+
+        
+</div>
+</section>
+
+<div class="slds-backdrop slds-backdrop_open" aura:id="backGroundSectionId"></div>
+    </aura:if>
+<!--/Survey Popup-->
+</aura:component>

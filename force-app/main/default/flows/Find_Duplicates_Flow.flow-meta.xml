@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <assignments>
+        <description>add 1</description>
+        <name>add_1</name>
+        <label>add 1</label>
+        <locationX>748</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Count</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>for_1st_record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Account 1</description>
+        <name>Assign_Account_1</name>
+        <label>Assign Account 1</label>
+        <locationX>1372</locationX>
+        <locationY>2</locationY>
+        <assignmentItems>
+            <assignToReference>Accountname1</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loop.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Accountid1</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loop.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Assign Account 1</description>
+        <name>Assign_Account_1_0</name>
+        <label>Assign Account 1</label>
+        <locationX>1290</locationX>
+        <locationY>131</locationY>
+        <assignmentItems>
+            <assignToReference>AccountName2</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loop.Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Accountid2</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loop.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loop</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>duplicates not found</description>
+        <name>duplicates_not_found</name>
+        <label>duplicates not found</label>
+        <locationX>786</locationX>
+        <locationY>405</locationY>
+        <defaultConnector>
+            <targetReference>loop</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>not_found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>get_duplicate_accounts</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>None_found</targetReference>
+            </connector>
+            <label>not found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>for 1st record</description>
+        <name>for_1st_record</name>
+        <label>for 1st record</label>
+        <locationX>1007</locationX>
+        <locationY>4</locationY>
+        <defaultConnector>
+            <targetReference>for_2nd_record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>if_count_equals_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Count</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Account_1</targetReference>
+            </connector>
+            <label>if count equals 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>for 2nd record</description>
+        <name>for_2nd_record</name>
+        <label>for 2nd record</label>
+        <locationX>1006</locationX>
+        <locationY>132</locationY>
+        <defaultConnector>
+            <targetReference>loop</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>if_count_equals_2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Count</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>2.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Account_1_0</targetReference>
+            </connector>
+            <label>if count equals 2</label>
+        </rules>
+    </decisions>
+    <description>Find Duplicates Flow</description>
+    <interviewLabel>Find Duplicates Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Find Duplicates</label>
+    <loops>
+        <name>loop</name>
+        <label>loop</label>
+        <locationX>1020</locationX>
+        <locationY>405</locationY>
+        <collectionReference>get_duplicate_accounts</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>add_1</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Records_found</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>get account</description>
+        <name>get_account</name>
+        <label>get account</label>
+        <locationX>467</locationX>
+        <locationY>411</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_duplicate_accounts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>get duplicate accounts</description>
+        <name>get_duplicate_accounts</name>
+        <label>get duplicate accounts</label>
+        <locationX>621</locationX>
+        <locationY>406</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>duplicates_not_found</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_account.Name</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Date_of_Birth__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_account.Date_of_Birth__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <screens>
+        <description>None found</description>
+        <name>None_found</name>
+        <label>None found</label>
+        <locationX>792</locationX>
+        <locationY>233</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Dupe_Not_found</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;We found no potential duplicates of this Account.&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <description>Records found</description>
+        <name>Records_found</name>
+        <label>Records found</label>
+        <locationX>1203</locationX>
+        <locationY>407</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>found_records</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;We found {!Count} potential duplicate of this Account.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;/{!Accountid1}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;&lt;b&gt;{!Accountname1}&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;/{!Accountid2}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;background-color: rgb(255, 255, 255); font-size: 14px;&quot;&gt;&lt;b&gt;{!AccountName2}&lt;/b&gt;&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>401</locationY>
+        <connector>
+            <targetReference>get_account</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Accountid1</description>
+        <name>Accountid1</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Accountid2</description>
+        <name>Accountid2</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Accountname1</description>
+        <name>Accountname1</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>AccountName2</description>
+        <name>AccountName2</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Count</description>
+        <name>Count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <description>recordId</description>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,29 @@
+/* contact us section*/
+.THIS .info-panel-head
+{
+    background-color:#343a40;  
+    padding: 12px !important;
+}
+
+.THIS .l-para
+{
+	margin-bottom:18px;
+}
+.THIS .head-2
+{
+
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: bold;
+    font-size:18px;
+    color: #585d65;
+    margin-bottom: 16px;
+    
+}
+.THIS .icn svg
+{ 
+    margin-bottom:5px !important; 
+    margin-right: 5px;
+    height: 20px;
+    fill:#585d65;
+}
+/*end contact us section*/

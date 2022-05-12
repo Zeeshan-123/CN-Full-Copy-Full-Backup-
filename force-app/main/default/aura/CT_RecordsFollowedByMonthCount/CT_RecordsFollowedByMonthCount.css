@@ -1,0 +1,17 @@
+.THIS .slds-button_brand, .THIS.slds-button--brand {
+    margin-top: 24px;
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+.THIS.spanhide{
+    display:none;
+}
+.THIS .heading {
+    text-align-last: center;
+    font-size: 28px;
+}
+.THIS .slds-spinner_container  {
+    background-color: rgba(0, 0, 0, 0.10);
+    margin-top: 200px;
+    margin-bottom: 200px; 
+}

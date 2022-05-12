@@ -1,0 +1,45 @@
+.THIS .mainHeading
+{
+	    font-family: 'Rajdhani', sans-serif;;
+		font-size: 2.25rem;    
+        line-height: 1;
+        margin-top: 2rem;
+        margin-bottom: 0.625rem;
+        padding-bottom: 1.5rem;
+}
+
+.THIS .heading
+{
+ 	    font-family: "Calvert";
+		font-size: 20px;   
+
+}
+
+.THIS .subHeading
+{
+ 	    font-family: "Calvert";
+		font-size: 17px;  
+    	margin: 0 0 1.3rem 0;
+}
+
+.THIS .para
+{
+    	margin: 0 0 1.3rem 0;
+ 	    font-family: "Calvert";
+		font-size: 17px;  
+}
+
+.THIS .size-img 
+{
+		height: 500px;
+    	width: 66%;
+    	margin-top:20px;
+    	margin-bottom:30px;
+}
+
+
+.THIS .icn svg
+{ 
+    fill: black !important; 
+    margin-bottom:11px !important; 
+}

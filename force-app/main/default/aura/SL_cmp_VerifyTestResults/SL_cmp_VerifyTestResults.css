@@ -1,0 +1,224 @@
+.THIS {
+    background-image: url('/resource/1630331349000/Test_Result_BG');
+    background-repeat: no-repeat;
+    height: 100%;
+    /* border-image: url(/resource/1630331349000/Test_Result_BG') !important; */
+    /* padding: 15px !important; */
+    /* border-image: url(border.png) 30 round !important; */
+}
+
+
+/* .THIS .homeBannerSec {
+    background-image:url('/resource/1630331349000/Test_Result_BG') !important;
+    background-repeat: no-repeat;
+    height: 100%;
+} */
+
+/* .THIS .sm-img {
+    margin: 0px 15px 0px 0px;
+    max-width: 90%;
+} */
+/* 
+.THIS .bg {
+    background-image: url('/resource/1630331349000/Test_Result_BG') !important;
+    background-size: cover;
+} */
+
+/* .THIS .bg-white {
+    background-color: white;
+} */
+
+/* .THIS .l2 {
+    color: #002286;
+    font-size: 20px;
+    font-weight: 500;
+} */
+
+/* .THIS .algn {
+    text-align: right;
+} */
+
+/* .THIS .img-S {
+    max-width: 100%;
+    height: 80px;
+} */
+
+.THIS p {
+    /* margin-top: 18px; */
+    /* margin-bottom: 1rem; */
+    font-size: 17px;
+}
+
+.THIS .dob-s {
+    margin: 23% 10%;
+}
+
+.THIS .alignField {
+    padding: 2px;
+    font-size: 12px;
+}
+
+/* .THIS .m-box {
+    margin: 40px 80px;
+}
+
+.THIS .m-box-style {
+    padding: 20px 65px 25px 65px;
+} */
+
+/* .THIS .mainHeading { */
+/* color: #002286; */
+/* color: #A52A2A;
+    margin-bottom: 0px !important;
+    padding: 15px 15px 0px 15px;
+    font-size: 35px;
+    font-weight: 900;
+    display: inline-block;
+    text-align: center !important;
+    border-bottom: 2px solid #002286;
+} */
+
+.THIS abbr[title] {
+    cursor: none;
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+
+.THIS .s-button {
+    color: White;
+    cursor: pointer;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: sans-serif, tahoma;
+    color: #fff;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.THIS .s-button:hover {
+    background-color: white;
+    border-color: rgb(37, 116, 169);
+    color: rgb(37, 116, 169);
+    cursor: pointer;
+}
+
+.THIS .alignField {
+    padding: 3px;
+}
+
+.THIS .t-s1 {
+    font-size: 21px;
+    color: #002286;
+    font-weight: 400;
+}
+
+.THIS .t-s2 {
+    font-size: 22px;
+    color: #002286;
+    font-weight: bolder;
+}
+
+.THIS .boldPara {
+    font-weight: bold;
+}
+
+/*Mobile*/
+@media screen and (min-width:280px) and (max-width: 767px) {
+    .THIS .slds-form-element__label {
+        font-size: 12px !important;
+    }
+
+    .THIS .m-box-style {
+        padding: 25px 25px;
+    }
+
+    .THIS .dob-s {
+        margin: 25% 10%;
+    }
+
+    .THIS .l2 {
+        font-size: 15px;
+        margin-top: 0px !important;
+    }
+
+    .THIS .mainHeading {
+        font-size: 14px;
+        padding: 10px 0 0 0;
+    }
+
+    .THIS p {
+        margin-top: 10px !important;
+        margin-bottom: 0px !important;
+        font-size: 14px;
+        text-align: left;
+    }
+
+    .THIS .sm-fnt {
+        font-size: 14px !important;
+        text-align: justify !important;
+    }
+
+    .THIS .algn {
+        text-align: left;
+        margin-top: 0px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .THIS .t-sm {
+        font-size: 15px !important;
+        text-align: center !important;
+    }
+
+    .THIS .img-S {
+        height: 70px;
+        margin-top: 12px;
+        margin-bottom: 12px;
+        width: 80%;
+    }
+
+    .THIS .m-box {
+        margin: 30px 20px 30px 20px;
+    }
+
+    .THIS .s-button {
+        border-radius: 0px;
+        font-size: 15px;
+        margin-top: 0px;
+    }
+
+    .THIS .sm-img {
+        margin: 0px 8px 0px 0px;
+    }
+}
+
+/*ipad devices */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .THIS .m-box-style {
+        padding: 20px 50px 25px 50px;
+    }
+
+    .THIS .m-box {
+        margin: 30px 30px;
+    }
+
+    .THIS .mainHeading {
+        padding: 12px 0px 0px 0px;
+        font-size: 28px;
+    }
+
+    .THIS p {
+        font-size: 16px;
+    }
+
+    .THIS .t-sm {
+        font-size: 19px !important;
+    }
+
+    .THIS .sm-img {
+        margin: 0px 8px 0px 0px;
+    }
+}

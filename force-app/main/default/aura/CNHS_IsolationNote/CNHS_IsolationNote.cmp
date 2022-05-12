@@ -1,0 +1,44 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_UA_TestResultsCntrl">
+    <ltng:require styles="{!$Resource.CN_Boot}"/>
+    <aura:attribute name="acnt" type="Object" default=""/>
+    <!--Handler -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+    <div class="text-center" style="margin: 20px 0px -22px 0px;"> <a class="blink" onclick="{!c.performPrint}"> CLICK HERE to PRINT</a></div>
+    <div id="homeBanner"  data-e2e="banner" style="background-image:url('/resource/1630331349000/Test_Result_BG');
+                                                   background-repeat: no-repeat;
+                                                   height: 100%;">
+        <div class="main-container " > 
+            <div class="card m-box bg-white">
+                <img  src="{!$Resource.CNPH_Header}" alt=""/>
+                <div class=" m-box-style">
+                    <p class="q2-para-align" style="margin-top: -10px !important;">
+                        <b>{!v.acnt.Name}</b> has been isolated by the Cherokee Nation Public Health Department through 
+                        <lightning:formattedDateTime class="dateFmt" value="{!v.acnt.Isolatied_End_Date__pc}"/> as long as you meet the following criteria:.
+                    </p>
+                    
+                    <ul class="slds-list_dotted Olist">
+                        <li>
+                            At least 24 hours have passed since resolution of fever without the use of fever-reducing medications <b> AND</b> 
+                        </li>
+                        <li>
+                            <p>Other symptoms have improved <b> AND</b> </p>
+                        </li>
+                        <li >
+                            <p> You should wear a well-fitting mask around others for at least 10 days after symptom onset. If you are unable to wear a mask, you should isolate for the full 10 days.</p>
+                        </li>
+                        <li >
+                            <p>Healthcare workers will need 1 negative test taken on days 5-7.</p>
+                        </li>
+                    </ul>
+                    <p >If symptoms do not improve by end of isolation, please call the COVID hotline at 1-833-528-0063.</p>
+                    <p class="sp">Sincerely, </p>
+                    <img class="q2-img"  src="{!$Resource.CNPH_Signature}" alt=""/>
+                    <p>Dr. Ashley Comiford, DrPH</p>
+                    <p>Epidemiologist</p>
+                    <p>Cherokee Nation Public Health</p>
+                    <p>918-453-5000 ext. 7076</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

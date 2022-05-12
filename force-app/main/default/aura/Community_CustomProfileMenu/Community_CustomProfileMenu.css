@@ -1,0 +1,51 @@
+.THIS .stl
+{
+    font-size: 14px;
+    font-family: 'Ek Mukta';
+    color:white !important;
+    background-color: #1f4b72 !important;
+    border-radius: 0px !important;
+    border-color: #1f4b72!important;
+}
+
+.THIS .ts
+{
+ 	outline: none !important;
+    border: none !important;
+}
+
+.THIS .b-d
+{
+    border-bottom: 0.1px solid dimgrey !important;
+    border-width: thin;
+}
+.THIS .uiMenuList--default .uiMenuItem > a, .THIS .uiMenuList--default .uiMenuItem > span 
+{
+    font-size: 14px;
+    font-family: 'Ek Mukta';
+    color: #fff !important;
+}
+
+.THIS .uiMenuList--default .uiMenuItem > a, .THIS .uiMenuList--default .uiMenuItem > span:hover 
+{
+    color: #fff !important;
+     background-color: #1f4b72 !important;
+}
+
+.THIS .pinIcon svg
+{
+  fill:white !important;
+}
+
+/*Mobile devices*/
+@media  screen and (min-width:280px) and (max-width: 1024px) 
+    {
+    
+.THIS .uiMenuList--default .uiMenuItem > a, .THIS .uiMenuList--default .uiMenuItem > span 
+{
+    font-size: 14px;
+    font-family: 'Ek Mukta';
+    color: #fff !important;
+    padding: 10px 5px 10px 5px;
+}
+}

@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction,lightning:availableForFlowScreens" access="global" >
+	<aura:attribute name="options" type="List" default="[
+    {'label': 'Yes', 'value': 'true'},
+    {'label': 'No', 'value': 'false'},
+    {'label': 'Unknown', 'value': 'unknown'}
+    ]"/> 
+    <aura:attribute name="value" type="String"/>
+	<aura:attribute name="Name" type="String" />
+    <div class="slds-m-top_large">
+    <lightning:radioGroup name="{!v.Name}"
+                          label="{!v.Name}"
+                          options="{!v.options}"
+                          value="{!v.value}"
+                          type="radio"/>
+     </div>
+</aura:component>

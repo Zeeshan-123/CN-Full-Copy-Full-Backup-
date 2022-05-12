@@ -1,0 +1,879 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global"
+  controller="WIC_requestFormController">
+  <ltng:require styles="{!$Resource.CN_Boot}" />
+
+  <aura:attribute name="showSuccessMessage" type="boolean" default="false" />
+  <aura:attribute name="showEBTForm" type="boolean" default="false" />
+
+  <aura:attribute name="caseId" type="String" />
+  <aura:attribute name="confirmationNumber" type="String" />
+
+  <aura:attribute name="options" type="List" default="[
+                                                      {'label': 'SNAP', 'value': 'SNAP'},
+                                                      {'label': 'TANF', 'value': 'TANF'},
+                                                      {'label': 'FDPIR (commodities)', 'value': 'FDPIR (commodities)'},
+                                                      {'label': 'Medicaid', 'value': 'Medicaid'}
+                                                      ]" />
+  <aura:attribute name="value" type="List" default=""/>
+  <!--Attributes for Picklists for Children-->
+  <aura:attribute name="genderList" type="String[]" />
+  <aura:attribute name="ethnicityList" type="String[]" />
+
+  <!-- CNHPHOMS-16, CNHPHOMS-32: Vikash: Removed Other tribe & added Low-Lactose Option Required? -->
+  <aura:attribute name="tribList" type="String[]" />
+  <aura:attribute name="lactoseOptionList" type="String[]" />
+
+  <aura:attribute name="schoolListedStr" type="String" default=""/>
+  <aura:attribute name="gradeList" type="String[]" />
+  <aura:attribute name="schoolList" type="String[]" />
+  <aura:attribute name="fosterChildList" type="String[]" />
+  <aura:attribute name="migrantList" type="String[]" />
+
+  <!--Attributes for Picklists for Account-->
+  <aura:attribute name="homeLanguageList" type="String[]" />
+  <aura:attribute name="incomeFrequencyList" type="String[]" />
+  <aura:attribute name="accountList" type="Account[]" />
+
+  <!--Attributes for Required-->
+  <!-- CNHPHOMS-16, CNHPHOMS-32: Adding required attribute for physical address -->
+  <aura:attribute name="physicalAddressRequired" type="boolean" default="true" />
+  <aura:attribute name="mailingAddressRequired" type="boolean" default="true" />
+  <aura:attribute name="isSameAsMailing" type="boolean" default="false" />
+
+  <!--Attributes for Physical and Mailing State/Country Picklists-->
+  <aura:attribute name="getParentList" type="list" default="[]" description="" />
+  <aura:attribute name="getMailingParentList" type="list" default="[]" description="" />
+  <aura:attribute name="getChildList" type="list" default="[]" />
+  <aura:attribute name="getMailingChildList" type="list" default="[]" />
+  <aura:attribute name="getPickListMap" type="map" />
+
+  <aura:attribute name="getObjectName" type="string" default="Account" />
+  <aura:attribute name="getParentFieldAPI" type="string" default="PersonMailingCountryCode" />
+  <aura:attribute name="getChildFieldAPI" type="string" default="PersonMailingStateCode" />
+
+  <!--Attributes for Button And T&C Checkbox-->
+  <aura:attribute name="isActive" type="Boolean" default="false" />
+  <aura:attribute name="iAccept" type="Boolean" default="false" />
+
+  <!-- CNHPHOMS-16 & CNHPHOMS-37: Vikash: Attributes for Form Review -->
+  <aura:attribute name="isShowReviewForm" type="Boolean" default="false"/>
+  <aura:attribute name="objSelectedVals" type="object" default="{}"/>
+  <aura:method name="editFormAgain" action="{!c.handleReviewCmpAction}" access="public">
+    <aura:attribute name="isFormEditableAgain" type="Boolean" default="false"/>
+    <aura:attribute name="isFormSubmitted" type="Boolean" default="false"/>
+  </aura:method>
+
+  <!-- CNHPHOMS-16: Store contact details for logged in users -->
+  <aura:attribute name="isCNCitizen" type="Boolean" default="false"/>
+  <!-- <aura:attribute name="currentUserAcc" type="object" default="{}"/> -->
+
+  <!--Handler-->
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <div class="slds-is-relative">
+    <lightning:spinner  aura:id="saveSpinner" 
+                        alternativeText="Processing.." 
+                        title="Processing.."
+                        variant="brand" 
+                        size="large" 
+                        class="slds-hide" />
+  </div>
+
+  <!--EBT Form Div-->
+  <aura:if isTrue="{!v.showEBTForm}">
+    <div class="main-container">
+      <div class="card m-box ">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="panel-head">
+              <h5 class="mainHeading text-center">
+                Summer EBT Request Form
+              </h5>
+            </div>
+            <div class="m-Border "></div>
+          </div>
+        </div>
+
+        <div class="m-box-style">
+          <p>
+            Eligibility for the SEBTC program is based on the free and reduced lunch program from the schools listed below:
+          </p>
+
+          <!--<p>
+            Adair Schools, Belfonte/Bell, Briggs, Brushy, Cave Springs, Central Schools, Chelsea, Chouteau-Maize Schools,
+            Claremore, Cleora, Colcord Schools, Dahlonegah, Dewey, Ft. Gibson, Gans, Gore Schools, Grand View, Greasy, Grove Schools,
+            Hulbert, Jay, Kansas, Kenwood, Keys, Leach, Liberty, Locust Grove Schools, Lowrey, Marble City, Maryetta,
+            Moffett, Moseley, Muldrow Schools, Norwood, Nowata, Oaks-Mission, Osage, Peavine, Peggs, Porum, Pryor Public Schools,
+            Rocky Mountain, Roland Schools, Salina Schools, Sallisaw Public Schools, Sequoyah-Immersion,
+            Sequoyah-Tahlequah, Shady Grove, Stilwell Schools, Tahlequah Public Schools, Tenkiller, Verdigris, Vian Schools, Vinita Schools, Warner, Watts Schools,
+            Webbers Falls, Welch, Westville Public Schools, Wickliffe, Woodall, White Oak, Zion.
+          </p>-->
+          <p>
+              {!v.schoolListedStr}
+          </p>
+          <p>
+            We are currently working to add additional school districts for the Summer Nutrition EBT 2022 program. 
+            Please check back if your child is enrolled in a school district in one of the following counties: 
+            Craig, Muskogee, Nowata, Rogers, Wagoner or Washington.
+          </p>
+
+          <p>
+            The deadline to apply is April 15, 2022, by 5:00 pm.
+          </p>
+
+          <aura:if isTrue="{!!v.isCNCitizen}">
+            <p>
+              *Cherokee citizenship is not a requirement and will not affect eligibility for this program.
+            </p>
+          </aura:if>
+
+          <p style="color:red;">
+            * indicates a Required Field. All other questions are optional.
+          </p>
+
+          <p>
+            <strong><span>Please complete one form for your entire family,</span></strong>
+            listing all school-age children. Use the table on form to add each child in your household,
+            PreK-12th grade, who would like to participate in the Summer EBT for Children program.
+            To add individuals, press the Add Row/Child button found above the table.
+          </p>
+
+          <div class="panel-head2">
+            <h5 class="mainHeading text-center">Household Information</h5>
+          </div>
+
+          <div class="row ">
+            <div class=" col-sm-6">
+              <lightning:select aura:id="numberOfChildren" class="alignField" required="true"
+                                label="How many school-age children are you applying for?"
+                                value="{!v.objSelectedVals.selectedChildCount}">
+                <option value="">--None--</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </lightning:select>
+            </div>
+          </div>
+
+          <p>
+            Please list each child in your household, PreK-12th grade, during the current school year.
+          </p>
+
+          <!--table-->
+          <div id="tbl">
+
+            <div class="slds-float_left slds-p-vertical_medium">
+              <lightning:button label="Add Row/Child" class="btn submit-button " variant="brand"
+                onclick="{!c.addRow}" />
+            </div>
+
+            
+            <div class="slde-show table-responsive-sm">
+              <table class="table table-bordered table_1">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Middle Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Suffix</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Ethnicity</th>
+                    <th scope="col">Tribe</th>
+                    <!-- <th scope="col">Other Tribe</th> -->
+                    <th scope="col">Low-Lactose Option Required?</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col">School</th>
+                    <th scope="col">Foster Child</th>
+                    <th scope="col">Migrant</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <aura:iteration items="{!v.accountList}" var="acc" indexVar="index">
+                    <tr scope="row">
+                      <td>
+                        <lightning:input name="fistName" type="text" value="{!acc.FirstName}" required="true"/>
+                      </td>
+
+                      <td>
+                        <lightning:input class="mar-top-10" name="middleName" type="text"
+                          value="{!acc.Middle_Name__c}"/>
+                      </td>
+
+                      <td>
+                        <lightning:input name="lastName" type="text" value="{!acc.LastName}" required="true"/>
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="suffix" value="{!acc.Suffix__c}" class="pl-val" >
+                          <option value="">           </option>
+                          <option value="Jr.">  Jr.   </option>
+                          <option value="Sr.">  Sr.   </option>
+                          <option value="II">   II    </option>
+                          <option value="III">  III   </option>
+                          <option value="IV">   IV    </option>
+                          <option value="V">    V     </option>
+                          <option value="VI">   VI    </option>
+                          <option value="VII">  VII   </option>
+                        </lightning:select>
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="gender" value="{!acc.HealthCloudGA__Gender__pc}" required="true" >
+                          <option value=""></option>
+                          <aura:iteration items="{!v.genderList}" var="gl" indexVar="key">
+                            <option text="{!gl.value}" value="{!gl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td>
+                        <lightning:select class="mar-top-10" aura:id="ethnicity" value="{!acc.Ethnicity__c}" >
+                          <option value=""></option>
+                          <aura:iteration items="{!v.ethnicityList}" var="el" indexVar="key">
+                            <option text="{!el.value}" value="{!el.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="tribe" value="{!acc.Tribe__c}" class="pl-val">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.tribList}" var="tl" indexVar="key">
+                            <option text="{!tl.value}" value="{!tl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <!-- CNHPHOMS-16, CNHPHOMS-32: Vikash: Removed Other tribe & added Low-Lactose Option Required? -->
+                      <!-- <td>
+                        <lightning:input name="OtherTribe" aura:id="otherTribe" type="text"
+                          value="{!acc.Other_Tribe__c}" class="pl-val" />
+                      </td> -->
+                      <td data-th="lowLactose" class="clsSmallScreentatus">
+                        <div class="slds-form-element">
+                          <lightning:select aura:id="lowLactose" value="{!acc.Low_Lactose_Option_Required__c}" class="pl-val">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.lactoseOptionList}" var="tl" indexVar="key">
+                              <option text="{!tl.value}" value="{!tl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </div>
+                      </td>
+
+                      <td>
+                        <lightning:input value="{!acc.Date_of_Birth__c}" maxlength="10"
+                          onchange="{!c.validateAndReplace}" required="true" placeholder="MM/DD/YYYY" />
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="grade" value="{!acc.Grade__c}" required="true">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.gradeList}" var="grl" indexVar="key">
+                            <option text="{!grl.value}" value="{!grl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="school" value="{!acc.School__c}" required="true"
+                          onchange="{!c.check}">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.schoolList}" var="scl" indexVar="key">
+                            <option text="{!scl.value}" value="{!scl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="fosterChild" value="{!acc.Foster_Child__c}" class="pl-val">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.fosterChildList}" var="fcl" indexVar="key">
+                            <option text="{!fcl.value}" value="{!fcl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td>
+                        <lightning:select aura:id="migrant" value="{!acc.Migrant__c}" class="pl-val">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.migrantList}" var="ml" indexVar="key">
+                            <option text="{!ml.value}" value="{!ml.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+                      <td style="text-align: center !important; ">
+                        <a onclick="{!c.removeRow}" class="mar-top-10" data-record="{!index}">
+                          <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                          <span class="slds-assistive-text">Delete</span>
+                        </a>
+                      </td>
+                    </tr>
+
+                  </aura:iteration>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!--/table-->
+
+          <!--cards-->
+          <div id="crds">
+            <div class="table-responsive-sm requestsTable clsSmallScreen" style="margin-top:15px;">
+              <table class="table table-bordered table_2">
+                <tbody>
+                  <aura:iteration items="{!v.accountList}" var="acc" indexVar="index">
+                    <tr>
+                      <td class="clsSmallScreentatus" style="text-align:right;">
+                        <a onclick="{!c.removeRow}" class="mar-top-10" data-record="{!index}">
+                          <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete" />
+                          <span class="slds-assistive-text">Delete</span>
+                        </a>
+                      </td>
+
+                      <td data-th="First Name" class="clsSmallScreentatus">
+                        <lightning:input name="fistName" type="text" value="{!acc.FirstName}" required="true" />
+                      </td>
+
+                      <td data-th="Middle Name" class="clsSmallScreentatus">
+                        <lightning:input class="mar-top-10" name="middleName" type="text"
+                          value="{!acc.Middle_Name__c}" />
+                      </td>
+
+                      <td data-th="Last Name" class="clsSmallScreentatus">
+                        <lightning:input name="lastName" type="text" value="{!acc.LastName}" required="true" />
+                      </td>
+
+                      <td data-th="Suffix" class="clsSmallScreentatus">
+                        <lightning:select aura:id="suffix" value="{!acc.Suffix__c}" class="pl-val">
+                          <option value=""    >         </option>
+                          <option value="Jr." >  Jr.    </option>
+                          <option value="Sr." >  Sr.    </option>
+                          <option value="II"  >   II    </option>
+                          <option value="III" >  III    </option>
+                          <option value="IV"  >   IV    </option>
+                          <option value="V"   >    V    </option>
+                          <option value="VI"  >   VI    </option>
+                          <option value="VII" >  VII    </option>
+                        </lightning:select>
+                      </td>
+
+                      <td data-th="Gender" class="clsSmallScreentatus">
+                        <lightning:select aura:id="gender" value="{!acc.HealthCloudGA__Gender__pc}" required="true">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.genderList}" var="gl" indexVar="key">
+                            <option text="{!gl.value}" value="{!gl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td data-th="Ethnicity" class="clsSmallScreentatus">
+                        <lightning:select class="mar-top-10" aura:id="ethnicity" value="{!acc.Ethnicity__c}">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.ethnicityList}" var="el" indexVar="key">
+                            <option text="{!el.value}" value="{!el.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td data-th="Tribe" class="clsSmallScreentatus">
+                        <div class="slds-form-element">
+                          <lightning:select aura:id="tribe" value="{!acc.Tribe__c}" class="pl-val">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.tribList}" var="tl" indexVar="key">
+                              <option text="{!tl.value}" value="{!tl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </div>
+                      </td>
+
+                      <!-- CNHPHOMS-16, CNHPHOMS-32: Vikash: Removed Other tribe & added Low-Lactose Option Required? -->
+                      <!-- <td data-th="Other Tribe" class="clsSmallScreentatus">
+                        <div class="slds-form-element">
+                          <lightning:input name="OtherTribe" aura:id="otherTribe" type="text"
+                            value="{!acc.Other_Tribe__c}" class="pl-val" />
+                        </div>
+                      </td> -->
+                      <td data-th="	Low-Lactose Option Required?" class="clsSmallScreentatus">
+                        <div class="slds-form-element">
+                          <lightning:select aura:id="lowLactose" value="{!acc.Low_Lactose_Option_Required__c}" class="pl-val">
+                            <option value=""></option>
+                            <aura:iteration items="{!v.lactoseOptionList}" var="tl" indexVar="key">
+                              <option text="{!tl.value}" value="{!tl.key}" />
+                            </aura:iteration>
+                          </lightning:select>
+                        </div>
+                      </td>
+
+                      <td data-th="Date of Birth" class="clsSmallScreentatus">
+                        <lightning:input value="{!acc.Date_of_Birth__c}" maxlength="10"
+                          onchange="{!c.validateAndReplace}" required="true" placeholder="MM/DD/YYYY" />
+                      </td>
+
+                      <td data-th="Grade" class="clsSmallScreentatus">
+                        <lightning:select aura:id="grade" value="{!acc.Grade__c}" required="true">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.gradeList}" var="grl" indexVar="key">
+                            <option text="{!grl.value}" value="{!grl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td data-th="School" class="clsSmallScreentatus">
+                        <lightning:select aura:id="school" value="{!acc.School__c}" required="true">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.schoolList}" var="scl" indexVar="key">
+                            <option text="{!scl.value}" value="{!scl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td data-th="Foster Child" class="clsSmallScreentatus">
+                        <lightning:select aura:id="fosterChild" value="{!acc.Foster_Child__c}" class="pl-val">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.fosterChildList}" var="fcl" indexVar="key">
+                            <option text="{!fcl.value}" value="{!fcl.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+
+                      <td data-th="Migrant" class="clsSmallScreentatus">
+                        <lightning:select aura:id="migrant" value="{!acc.Migrant__c}" class="pl-val">
+                          <option value=""></option>
+                          <aura:iteration items="{!v.migrantList}" var="ml" indexVar="key">
+                            <option text="{!ml.value}" value="{!ml.key}" />
+                          </aura:iteration>
+                        </lightning:select>
+                      </td>
+                    </tr>
+                  </aura:iteration>
+                </tbody>
+              </table>
+            </div>
+            
+            <div class="row ">
+              <div class=" col-sm-12">
+                <div class="slds-float_left">
+                  <lightning:button label="Add Row/Child" class="btn submit-button " variant="brand"
+                    onclick="{!c.addRow}" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--/cards-->
+
+          
+          <div class="row " style="margin-top:20px;">
+            <!-- Spoken Language -->
+            <div class=" col-sm-6">
+              <lightning:select class="alignField" label="Language spoken in the home" aura:id="spokenHomeLanguage" onchange="{!c.languageChange}"
+                                value="{!v.objSelectedVals.selectedSpokenHomeLanguage}">
+                <option value="">--None--</option>
+                <aura:iteration items="{!v.homeLanguageList}" var="hll" indexVar="key">
+                  <option text="{!hll.value}" value="{!hll.key}" />
+                </aura:iteration>
+              </lightning:select>
+            </div>
+            <!-- Other Language -->
+            <div class=" col-sm-6">
+              <lightning:input  label="Other Language " aura:id="otherLanguage" class="alignField" type="text" 
+                                value="{!v.objSelectedVals.selectedOtherLanguage}"
+                                disabled="{!v.objSelectedVals.diableOtherLanguage}"/>
+            </div>
+          </div>
+
+          <!-- Household Program -->
+          <p>Which program does any household member participate in?</p>
+          <div class="row ">
+            <div class="col">
+              <div class=" multiSelect">
+                <lightning:checkboxGroup  aura:id="program" options="{!v.options}" value="{!v.value}" 
+                                          onchange="{!c.handleProgramChange}" />
+              </div>
+            </div>
+          </div>
+
+          <!--Household Income Information-->
+          <div class="panel-head2">
+            <h5 class="mainHeading text-center">Household Income Information</h5>
+          </div>
+
+          <div class="row r2">
+            <div class=" col-sm-4">
+              <lightning:input  label="Current Household Income - USD" class="alignField" aura:id="householdIncome" type="text" 
+                                value="{!v.objSelectedVals.selectedHouseholdIncome}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:select class="alignField" label="Income Frequency (how often)" aura:id="incomeFrequency"
+                                value="{!v.objSelectedVals.selectedIncomeFrequency}">
+                <option value="">--None--</option>
+                <aura:iteration items="{!v.incomeFrequencyList}" var="ifl" indexVar="key">
+                  <option text="{!ifl.value}" value="{!ifl.key}" />
+                </aura:iteration>
+              </lightning:select>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  label="Household Size" class="alignField " aura:id="householdSize" type="text" 
+                                value="{!v.objSelectedVals.selectedHouseholdSize}"/>
+            </div>
+          </div>
+          <!--/Household Income Information-->
+
+          <!--Parent / Legal Guardian-->
+          <div class="panel-head2">
+            <h5 class="mainHeading text-center">Parent / Legal Guardian</h5>
+          </div>
+
+          <h1 class="head">Primary Contact:</h1>
+          <div class="row ">
+            <div class=" col-sm-4">
+              <lightning:input  label="First Name" aura:id="priConFirstName" class="alignField" type="text"
+                                required="true" maxlength="50" 
+                                value="{!v.objSelectedVals.selectedpriConFirstName}"
+                                disabled="{!v.isCNCitizen}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  label="Middle Name" aura:id="priConMiddleName" class="alignField" type="text"
+                                maxlength="100" 
+                                value="{!v.objSelectedVals.selectedpriConMiddleName}"
+                                disabled="{!v.isCNCitizen}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  label="Last Name" aura:id="priConLastName" class="alignField " type="text"
+                                required="true" 
+                                maxlength="50" 
+                                value="{!v.objSelectedVals.selectedpriConLastName}"
+                                disabled="{!v.isCNCitizen}"/>
+            </div>
+
+          </div>
+
+          <div class="row ">
+            <div class=" col-sm-4">
+              <!-- <lightning:select aura:id="priConSuffix" class="alignField" label="Suffix" value="{!v.objSelectedVals.selectedpriConSuffix}"
+                                disabled="{!v.objSelectedVals.isCNUser}">
+                <option value="">--><!--None--><!--</option>
+                <option value="Jr.">Jr.</option>
+                <option value="Sr.">Sr.</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+                <option value="VII">VII</option>
+              </lightning:select> -->
+              <lightning:input  aura:id="priConSuffix" class="alignField" label="Suffix" value="{!v.objSelectedVals.selectedpriConSuffix}"
+                                disabled="{!v.isCNCitizen}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  aura:id="priConEmail" label="Email" type="email" class=" alignField" 
+                                value="{!v.objSelectedVals.selectedpriConEmail}"
+                                disabled="{!v.isCNCitizen}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  class="alignField" label="Date of Birth" aura:id="priConDob" maxlength="10" 
+                                onchange="{!c.validateAndReplace}" required="true" placeholder="MM/DD/YYYY" 
+                                value="{!v.objSelectedVals.selectedpriConDob}"
+                                disabled="{!v.isCNCitizen}"/>
+            </div>
+          </div>
+
+          <!-- Cherokee Nation Citizenship Number -->
+          <!-- Hide Citizenship Number if logged in user else display the number -->
+          <aura:if isTrue="{!!v.isCNCitizen}">
+            <h1 class="head">
+              If you are Cherokee Nation Citizen, please specify your Citizenship Number:
+            </h1>
+            <div class="row">
+              <div class="col-sm-6 ">
+                <lightning:input  label="Citizenship Number" aura:id="priConCitizenshipNumber" class="alignField"
+                                  type="text" maxlength="50" 
+                                  value="{!v.objSelectedVals.selectedpriConCitizenshipNumber}"/>
+              </div>
+            </div>
+          </aura:if>
+
+          <!--Cherokee Nation Citizen-->
+          <!--Mailing Address-->
+          <h1 class="head">Mailing Address:</h1>
+          <div class="row">
+            <div class="col-sm-6 ">
+              <lightning:input  aura:id="MailingStreetInput" class="alignField" label="Street: "
+                                required="{!v.mailingAddressRequired}"
+                                value="{!v.objSelectedVals.selectedMailingStreetInput}" />
+            </div>
+
+            <div class="col-sm-6 ">
+              <lightning:input  aura:id="MailingCityInput" class="alignField " label="City: "
+                                required="{!v.mailingAddressRequired}"
+                                value="{!v.objSelectedVals.selectedMailingCityInput}"/>
+            </div>
+
+            <div class="col-sm-6">
+              <lightning:select class="alignField " name="MailingCountryInput" aura:id="MailingCountryInput"
+                                label="Country" disabled="true"
+                                value="{!v.objSelectedVals.selectedMailingCountryInput}">
+
+                <aura:iteration items="{!v.getMailingParentList}" var="value">
+                  <option value="{!value}">{!value}</option>
+                </aura:iteration>
+              </lightning:select>
+            </div>
+
+            <!-- CNHPHOMS-16: Set selected value based on logged in user -->
+            <div class="col-sm-6">
+              <lightning:select class="alignField " aura:id="MailingStateInput" name="childField" label="State"
+                                disabled="{!v.getMailingDisabledChildField}" required="{!v.mailingAddressRequired}"
+                                value="{!v.objSelectedVals.selectedMailingStateInput}">
+                <option value="">--None--</option>
+                <aura:iteration items="{!v.getMailingChildList}" var="item">
+                  <option text="{!item.value}" value="{!item.value}" selected="{!item.selected}"/>
+                </aura:iteration>
+              </lightning:select>
+            </div>
+
+            <div class="col-sm-6">
+              <lightning:input  aura:id="MailingzipInput" class="alignField " label="Zip Code: "
+                                required="{!v.mailingAddressRequired}"
+                                value="{!v.objSelectedVals.selectedMailingzipInput}" />
+            </div>
+          </div>
+          <!--/Mailing Address-->
+
+
+          <!--Physical Address-->
+          <!-- CNHPHOMS-16, CNHPHOMS-32: Vikash Adding required attributes -->
+          <div class="row ">
+            <div class="col">
+              <h1 class="head">Physical Address: </h1>
+            </div>
+          </div>
+
+          <div class="row col">
+            <lightning:input  type="checkbox" class="alignField" label="Same as Mailing"
+                                aura:id="sameAsMailing" checked="{!v.isSameAsMailing}" onchange="{!c.phySameAsMailing}"
+                                value="{!v.objSelectedVals.sameAsMailing}"/>
+          </div>
+
+          <div class="row ">
+            <div class="col-sm-6 ">
+              <lightning:input  aura:id="PhysicalStreetInput" class="alignField " label="Street: " required="{!v.physicalAddressRequired}"
+                                value="{!v.objSelectedVals.selectedPhysicalStreetInput}"/>
+            </div>
+
+            <div class="col-sm-6 ">
+              <lightning:input  aura:id="PhysicalCityInput" class="alignField " label="City: " required="{!v.physicalAddressRequired}"
+                                value="{!v.objSelectedVals.selectedPhysicalCityInput}"/>
+            </div>
+
+            <div class="col-sm-6">
+              <lightning:select class="alignField " name="PhysicalCountryInput" aura:id="PhysicalCountryInput"
+                                label="Country" disabled="true"
+                                value="{!v.objSelectedVals.selectedPhysicalCountryInput}">
+
+                <aura:iteration items="{!v.getParentList}" var="value">
+                  <option value="{!value}">{!value}</option>
+                </aura:iteration>
+              </lightning:select>
+            </div>
+
+            <div class="col-sm-6 ">
+              <lightning:select class="alignField " aura:id="PhysicalStateInput" name="physicalStateField" label="State"
+                                disabled="{!v.getDisabledChildField}" required="{!v.physicalAddressRequired}"
+                                value="{!v.objSelectedVals.selectedPhysicalStateInput}">
+                <!-- CNHPHOMS-16: Set selected value based on logged in user -->
+                <option value="">--None--</option>
+                <aura:iteration items="{!v.getChildList}" var="item">
+                  <option text="{!item.value}" value="{!item.value}" selected="{!item.selected}"/>
+                  <!-- {!value}</option> -->
+                </aura:iteration>
+              </lightning:select>
+            </div>
+
+            <div class="col-sm-6 ">
+              <lightning:input  aura:id="PhysicalzipInput" class="alignField" label="Zip Code: " required="{!v.physicalAddressRequired}"
+                                value="{!v.objSelectedVals.selectedPhysicalzipInput}"/>
+            </div>
+          </div>
+          <!--/Physical Address-->
+
+          <!--Phone-->
+          <h1 class="head">Phone:</h1>
+          <div class="row ">
+            <div class=" col-sm-4">
+              <lightning:input  label="Mobile" aura:id="priConCellPhone" class="alignField" type="phone"
+                                required="true" 
+                                value="{!v.objSelectedVals.selectedpriConCellPhone}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  label="Home" aura:id="priConHomePhone" class="alignField" type="phone" 
+                                value="{!v.objSelectedVals.selectedpriConHomePhone}"/>
+            </div>
+
+            <div class=" col-sm-4">
+              <lightning:input  label="Work" aura:id="priConWorkPhone" class="alignField" type="phone" 
+                                value="{!v.objSelectedVals.selectedpriConWorkPhone}"/>
+            </div>
+          </div>
+          <!--/Phone-->
+
+
+          <!--Secondary Contact-->
+          <h1 class="head">Secondary Contact:</h1>
+          <div class="row ">
+            <div class=" col-sm-6">
+              <lightning:input  label="First Name" aura:id="secConFirstName" class="alignField" type="text" 
+                                value="{!v.objSelectedVals.selectedsecConFirstName}"/>
+            </div>
+
+            <div class=" col-sm-6">
+              <lightning:input  label="Last Name" aura:id="secConLastName" class="alignField" type="text" 
+                                value="{!v.objSelectedVals.selectedsecConLastName}"/>
+            </div>
+
+            <div class=" col-sm-6">
+              <lightning:input  label="Phone" aura:id="secConPhone" class="alignField" 
+                                value="{!v.objSelectedVals.selectedsecConPhone}"/>
+            </div>
+
+            <div class=" col-sm-6">
+              <lightning:input  aura:id="secConEmail" label="Email" type="email" class=" alignField" 
+                                value="{!v.objSelectedVals.selectedsecConEmail}"/>
+            </div>
+          </div>
+          <!--/Secondary Contact-->
+
+
+          <!-- 
+            Moving the aceept checkbox to the review page
+            <div class="row ">
+              <div class="col-sm-12">
+                <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:20px; color:rgb(90,90,90);">
+                  By checking this box you are giving permission to receive text/messages from Cherokee Nation. In
+                  addition,
+                  Cherokee Nation may also confirm the following details from student records for each child:
+                  age, grade, gender, school attended, race/ethnicity, free or reduced lunch and language.
+                </p>
+                <lightning:input type="checkbox" required="true" label="I Accept" aura:id="acceptCheckBox"
+                  checked="{!v.iAccept}" />
+              </div>
+            </div> 
+          -->
+
+          <!-- Abt Associates Consent Checkbox -->
+          <div class="row ">
+            <div class="col-sm-12">
+              <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:20px; color:rgb(90,90,90);">
+                Abt Associates, will randomly contact families in the Cherokee Nation demonstration area to do a survey in the summer months. 
+                Information provided by you and collected during the survey as well as any records obtained will be kept confidential as 
+                allowed by law and will be used only for this study. Your participation in the survey and agreement to release your child’s 
+                records is voluntary, and helps reporting and requesting  grant funding.  If you do not agree to these terms, conditions or 
+                wish to be contacted, please uncheck the box.
+              </p>
+              <lightning:input  type="checkbox" 
+                                label="Abt Associates Consent" 
+                                aura:id="abtAssociateConsentCheckBox"
+                                value="{!v.objSelectedVals.abtAssociateConsent}"
+                                checked="{!v.objSelectedVals.abtAssociateConsent}"
+                                onchange="{!c.handleAbtAssChange}"/>
+            </div>
+          </div>
+
+          <div class=" text-center">
+            <!-- CNHPHOMS-16, CNHPHOMS-37: Vikash: Commented the Submit Button & added Review button -->
+            <lightning:button label="Next" 
+                              disabled="{!v.isActive}" 
+                              class="btn submit-button " 
+                              variant="brand"
+                              onclick="{!c.handleFormReview}" />
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </aura:if>
+
+  <!-- Review Form -->
+  <aura:if isTrue="{!v.isShowReviewForm}">
+    <c:WIC_requestFormReview  objSelectedVals = "{!v.objSelectedVals}"
+                              accountList = "{!v.accountList}"
+                              parentComponent="{!this}"
+                              genderList = "{!v.genderList}"
+                              ethnicityList = "{!v.ethnicityList}"
+                              tribList = "{!v.tribList}"
+                              lactoseOptionList = "{!v.lactoseOptionList}"
+                              gradeList = "{!v.gradeList}"
+                              schoolList = "{!v.schoolList}"
+                              fosterChildList = "{!v.fosterChildList}"
+                              migrantList = "{!v.migrantList}"
+                              isCNCitizen = "{!v.isCNCitizen}"/>
+  </aura:if>
+
+  <!--Success Message Div-->
+  <aura:if isTrue="{!v.showSuccessMessage}">
+    <div class=" container">
+      <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-8 col-lg-6">
+          <div class="card sm-box">
+            <div class="align-s-content">
+              <strong>
+                <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                  Congratulations!
+                </p>
+              </strong>
+
+              <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                You have successfully submitted your SEBTC form for 2022.
+              </p>
+
+              <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">
+                Confirmation Number: {!v.confirmationNumber}
+              </p>
+
+              <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                Please keep your confirmation number for future reference.
+              </p>
+	
+              <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                {!$Label.c.WIC_Letter_or_EBT}
+              </p>
+                
+              <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                Any questions or concerns regarding your Summer Nutrition 2022 application,
+                please email {!$Label.c.WIC_Support_Email} or call {!$Label.c.WIC_Support_Phone}.
+                <!-- Vikash: For Logged In User -->
+                <aura:if isTrue="{!v.isCNCitizen}">
+                  You can view request by clicking "View Request" below.
+                </aura:if>
+              </p>
+              <!-- Vikash -->
+              <aura:if isTrue="{!v.isCNCitizen}">
+                <div class=" text-center btn-div-r">
+                  <lightning:button class="btn resetButton-r" label="View Request" onclick="{!c.viewRequest}" />
+                </div>
+              </aura:if>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </aura:if>
+  <!--/Success Message Div-->
+</aura:component>

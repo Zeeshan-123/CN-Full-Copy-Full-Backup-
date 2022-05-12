@@ -1,0 +1,95 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes"  access="global" >
+		<aura:attribute name="recIdToUpdate" type="String" description="" access="public"/>
+        <aura:attribute name="ShowModule" type="boolean" default="true"/>
+     	<aura:attribute name="yearsPicklist" type="String[]" />
+        <aura:attribute name="yearsDurationPicklist" type="String[]" />
+  	    <aura:attribute name="monthsDurationPicklist" type="String[]" />
+        <aura:attribute name="monthsPicklist" type="String[]" default="January, February, March, April, May, June, July, August, September, October, November, December"/>
+		<aura:attribute name="selectedValue" type="String"/> 	  
+        <!--Attributes for spinner-->
+        <aura:attribute name="isSpinner" type="boolean" default="false"/>
+    
+    <aura:if isTrue="{!v.ShowModule}">  
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+                <div class="slds-modal__container">
+                    <!--Modal Header-->
+                    <header class="slds-modal__header">
+                        
+                        <lightning:buttonIcon iconName="utility:close"
+                                              size="large"
+                                              variant="bare-inverse"
+                                              onclick="{! c.HideMe }"
+                                              alternativeText="Close" 
+                                              class="slds-modal__close" />
+                        
+                        
+           <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{!$Label.c.Community_RecordEditFormHeader}</h2>
+			</header>  <!--/Modal Header-->
+                    
+            <!--Modal Body-->
+            <div class="slds-modal__content slds-p-around_small" id="modal-content-id-1">
+              
+
+  
+        <!--  Edit Veteran Record Form  -->
+        <form class="slds-form--stacked" >               
+       <lightning:recordEditForm aura:id="updateRecord"
+                                 objectApiName="Veteran_Service__c"
+                                 recordId="{!v.recIdToUpdate}"
+                                 onsubmit="{!c.updateVetRecord}"
+                                 >                  
+          
+		<div class="fields-div">    
+             <label> Service Branch</label>
+               <lightning:inputField fieldName="Service_Branch__c" class="alignField" label="Service Branch"    required="true"/>
+               <!--Start of service-->
+          <p> Start of Draft/Enlistment</p>
+          <div class="row">        
+               <div class="col" > 
+                   <p>Year</p>
+                    <lightning:inputField fieldName="Enlistment_Year__c" class="alignField" label="Year"   required="true"/>
+              </div> 
+              
+              <div class="col" > 
+                    <p>Month</p>
+               <lightning:inputField fieldName="Enlistment_Month__c" class="alignField" label="Month"     required="true"/>
+ 					</div>  
+            </div> 
+            <!--/Start of service-->
+            
+            <!--Duration-->
+             <p> Service Period</p>
+               <div class="row">        
+               <div class="col" >   
+                    <p>Year</p>
+                    <lightning:inputField fieldName="Number_of_Service_Years__c" class="alignField" label="Year"    required="true"/>
+              </div> 
+              
+              <div class="col" > 
+                   <p>Month</p>
+               <lightning:inputField fieldName="Number_of_Service_Months__c" class="alignField" label="Month" aura:id="serviceBranch"  />
+ 					</div>  
+            </div> 
+            <!--/Duration--> 
+            <lightning:inputField fieldName="Combat_Veteran__c" class="alignField" label="Combat Veteran" aura:id="combatVeteran"  />
+           
+           <div class="slds-text-align_center">
+               <lightning:button class="btn submit-button" type="submit" name="update" label="Update" />
+           </div>
+          <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+
+            </div>
+            </lightning:recordEditForm>
+            
+        </form>
+            <!--  /Edit Veteran Record Form -->
+                        
+                     
+                    </div> <!--/Modal Body-->
+                    
+                            </div>
+            </section>
+    
+   <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>    
+</aura:component>

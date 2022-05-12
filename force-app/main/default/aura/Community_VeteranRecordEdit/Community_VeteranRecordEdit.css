@@ -1,0 +1,47 @@
+.THIS .submit-button {
+    cursor: pointer;
+    margin-top: 13px;
+    background-color: rgb(37, 116, 169);
+    border-radius: 0px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: sans-serif,tahoma;
+    color: #fff;
+}
+
+.THIS  .submit-button:hover {
+    background-color:white;
+    border-color:rgb(37, 116, 169);
+    color:rgb(37, 116, 169);
+    cursor:pointer;
+}
+
+
+.THIS .fields-div {
+	padding: 20px 35px 15px 35px;
+}
+.THIS .alignField
+{
+    padding: 2px; 
+   
+}
+
+
+.THIS abbr[title] {
+     cursor: none; 
+}
+
+.THIS abbr[data-original-title], .THIS abbr[title] {
+    text-decoration: none;
+}
+
+.THIS p{
+     font-size: 12px;
+     color: gray;
+    margin-bottom:5px;
+    
+}
+
+.THIS label.slds-form-element__label {
+    display: none;
+}

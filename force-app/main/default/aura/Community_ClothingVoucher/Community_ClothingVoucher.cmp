@@ -1,0 +1,1573 @@
+<aura:component  implements="forceCommunity:availableForAllPageTypes" access="global" controller="Community_ClothingVoucherCntrl">
+      <ltng:require styles="{!$Resource.CN_Boot}"/>
+     <!--Allow Multi Line Space in Toast Messages-->
+     <aura:html tag="style">
+        .toastMessage.forceActionsText{
+        white-space : pre-line !important;
+        } 
+    </aura:html>
+    <aura:attribute name="CVCase" type="Case"
+                    default="{ 'sobjectType': 'Case'
+                             }"/>
+    <aura:attribute name="CVCaseClone" type="Case"
+                    default="{ 'sobjectType': 'Case'
+                             }"/>
+    <aura:attribute name="Acnt" type="Account"/>
+    <aura:attribute name="showSuccessMessage" type="boolean" default="false"/>
+    <aura:attribute name="showPrimaryGuardianSection" type="boolean" default="false"/>
+    <aura:attribute name="showCAForm" type="boolean" default="false"/>
+    <aura:attribute name="showReviewScreen" type="boolean" default="false"/>
+    <aura:attribute name="UpdateAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="UpdatePhysicalAddressRequired" type="boolean" default="false"/>
+    
+     <!--Attributes for Mailing Melissa Data-->
+    <aura:attribute name="location" type="string" default=""/>
+    <aura:attribute name="predictions" type="List" default="[]"/>
+    <aura:attribute name="states" type="List" default="[]"/>
+    <aura:attribute name="isManual" type="boolean" default="false"/>
+    <aura:attribute name="selectedAddressIndex" type="Integer" default="0"/>
+    <aura:attribute name="isAddressChanged" type="boolean" default="false"/>
+    <aura:attribute name="selectedAddress" type="string" default=""/>
+    <aura:attribute name="showManualCB" type="boolean" default="false"/>
+    <aura:attribute name="showLookUp" type="boolean" default="false"/>
+    
+     <!--Attributes for Physical Melissa Data-->
+    <aura:attribute name="locationPA" type="string" default=""/>
+    <aura:attribute name="predictionsPA" type="List" default="[]"/>
+    <aura:attribute name="isPAManual" type="boolean" default="false"/>
+    <aura:attribute name="selectedPhyAddressIndex" type="Integer" default="0"/>
+    <aura:attribute name="isPhyAddressChanged" type="boolean" default="false"/>
+    <aura:attribute name="selectedPhyAddress" type="string" default=""/>
+    <aura:attribute name="showPAManualCB" type="boolean" default="false"/>
+    <aura:attribute name="showPALookUp" type="boolean" default="false"/>
+    
+    <aura:attribute name="caseId" type="String"/>
+    <aura:attribute name="requestNumber" type="String"/>
+        
+     <!--Attributes for Students-->
+    <aura:attribute name="StudentsList" type="CA_Student2__c[]" /> 
+    <aura:attribute name="ProcessedStudentsList" type="CA_Student2__c[]" /> 
+    
+     <!--Attributes for HH Members-->
+    <aura:attribute name="HHMembersList" type="HH_Member__c[]" /> 
+       
+    <!--Attributes for Required-->
+    <aura:attribute name="mailingAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="FFAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="physicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="FFPhysicalAddressRequired" type="boolean" default="false"/>
+    <aura:attribute name="HHMembersRequired" type="boolean" default="false"/>
+    
+    <!--Attributes for Physical and Mailing State/Country Picklists-->
+    <aura:attribute name="getMailingParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getMailingChildList" type="list" default="[]"/>
+    <aura:attribute name="getPhysicalParentList" type="list" default="[]" description=""/>
+    <aura:attribute name="getPhysicalChildList" type="list" default="[]"/>
+    <aura:attribute name="getPickListMap" type="map"/>
+    
+    <!--Attributes to show hide State/Other State Fields-->
+    <aura:attribute name="showMailingState" type="boolean" default="true"/>
+    <aura:attribute name="showMailingOtherState" type="boolean" default="false"/>
+    <aura:attribute name="showPhysicalState" type="boolean" default="true"/>
+    <aura:attribute name="showPhysicalOtherState" type="boolean" default="false"/>
+    
+    <!--Attributes for Button -->
+    <aura:attribute name="iAccept" type="Boolean" default="false"/>
+    <aura:attribute name="malingAddressCorrect" type="Boolean" default="false"/>
+    <aura:attribute name="addressUpdate" type="Boolean" default="false"/>
+    <aura:attribute name="physicalAddressCorrect" type="Boolean" default="false"/>
+    <aura:attribute name="physicalAddressUpdate" type="Boolean" default="false"/>
+    <aura:attribute name="isActive2" type="Boolean" default="false"/>
+    <aura:attribute name="isActive" type="Boolean" default="false"/>
+    
+    
+    <!--Attributes for Picklists-->
+    <aura:attribute name="gradeList" type="String[]" />
+    <aura:attribute name="category" type="String[]" />
+    <aura:attribute name="relationList" type="String[]" />
+    <aura:attribute name="HHMRelationList" type="String[]" />
+    
+    <aura:attribute name="filetype" type="List" default="['.png', '.jpg', '.jpeg','.pdf']"/>
+    <aura:attribute name="incomeUploadedFilesList" type="List" default="[]" access="public"/>
+    <aura:attribute name="custodyUploadedFilesList" type="List" default="[]" access="public"/>
+    <aura:attribute name="isLoading" type="boolean" default="false"/>
+    
+    <!--Handler-->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
+
+    <aura:if isTrue="{!v.showCAForm}">
+        <div class="main-container"> 
+              <aura:if isTrue="{!v.isLoading}">
+            <lightning:spinner aura:id="mySpinner" variant="brand" />
+        </aura:if>
+            <div class="card m-box ">
+               <img src="{!$Resource.Student_Coat_Assistance}" alt=""/>
+                <div class="row">        
+                    <div class="col-sm-12" >  
+                        <div class="panel-head" style="background-color: #3f7084;">  
+                            <h5 class="mainHeading text-center" style="color:#fff">
+                              2021 Student Coat Assistance Program
+                            </h5> </div>
+                        <div class="m-Border "></div>
+                    </div>
+                </div>
+                <div class="m-box-style">
+                                       <br/>
+                   
+                    <p style="margin-top: 0px;">The 2021 Student Coat Assistance Program administered through the Human Services Department is available to assist income-eligible Cherokee families with financial assistance to help meet their student’s clothing needs.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">The Cherokee Nation continues addressing the impacts of COVID-19 and the economic hardships faced by Cherokee Nation citizens.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">By completing this application, you are requesting assistance due to the economic impact of COVID-19 and acknowledge that any 
+                        financial assistance provided to you on behalf of the student(s) listed on the application will be used towards meeting the student’s clothing needs.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">Please review the eligibility requirements listed below.</p>
+                     <br/>
+                    <p style="margin-top: 0px;"><b>Application Deadline:</b> December 13, 2021.</p>
+                    <br/>
+                    <p style="margin-top: 0px;"><b>Eligibility Requirements</b></p>
+                    <br/>
+                    <p style="margin-top: 0px;"><b>Citizenship:</b> Student <b>must</b> be a current Cherokee Nation citizen. </p>
+                    <p style="margin-top: 0px;"><b>Income:</b> There are income guidelines based on family size. Income verification is required to be uploaded to the application.</p>
+                    <p style="margin-top: 0px;">If you have qualified for the income-based school clothing assistance in years’ past you may meet the income guidelines for this year’s winter coat assistance.</p>
+                    <p style="margin-top: 0px;"><b>Age:</b> Students must be at least 5 years old by September 1, 2021 and cannot be over 18 years of age at the time of application.</p>
+                    <p style="margin-top: 0px;"> <b>School:</b> Students must be enrolled in Kindergarten-12th grade or equivalent school program; post-secondary students are not eligible. </p>
+                    <p style="margin-top: 0px;">Student can be in public, private, virtual, or home school programs.</p>
+                    <p style="margin-top: 0px;"> <b>Residency:</b> Students must reside within the Cherokee Nation Reservation. This will be verified using the physical address provided on the application.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">If you have any questions regarding eligibility or submission, please call 918-453-5058 to be directed to Cherokee Nation staff assisting with questions.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">Please review your information prior to submission to ensure timely processing and payment. 
+                        Payments may be made electronically or by paper check after the application has been verified and once the application deadline of December 13th, 
+                        2021 has passed. Any inconsistent or missing data may delay processing, 
+                        and further action by Cherokee Nation staff may take additional time before processing and payment is complete.</p>
+                    <br/>
+                    <p style="margin-top: 0px;">
+                    Applicant’s Cherokee Nation Citizenship #, name, and date of birth MUST match Cherokee Nation Registration records. 
+                        Applications with inconsistent, incorrect, or missing data cannot be approved.</p>
+                  <!--Parent / Legal Guardian-->
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Primary Contact / Guardian</h5> </div>
+                    <h1 class="head">Primary Contact:</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="First Name" 
+                                             aura:id="priConFirstName"
+                                             value="{!v.CVCase.Primary_Contact_First_Name__c}"
+                                             class="alignField" 
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Middle Name"
+                                             aura:id="priConMiddleName"
+                                             value="{!v.Acnt.Middle_Name__c}"
+                                             class="alignField"
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Last Name"
+                                             aura:id="priConLastName"
+                                             value="{!v.CVCase.Primary_Contact_Last_Name__c}"
+                                             class="alignField "
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                                            
+                        <div class=" col-sm-4">
+                            <lightning:input label="Cherokee Nation Citizen Registry ID #"
+                                             aura:id="RegID"
+                                             value="{!v.Acnt.Tribe_Id__c}"
+                                             class="alignField "
+                                             type="text"
+                                             disabled="true"/>
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input class="alignField"
+                                             label="Date of Birth"
+                                             aura:id="priConDob"
+                                             value="{!v.Acnt.Date_of_Birth__c}"
+                                             disabled="true"
+                                             placeholder="MM/DD/YYYY"/>               
+                        </div> 
+                        <div class=" col-sm-4"> 
+                            <lightning:input aura:id="priConEmail" 
+                                             label="Email" 
+                                             value="{!v.Acnt.Users[0].Email}"
+                                             type="email"
+                                             class=" alignField" 
+                                             disabled="true"/>      
+                        </div>
+                                            
+                        <div class=" col-sm-4"> 
+                                <lightning:input label="Mobile"
+                                                 aura:id="priConCellPhone"
+                                                 value="{!v.CVCase.Ebt_Mobile_Phone__c}"
+                                                 class="alignField"
+                                                 required="true"
+                                                 onblur="{!c.clearErrors}"
+                                                 maxlength="14"  
+                                                 onchange="{!c.formatPhone}"
+                                                 />
+                        </div>
+                    </div>
+
+                    <!--/Mobile-->
+             
+                    
+                    <!--Mailing Address-->  
+                     <div class="panel-head2" >  <h5 class="mainHeading text-center">Mailing Address</h5> </div>
+                    <h1 class="head" style="margin-bottom: -1%;">Mailing Address (If your mailing address is not correct, please click the update address toggle and use the Address Lookup field that appears):</h1>  
+                    <div class="row">     
+                          <div class="col-sm-12 " >  
+                            <strong>
+                                     <lightning:input type="checkbox"  required="true"
+                                                     style = 'margin-top: 22px;'
+                                                     label="I have verified that my mailing address is correct"
+                                                     class="alignField"
+                                                     aura:id="mAddressCheckBox" checked="{!v.malingAddressCorrect}" />
+                                    </strong>
+                            </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingStreetInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Mailing_Street__c}"
+                                             label="Address Line1: " 
+                                             disabled="{!not(v.isManual)}"
+                                             required="{!v.mailingAddressRequired}" 
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingAddress2Input" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.mailing_address2__c}"
+                                             label="Address Line2: " 
+                                             disabled="{!not(v.isManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingSuiteInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.mailing_suite__c}"
+                                             label="Suite: " 
+                                             disabled="{!not(v.isManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="MailingCityInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Mailing_City__c}"
+                                             label="City: " 
+                                             disabled="{!not(v.isManual)}"
+                                             required="{!v.mailingAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" >
+                            <lightning:select class="alignField "
+                                              name="MailingCountryInput"
+                                              value="{!v.CVCase.Mailing_Countries__c}"
+                                              aura:id="MailingCountryInput"
+                                              label="Country"
+                                              disabled="{!not(v.isManual)}"
+                                              required="{!v.mailingAddressRequired}"
+                                              onblur="{!c.clearErrors}"
+                                              onchange="{!c.onMailingCountryChange}">
+                                
+                                 <option value="">--None--</option>
+                                <aura:iteration items="{!v.getMailingParentList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.CVCase.Mailing_Countries__c}">{!value}</option>
+                                </aura:iteration>
+                                
+                            </lightning:select>    
+                        </div>  
+                       
+                         <aura:if isTrue="{!v.showMailingState}">
+                        <div class="col-sm-6" > 
+                            <lightning:select class="alignField "
+                                              aura:id="MailingStateInput"
+                                              value="{!v.CVCase.Mailing_States__c}"
+                                              name="childField"
+                                              label="State"
+                                              disabled="{!not(v.isManual)}"
+                                              required="{!v.mailingAddressRequired}"
+                                              onblur="{!c.clearErrors}">
+                                
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.getMailingChildList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.CVCase.Mailing_States__c}">{!value}</option>
+                                    
+                                </aura:iteration>
+                                
+                            </lightning:select>    
+                        </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showMailingOtherState}">
+                            <div class="col-sm-6 " >  
+                                <lightning:input aura:id="MailingOtherState" 
+                                                 class="alignField inputField"
+                                                 value="{!v.CVCase.Other_Mailing_State__c}"
+                                                 label="Other State/Territory:" 
+                                                 disabled="{!not(v.isManual)}"
+                                                 required="{!v.mailingAddressRequired}"
+                                                 onblur="{!c.clearErrors}"/>
+                     		</div>
+                        </aura:if>
+                        
+                         <div class="col-sm-6" >               
+                            <lightning:input aura:id="MailingzipInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Mailing_ZipPostal_Code__c}"
+                                             label="Zip Code: "  
+                                             disabled="{!not(v.isManual)}"
+                                             required="{!v.mailingAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" > 
+                          
+                          <Strong>
+                            <label class="slds-form-element__label" style = 'margin-top: 8px;' for="toggle">Update Mailing Address</label>
+                            </Strong>  
+                            <lightning:input class="cell"
+                                             type="toggle" 
+                                             aura:id="addressUpdateCheckBox" 
+                                             checked="{!v.addressUpdate}"
+                                             onchange="{!c.handleAddreesUpdate}"
+                                             messageToggleActive="Yes"
+                                             messageToggleInactive="No"
+                                             required="{!v.UpdateAddressRequired}"/>
+                        </div>
+                        
+                         <aura:if isTrue="{!v.showLookUp}">
+                           <div class="col-sm-6">
+                            <lightning:input aura:id="AddressFreeFormInput" 
+                                             class="alignField" 
+                                             label="Address Lookup: "  
+                        					 value="{!v.location}"
+                                             onchange="{!c.handleAddressChange}"
+                                             required="{!v.FFAddressRequired}"/>
+                            <aura:if isTrue="{!v.predictions.length > 0}">		 
+                            <ul class="result" id="addressResult">
+                                <aura:iteration items="{!v.predictions}" var="prediction" indexVar="indexVar">
+                                        <aura:if isTrue="{!prediction.Address.SuiteCount > 0}">
+                                        <aura:iteration items="{!prediction.Address.SuiteList}" var="suite" indexVar="indexVar2">
+                                            <li class="slds-listbox__item">
+                                                <a onclick="{!c.handleAddressClick}" data-placeid="{!indexVar+indexVar2}" data-place="{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}">{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                            </li>
+                                        </aura:iteration>
+                                        <aura:set attribute="else">
+                                            <li class="slds-listbox__item">
+                                                <a onclick="{!c.handleAddressClick}" data-placeid="{!indexVar}" data-place="{!prediction.Address.AddressLine1 + (prediction.Address.SuiteName != ''?' '+prediction.Address.SuiteName:'') +', '+ prediction.Address.City+', '+prediction.Address.State}">
+                                                {!prediction.Address.AddressLine1} <aura:if isTrue="{!prediction.Address.SuiteName != ''}">{!' '+prediction.Address.SuiteName}</aura:if> {!', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                            </li>
+                                        </aura:set>
+                                    </aura:if> 
+                                </aura:iteration>
+                            </ul> 	 
+                        </aura:if>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="slds-form slds-form_stacked">
+                                <div class="slds-form-element">
+                                    <aura:if isTrue="{!v.showManualCB == true}">
+                                    <label class="slds-form-element__label" for="toggle">Enter address manually</label>
+                                    <lightning:input class="cell" type="toggle" 
+                                                     aura:id="checkManual" 
+                                                     checked="{!v.isManual}"
+                                                     onchange="{!c.handleToggleChange}"
+                                                     messageToggleActive="Yes"
+                                                     messageToggleInactive="No"/>
+                                    </aura:if>
+                                </div>
+                            </div>
+                        </div>
+                        </aura:if>
+                    </div>
+                    <!--/Mailing Address-->  
+                    
+                    
+                    <!--Physical Address-->   
+                    <div class="panel-head2" >  <h5 class="mainHeading text-center">Physical Address</h5> </div>
+                    <p style=" font-weight: 500;  margin-bottom:-10px !important;">NOTE: P.O. BOX address details are not acceptable for physical address.</p>
+                    <h1 class="head" style="margin-bottom: -1%;">Physical Address (If your physical address is not correct, please click the update address toggle and use the Address Lookup field that appears):</h1>  
+                    <div class="row">     
+                        <div class="col-sm-12 " >  
+                            <strong>
+                                <lightning:input type="checkbox"  required="true"
+                                                 style = 'margin-top: 22px;'
+                                                 label="I have verified that my physical address is correct"
+                                                 class="alignField"
+                                                 aura:id="pAddressCheckBox" checked="{!v.physicalAddressCorrect}" />
+                            </strong>
+                        </div>
+                       
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalStreetInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Physical_Street__c}"
+                                             label="Address Line1: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             required="{!v.physicalAddressRequired}" 
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalAddress2Input" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Physical_Address2__c}"
+                                             label="Address Line2: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalSuiteInput" 
+                                             class="alignField" 
+                                             value="{!v.CVCase.Physical_Suite__c}"
+                                             label="Suite: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             onblur="{!c.clearErrors}"/>
+                            
+                        </div>
+                        <div class="col-sm-6 " >  
+                            <lightning:input aura:id="PhysicalCityInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Physical_City__c}"
+                                             label="City: " 
+                                             disabled="{!not(v.isPAManual)}"
+                                             required="{!v.physicalAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" >
+                            <lightning:select class="alignField "
+                                              value="{!v.CVCase.Physical_Countries__c}"
+                                              aura:id="PhysicalCountryInput"
+                                              label="Country"
+                                              disabled="{!not(v.isPAManual)}"
+                                              required="{!v.physicalAddressRequired}"
+                                              onblur="{!c.clearErrors}"
+                                              onchange="{!c.onPhysicalCountryChange}">
+                                
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.getPhysicalParentList}" var="value">
+                                    <option value="{!value}" selected="{!value==v.CVCase.Physical_Countries__c}">{!value}</option>
+                                </aura:iteration>
+                                
+                            </lightning:select>    
+                        </div>  
+                        
+                        <aura:if isTrue="{!v.showPhysicalState}">
+                            <div class="col-sm-6" > 
+                                <lightning:select class="alignField "
+                                                  aura:id="PhysicalStateInput"
+                                                  value="{!v.CVCase.Physical_States__c}"
+                                                  name="childField"
+                                                  label="State"
+                                                  disabled="{!not(v.isPAManual)}"
+                                                  required="{!v.physicalAddressRequired}"
+                                                  onblur="{!c.clearErrors}">
+                                    
+                                    <option value="">--None--</option>
+                                    <aura:iteration items="{!v.getPhysicalChildList}" var="value">
+                                        <option value="{!value}" selected="{!value==v.CVCase.Physical_States__c}">{!value}</option>
+                                        
+                                    </aura:iteration>
+                                    
+                                </lightning:select>    
+                            </div>
+                        </aura:if>
+                        
+                        <aura:if isTrue="{!v.showPhysicalOtherState}">
+                            <div class="col-sm-6 " >  
+                                <lightning:input aura:id="PhysicalOtherState" 
+                                                 class="alignField inputField"
+                                                 value="{!v.CVCase.Other_Physical_State__c}"
+                                                 label="Other State/Territory:" 
+                                                 disabled="{!not(v.isPAManual)}"
+                                                 required="{!v.physicalAddressRequired}"
+                                                 onblur="{!c.clearErrors}"/>
+                            </div>
+                        </aura:if>
+                        
+                        <div class="col-sm-6" >               
+                            <lightning:input aura:id="PhysicalzipInput" 
+                                             class="alignField "
+                                             value="{!v.CVCase.Physical_ZipPostal_Code__c}"
+                                             label="Zip Code: "  
+                                             disabled="{!not(v.isPAManual)}"
+                                             required="{!v.physicalAddressRequired}"
+                                             onblur="{!c.clearErrors}"/>
+                        </div>
+                        
+                        <div class="col-sm-6" > 
+                            
+                            <Strong>
+                                <label class="slds-form-element__label" style = 'margin-top: 8px;' for="toggle">Update Physical Address</label>
+                            </Strong>  
+                            <lightning:input class="cell"
+                                             type="toggle" 
+                                             aura:id="addressUpdateCheckBoxPhysical" 
+                                             checked="{!v.physicalAddressUpdate}"
+                                             onchange="{!c.handlePhysicalAddreesUpdate}"
+                                             messageToggleActive="Yes"
+                                             messageToggleInactive="No"
+                                             required="{!v.UpdatePhysicalAddressRequired}"/>
+                        </div>
+                        
+                        <aura:if isTrue="{!v.showPALookUp}">
+                            <div class="col-sm-6">
+                                <lightning:input aura:id="AddressFreeFormInputPhysical" 
+                                                 class="alignField" 
+                                                 label="Address Lookup: "  
+                                                 value="{!v.locationPA}"
+                                                 onchange="{!c.handlePhysicalAddressChange}"
+                                                 required="{!v.FFPhysicalAddressRequired}"/>
+                                <aura:if isTrue="{!v.predictionsPA.length > 0}">		 
+                                    <ul class="result" id="addressResultPA">
+                                        <aura:iteration items="{!v.predictionsPA}" var="prediction" indexVar="indexVar">
+                                            <aura:if isTrue="{!prediction.Address.SuiteCount > 0}">
+                                                <aura:iteration items="{!prediction.Address.SuiteList}" var="suite" indexVar="indexVar2">
+                                                    <li class="slds-listbox__item">
+                                                        <a onclick="{!c.handlePhysicalAddressClick}" data-placeid="{!indexVar+indexVar2}" data-place="{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}">{!prediction.Address.AddressLine1 +' '+suite+', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                                    </li>
+                                                </aura:iteration>
+                                                <aura:set attribute="else">
+                                                    <li class="slds-listbox__item">
+                                                        <a onclick="{!c.handlePhysicalAddressClick}" data-placeid="{!indexVar}" data-place="{!prediction.Address.AddressLine1 + (prediction.Address.SuiteName != ''?' '+prediction.Address.SuiteName:'') +', '+ prediction.Address.City+', '+prediction.Address.State}">
+                                                            {!prediction.Address.AddressLine1} <aura:if isTrue="{!prediction.Address.SuiteName != ''}">{!' '+prediction.Address.SuiteName}</aura:if> {!', '+ prediction.Address.City+', '+prediction.Address.State}</a>
+                                                    </li>
+                                                </aura:set>
+                                            </aura:if> 
+                                        </aura:iteration>
+                                    </ul> 	 
+                                </aura:if>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="slds-form slds-form_stacked">
+                                    <div class="slds-form-element">
+                                        <aura:if isTrue="{!v.showPAManualCB == true}">
+                                            <label class="slds-form-element__label" for="toggle">Enter address manually</label>
+                                            <lightning:input class="cell" type="toggle" 
+                                                             aura:id="checkPAManual" 
+                                                             checked="{!v.isPAManual}"
+                                                             onchange="{!c.handlePhysicalToggleChange}"
+                                                             messageToggleActive="Yes"
+                                                             messageToggleInactive="No"/>
+                                        </aura:if>
+                                    </div>
+                                </div>
+                            </div>
+                        </aura:if>
+                    </div>
+                    <!--/Physical Address--> 
+                    
+                   <div class="panel-head2">  <h5 class="mainHeading text-center">Students Information</h5> </div>
+                    <h1 class="head" style="font-weight: 550; color: red;">Please add all students you’re applying for:</h1>  
+                    <!--Student Table-->
+                    <div id="tbl">
+                        <div class="slds-float_left slds-p-bottom_small">
+                            <lightning:button label="Add Row/Student" class="btn a-btn" variant="brand" onclick="{!c.addRow}"/>
+                        </div>
+                        <div class="table-responsive-sm" aura:id="parent-aura-div-id">            
+                            <table class="table table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col">Citizen ID</th>
+                                        <th scope="col">Date of Birth</th>
+                                        <th scope="col">Grade</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">School District</th>
+                                        <th scope="col">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.StudentsList}" var="st" indexVar="index">
+                                        <tr scope="row">
+                                            <td>
+                                                <lightning:input  aura:id="SList"
+                                                                 name="citizenId"
+                                                                 type="text"  
+                                                                 value="{!st.Citizen_ID__c}" 
+                                                                 maxlength="15"
+                                                                 required="true"/>
+                                            </td>
+                                            
+                                            <td> 
+                                                <lightning:input aura:id="SList" 
+                                                                 value="{!st.Date_of_Birth__c}"
+                                                                 maxlength="10" 
+                                                                 onchange="{!c.validateAndReplace}"
+                                                                 required="true"
+                                                                 placeholder="MM/DD/YYYY"
+                                                                 oncontextmenu="{!c.handleContext}" 
+                                                                 onpaste="{!c.handlePaste}"/>  
+                                            </td>
+                                                                   
+                                            <td>
+                                                <lightning:select aura:id="SList"
+                                                                  value="{!st.Grade__c}"
+                                                                  required="true"> 
+                                               <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.gradeList}" var="grl" indexVar="key">   
+                                                        <option text="{!grl.value}" value="{!grl.key}"/>
+                                                    </aura:iteration>
+                                                </lightning:select> 
+               						  </td>
+                                            <td>
+                                                
+                                                 <lightning:select aura:id="SList"
+                                                                   value="{!st.Category__c}"
+                                                                   required="true"> 
+                                               <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.category}" var="cat" indexVar="key">   
+                                                        <option text="{!cat.value}" value="{!cat.key}"/>
+                                                    </aura:iteration>
+                                                </lightning:select> 
+                                            </td> 
+                                            
+                                            <td>
+                                            <lightning:input  aura:id="SList"
+                                                                 name="schlDistrict"
+                                                                 type="text"  
+                                                                 value="{!st.School_District__c}" 
+                                                                 maxlength="50"/>
+                                            </td>
+                                          
+                                            <td style="text-align: center !important; ">
+                                                <a onclick="{!c.removeRow}" data-record="{!index}">
+                                                    <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                                    <span class="slds-assistive-text">Delete</span>
+                                                </a>
+                                            </td>  
+                                        </tr>
+                                        
+                                    </aura:iteration>     
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/Student Table-->
+                    
+                    <!--Cards for Students Records-->
+                    <div id="crds">
+                        <div class="table-responsive-sm requestsTable clsSmallScreen" style="margin-top:15px;">            
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <aura:iteration items="{!v.StudentsList}" var="st" indexVar="index">
+                                        <tr>
+                                            <td class="clsSmallScreentatus" style="text-align:right;">
+                                                 <a onclick="{!c.removeRow}" data-record="{!index}">
+                                                    <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                                    <span class="slds-assistive-text">Delete</span>
+                                                </a>
+                                            </td>
+                                            
+                                             <td data-th="Citizen ID" class="clsSmallScreentatus">
+                                                  
+                                                 <lightning:input aura:id="SListMobile" 
+                                                                  name="citizenId"
+                                                                  type="text"  
+                                                                  value="{!st.Citizen_ID__c}" 
+                                                                  maxlength="15"
+                                                                  required="true"/>
+                                            </td>
+                                            
+                                            <td data-th="Date of Birth" class="clsSmallScreentatus">
+                                                
+                                                <lightning:input aura:id="SListMobile"
+                                                                 value="{!st.Date_of_Birth__c}"
+                                                                 maxlength="10" 
+                                                                 onchange="{!c.validateAndReplace}"
+                                                                 required="true"
+                                                                 placeholder="MM/DD/YYYY"
+                                                                 oncontextmenu="{!c.handleContext}" 
+                                                                 onpaste="{!c.handlePaste}"/>   
+                                            </td>
+                                            
+                                            <td data-th="Grade" class="clsSmallScreentatus">
+                                                 <lightning:select aura:id="SListMobile"
+                                                                  value="{!st.Grade__c}"
+                                                                  required="true"> 
+                                               <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.gradeList}" var="grl" indexVar="key">   
+                                                        <option text="{!grl.value}" value="{!grl.key}"/>
+                                                    </aura:iteration>
+                                                </lightning:select> 
+                                            </td>
+                                            
+                                             <td data-th="School Category" class="clsSmallScreentatus">
+                                                 <lightning:select aura:id="SListMobile"
+                                                                   value="{!st.Category__c}"
+                                                                   required="true"> 
+                                               <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.category}" var="cat" indexVar="key">   
+                                                        <option text="{!cat.value}" value="{!cat.key}"/>
+                                                    </aura:iteration>
+                                                </lightning:select> 
+                                            </td>
+                                            
+                                             <td data-th="School District" class="clsSmallScreentatus">
+                                                  
+                                                 <lightning:input aura:id="SListMobile" 
+                                                                  name="schlDistrict"
+                                                                  type="text"  
+                                                                  value="{!st.School_District__c}" 
+                                                                  maxlength="50"/>
+                                            </td>
+                                        </tr>
+                                    </aura:iteration>     
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row ">
+                            <div class=" col-sm-12"> 
+                                <div class="slds-float_left">
+                                    <lightning:button label="Add Row/Student" class="btn a-btn" variant="brand" onclick="{!c.addRow}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Cards for Students Records-->    
+                    
+                    <!--Household Information-->
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Household Information</h5> </div>
+                    <h1 class="head" style="font-weight: 550; color: red;">Please add all household members besides those listed in the Students table:</h1>  
+                    <!--HH Members Table-->
+                    <div id="tbl">
+                        <div class="slds-float_left slds-p-bottom_small">
+                            <lightning:button label="Add Row/Household Member" class="btn a-btn" variant="brand" onclick="{!c.addHHMember}"/>
+                        </div>
+                        <div class="table-responsive-sm" aura:id="parent-aura-div-id">            
+                            <table class="table table-bordered">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Last Name</th>
+                                            <th scope="col">Date of Birth</th>
+                                            <th scope="col">Relation to Student(s)</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                    </thead>
+                                <tbody>
+                                    <aura:iteration items="{!v.HHMembersList}" var="HhM" indexVar="index">
+                                        <tr scope="row">
+                                            <td>
+                                                <lightning:input  aura:id="HHMList"
+                                                                 name="firstName"
+                                                                 type="text"  
+                                                                 value="{!HhM.First_Name__c}" 
+                                                                 maxlength="40"
+                                                                 required="{!v.HHMembersRequired}"/>
+                                            </td>
+                                            
+                                            <td>
+                                                <lightning:input  aura:id="HHMList"
+                                                                 name="lastName"
+                                                                 type="text"  
+                                                                 value="{!HhM.Last_Name__c}" 
+                                                                 maxlength="40"
+                                                                 required="{!v.HHMembersRequired}"/>
+                                            </td>
+                                            
+                                            <td> 
+                                                <lightning:input aura:id="HHMList" 
+                                                                 value="{!HhM.Date_of_Birth__c}"
+                                                                 maxlength="10" 
+                                                                 onchange="{!c.validateAndReplace}"
+                                                                 placeholder="MM/DD/YYYY"
+                                                                 oncontextmenu="{!c.handleContext}" 
+                                                                 onpaste="{!c.handlePaste}"
+                                                                 required="{!v.HHMembersRequired}"/>  
+                                            </td>
+                                            
+                                            <td>
+                                                
+                                                <lightning:select aura:id="HHMList"
+                                                                  value="{!HhM.Relation__c}"
+                                                                  required="{!v.HHMembersRequired}"> 
+                                                    <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.HHMRelationList}" var="rl" indexVar="key">   
+                                                        <option text="{!rl.value}" value="{!rl.key}"/>
+                                                    </aura:iteration>
+                                                </lightning:select> 
+                                            </td> 
+                                            
+                                            <td style="text-align: center !important; ">
+                                                <a onclick="{!c.removeHHMember}" data-record="{!index}">
+                                                    <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                                    <span class="slds-assistive-text">Delete</span>
+                                                </a>
+                                            </td>  
+                                        </tr>
+                                        
+                                    </aura:iteration>     
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/HH Members Table-->
+                    
+                    <!--Cards for HH Members Records-->
+                    <div id="crds">
+                        <div class="table-responsive-sm requestsTable clsSmallScreen" style="margin-top:15px;">            
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <aura:iteration items="{!v.HHMembersList}" var="HhM" indexVar="index">
+                                        <tr>
+                                            <td class="clsSmallScreentatus" style="text-align:right;">
+                                                 <a onclick="{!c.removeHHMember}" data-record="{!index}">
+                                                    <lightning:icon iconName="utility:delete" size="small" alternativeText="Delete"/>
+                                                    <span class="slds-assistive-text">Delete</span>
+                                                </a>
+                                            </td>
+                                            
+                                             <td data-th="First Name" class="clsSmallScreentatus">
+                                                 <lightning:input  aura:id="HHMListMobile"
+                                                                  name="firstName"
+                                                                  type="text"  
+                                                                  value="{!HhM.First_Name__c}" 
+                                                                  maxlength="40"
+                                                                  required="{!v.HHMembersRequired}"/>
+                                            </td>
+                                            
+                                            <td data-th="Last Name" class="clsSmallScreentatus">
+                                                <lightning:input  aura:id="HHMListMobile"
+                                                                 name="lastName"
+                                                                 type="text"  
+                                                                 value="{!HhM.Last_Name__c}" 
+                                                                 maxlength="40"
+                                                                 required="{!v.HHMembersRequired}"/>
+                                            </td>
+                                            
+                                            <td data-th="Date of Birth" class="clsSmallScreentatus">
+                                                <lightning:input aura:id="HHMListMobile" 
+                                                                 value="{!HhM.Date_of_Birth__c}"
+                                                                 maxlength="10" 
+                                                                 onchange="{!c.validateAndReplace}"
+                                                                 placeholder="MM/DD/YYYY"
+                                                                 oncontextmenu="{!c.handleContext}" 
+                                                                 onpaste="{!c.handlePaste}"
+                                                                 required="{!v.HHMembersRequired}"/>   
+                                            </td>
+                                            
+                                            <td data-th="Relation to Student(s)" class="clsSmallScreentatus">  
+                                                <lightning:select aura:id="HHMListMobile"
+                                                                  value="{!HhM.Relation__c}"
+                                                                  required="{!v.HHMembersRequired}"> 
+                                                    <option value="">--None--</option>
+                                                    <aura:iteration items="{!v.HHMRelationList}" var="rl" indexVar="key">   
+                                                        <option text="{!rl.value}" value="{!rl.key}"/>
+                                                    </aura:iteration>
+                                                </lightning:select>  
+                                            </td>
+                                            
+                                        </tr>
+                                    </aura:iteration>     
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row ">
+                            <div class=" col-sm-12"> 
+                                <div class="slds-float_left">
+                                    <lightning:button label="Add Row/Household Member" class="btn a-btn" variant="brand" onclick="{!c.addHHMember}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/Cards for HH Members Records-->  
+                    
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:input label="Household Income (Annual)" 
+                                             aura:id="HouseholdIncome"
+                                             value="{!v.CVCase.Household_Income2__c}"
+                                             class="alignField" 
+                                             type="number" 
+                                             formatter="currency" 
+                                             required="true"
+                                             maxlength="5"
+                                             onchange="{!c.validateIncome}"/>  
+                        </div>
+                        
+                        <div class=" col-sm-6"> 
+                            <lightning:select  label="Household Size"
+                                              class="alignField "
+                                              aura:id="HouseholdSize"
+                                              value="{!v.CVCase.Household_Size2__c}"
+                                              onblur="{!c.clearErrors}"
+                                              required="true"> 
+                                                     <option value="">--None--</option>
+                                                     <option value="2">2</option>
+                                                     <option value="3">3</option>
+                                                     <option value="4">4</option>
+                                                     <option value="5">5</option>
+                                                     <option value="6">6</option>
+                                                     <option value="7">7</option>
+                                                     <option value="8">8</option>
+                         `							 <option value="9">9</option>
+                                                     <option value="10">10</option>
+                                                     <option value="11">11</option>
+                                                     <option value="12">12</option>
+                                                     <option value="13">13</option>
+                                                     <option value="14">14</option>
+                                                     <option value="15">15</option>
+                            </lightning:select> 
+                        </div>
+                   <!-- Income Files Section-->
+                        <div class=" col-sm-6">
+                            <p style="margin-top:10px !important; margin-bottom:-10px !important; font-weight: 500;">
+                                Please upload documents for income verification. Acceptable documentation includes:
+                            <br/>    
+                                Income tax return, W2’s, 1099, recent check stubs, TANF, social security (SSI, SSD, SSA) award letter, child support statement.
+                            </p>
+                            <lightning:fileUpload label=""
+                                                  aura:id="W9FileId" 
+                                                  name="fileUploader"
+                                                  variant="label-hidden"
+                                                  multiple="true"
+                                                  accept="{!v.filetype}"
+                                                  required = "true"
+                                                  onuploadfinished="{!c.handleIncomeFilesUpload}" />
+                            <p style="font-weight: 500;">Maximum File Size 20 MB with supported types PDF, JPEG, JPG and PNG only</p>
+                            <aura:iteration items="{!v.incomeUploadedFilesList}" var="file">
+                               <lightning:layoutItem class = "custom_pillLayout"  size="6" mediumDeviceSize="3" padding="around-small">
+                                    <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                    name="{!file.Id}" label="{!file.Title}"
+                                                    onremove="{!c.onIncomeFileRemove}" onclick="{!c.previewFile}">
+                                        <aura:set attribute="media">
+                                            <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                        </aura:set>
+                                    </lightning:pill>
+                                </lightning:layoutItem>
+                            </aura:iteration>
+                        </div>
+                        
+                        <!--/End Income Files Section-->
+                           <!-- Custody Files Section-->
+                        <div class=" col-sm-6">
+                           <p style="margin-top:10px !important; margin-bottom:-7px !important; font-weight: 500;">Please upload documents supporting guardianship for the students you are applying for (if applicable).  Acceptable documentation includes: 
+                               <br/>
+                               District Court papers, Divorce Decree, Guardianship form, Income tax papers, School enrollment papers identifying the person applying as guardian/parent, SNAP benefits documentation, DHS paperwork.
+                            </p>
+                                <lightning:fileUpload label=""
+                                                      aura:id="custodyFiles" 
+                                                      name="fileUploader2"
+                                                      variant="label-hidden"
+                                                      multiple="true"
+                                                      accept="{!v.filetype}"
+                                                      required = "true"
+                                                      onuploadfinished="{!c.handleCustodyFilesUpload}" />
+                            <p style="font-weight: 500;">Maximum File Size 20 MB with supported types PDF, JPEG, JPG and PNG only</p>
+                                <aura:iteration items="{!v.custodyUploadedFilesList}" var="file">
+                                    <lightning:layoutItem  class = "custom_pillLayout" size="6" mediumDeviceSize="3" padding="around-small">
+                                        <lightning:pill class="slds-media slds-media_small slds-media_center slds-media__body custom_pill" 
+                                                        name="{!file.Id}" label="{!file.Title}"
+                                                        onremove="{!c.onCustodyFileRemove}" onclick="{!c.previewFile}">
+                                            <aura:set attribute="media">
+                                                <lightning:icon style="fill:#43b02a;" class="icn" iconName="utility:file"  alternativeText="Labrador Image"/>
+                                            </aura:set>
+                                        </lightning:pill>
+                                    </lightning:layoutItem>
+                                </aura:iteration>                            
+                        </div>
+                         <!--/End Custody Files Section-->
+                    </div>
+					 <!--/Household Information-->
+                    
+                    <!--Show Primary Guardian Section -->
+                    <aura:if isTrue="{!v.showPrimaryGuardianSection}">     
+                        <div class="panel-head2">  <h5 class="mainHeading text-center">Primary Guardian</h5> </div>
+                        <h1 class="head">Primary Guardian Contact:</h1>  
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                    <lightning:input label="First Name" 
+                                                     aura:id="PriGuardianFirstName"
+                                                     value="{!v.CVCase.PG_First_Name__c}"
+                                                     class="alignField" 
+                                                     type="text"
+                                                     maxlength="30"
+                                                     required="true"
+                                                     onchange="{!c.validateLName}"/>    
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Last Name"
+                                                 aura:id="PriGuardianLastName"
+                                                 value="{!v.CVCase.PG_Last_Name__c}"
+                                                 class="alignField "
+                                                 type="text"
+                                                 maxlength="40"
+                                                 required="true"
+                                                 onchange="{!c.validateLName}"
+                                                 /> 
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                    <lightning:input label="Mobile"
+                                                     aura:id="PriGuardianPhone"
+                                                     value="{!v.CVCase.PG_Mobile_Phone__c}"
+                                                     class="alignField"
+                                                     onblur="{!c.clearErrors}"
+                                                     maxlength="14"  
+                                                     onchange="{!c.formatPhone}"
+                                                     required="true"
+                                                     />   
+                            </div>
+                          
+                            
+                        </div>
+                        
+                        
+                    </aura:if> 
+                    <!--/Show Primary Guardian Section-->                    
+                    
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Alternate Contact / Guardian</h5> </div>
+                    <h1 class="head">Alternate Contact:</h1>  
+                    <div class="row ">
+                        <div class=" col-sm-6">
+                            <lightning:input label="First Name" 
+                                             aura:id="SecConFirstName"
+                                             value="{!v.CVCase.Sec_First_Name__c}"
+                                             class="alignField" 
+                                             type="text"
+                                             maxlength="30" 
+                                             onchange="{!c.validateLName}"/>  
+                        </div>
+                        
+                        <div class=" col-sm-6"> 
+                            <lightning:input label="Last Name"
+                                             aura:id="SecConLastName"
+                                             value="{!v.CVCase.Sec_Last_Name__c}"
+                                             class="alignField "
+                                             type="text"
+                                             maxlength="40"
+                                             onchange="{!c.validateLName}"
+                                             /> 
+                        </div>
+                        
+                        <div class=" col-sm-6">
+                            <lightning:input label="Mobile"
+                                             aura:id="SecConPhone"
+                                             value="{!v.CVCase.Sec_Phone__c}"
+                                             class="alignField"
+                                             onblur="{!c.clearErrors}"
+                                             maxlength="14"  
+                                             onchange="{!c.formatPhone}"
+                                             /> 
+                        </div>
+                        <div class=" col-sm-6">
+                            <lightning:select aura:id="SecConRelation"
+                                              value="{!v.CVCase.Relation__c}"
+                                              label="Relation to Student(s)"
+                                              onblur="{!c.clearErrors}"> 
+                                <option value="">--None--</option>
+                                <aura:iteration items="{!v.relationList}" var="rel" indexVar="key">   
+                                    <option text="{!rel.value}" value="{!rel.key}"/>
+                                </aura:iteration>
+                            </lightning:select> 
+                        </div>
+                        
+                    </div>
+                    
+                    
+                    <div class="panel-head2">  <h5 class="mainHeading text-center">Terms and Conditions</h5> </div>
+                    <p ></p>
+                    <div class="row ">        
+                        <div class="col-sm-12" > 
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; color:rgb(90,90,90);">
+                                Cherokee Nation is providing coat assistance funds as part of the 2021 Student Coat Assistance Program. All funds are to be used to help meet the coat needs of Cherokee students economically impacted by COVID-19.
+                                Funds will be disbursed to the citizen submitted in each application. Applications with inconsistent or missing data cannot be approved. 
+                                Multiple applications submitted for the same student will be flagged for further review and may require the submission of additional documentation to determine validity of the submission before payment will be processed.
+                            </p>
+                            
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:10px; color:rgb(90,90,90);">
+                                I accept the Terms and Conditions and agree to use the 2021 Student Coat Assistance funds to meet the coat needs of the Cherokee student(s) listed on this application. 
+                                The information I provided is true and correct to the best of my knowledge.
+                            </p>
+                            
+                            <p class="alignField" style="text-align:justify;margin-bottom:0px; margin-top:10px; color:rgb(90,90,90);">
+                                I certify under the laws of Cherokee Nation, United States, or a state that I am the legal primary or joint custodial parent or guardian of any minor child/children listed on my 2021 Student Coat Assistance Program application and that I have the authority to apply on the minor's behalf.
+                            </p>
+                            
+                            <lightning:input type="checkbox"
+                                             required="true"
+                                             style = 'margin-top: 22px;'
+                                             label="I Accept"
+                                             class="alignField"
+                                             aura:id="termsAndCons"
+                                             checked="{!v.iAccept}" />
+                        </div>
+                        
+                    </div>  
+                    <!--/Parent / Legal Guardian-->
+                    
+                    <div class=" text-center">
+                        <lightning:button label="Review Application" disabled="{!v.isActive}" class="btn sr-button " variant="brand" onclick="{!c.reviewInformation}"/>
+                     <div class="slds-is-relative"> 
+                            <lightning:spinner aura:id="saveSpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+                           </div>  
+                    </div> 
+                </div>
+            </div>
+        </div>
+        
+    </aura:if> 
+    <!--Clothing Assistance Form Div-->
+    
+    <!--Success Message Div-->
+    <aura:if isTrue="{!v.showSuccessMessage}">  
+        <div class=" container" style= 'padding-right:0px !important; padding-left:0px !important;'>
+            <div class="row justify-content-center">
+                <div class="col-sm-10 col-md-8 col-lg-6" >
+                    <div class="card sm-box">
+                        <div class="align-s-content"> 
+                            <strong>  <p class="msgTextFont m2" style="font-size: 20px; color: #7684e4;">
+                                Congratulations!
+                                
+                                </p> </strong> 
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;"> 
+                                You have successfully submitted your Student Coats Assistance Application.
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; FONT-WEIGHT: 700; padding-bottom: 10px;">   
+                                Confirmation Number: {!v.requestNumber}
+                                
+                            </p>
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                                Please keep your confirmation number for future reference. 
+                            </p>
+                            
+                             <div class=" text-center btn-div-r" >
+                                <lightning:button class="btn s-button" label="View Request" onclick="{!c.viewRequest}" />
+                            </div> 
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                              If you have any questions or concerns regarding your Student Coats Assistance application, please contact Cherokee Nation at 918-453-5058 or by email support-gadugiportal@cherokee.org. You can view your request by clicking "View Request" above.
+                            </p>
+                            
+                            <p class="msgTextFont " style="text-align: left; padding-bottom: 10px;">
+                               Payment processing will be completed after all information is verified in the application. 
+                                Payments may be made electronically or by paper check. Any inconsistent or missing data may delay processing, 
+                                and further action by Cherokee Nation staff may take additional time before processing and payment is complete.
+                            </p>
+                                                        
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div> 
+    </aura:if>
+    <!--/Success Message Div-->
+       
+    <!--Review Section-->
+   <aura:if isTrue="{!v.showReviewScreen}">
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open acct-header--tier-modal slds-align_absolute-center">
+      <div class="slds-modal__container">
+      <!--Modal Header-->
+          <header class="slds-modal__header">
+              <lightning:buttonIcon iconName="utility:close"
+                                    size="large"
+                                    variant="bare-inverse"
+                                    onclick="{! c.hideModal }"
+                                    alternativeText="Close" 
+                                    class="slds-modal__close" />
+              <h2 id="modal-heading-01" class="mH">Review Information</h2>
+          </header>  <!--/Modal Header-->
+                    
+                    <!--Modal Body-->
+        <div class="slds-modal__content slds-p-around_small modal__padding" id="modal-content-id-1">
+                
+        <form class="slds-form--stacked" >               
+             <div class="panel-head2" >  <h5 class="mainHeading text-center">Primary Contact / Guardian</h5> </div>
+                    <div class="row ">
+                        <div class=" col-sm-4 "> 
+                            <lightning:input label="First Name" 
+                                             value="{!v.CVCase.Primary_Contact_First_Name__c}"
+                                             class="alignField modal__FontSize" 
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Middle Name"
+                                             value="{!v.Acnt.Middle_Name__c}"
+                                             class="alignField modal__FontSize"
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Last Name"
+                                             value="{!v.CVCase.Primary_Contact_Last_Name__c}"
+                                             class="alignField modal__FontSize"
+                                             type="text"
+                                             disabled="true"/>       
+                        </div>
+                        
+                        <div class=" col-sm-4">
+                            <lightning:input label="Cherokee Nation Citizen Registry ID #"
+                                             value="{!v.Acnt.Tribe_Id__c}"
+                                             class="alignField modal__FontSize"
+                                             type="text"
+                                             disabled="true"/>
+                        </div>
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Date of Birth"
+                                             value="{!v.Acnt.Date_of_Birth__c}"
+                                             class="alignField modal__FontSize"
+                                             disabled="true"/>               
+                        </div> 
+                        <div class=" col-sm-4"> 
+                            <lightning:input label="Email" 
+                                             type="email"
+                                             value="{!v.Acnt.Users[0].Email}"
+                                             class=" alignField modal__FontSize" 
+                                             disabled="true"/>      
+                        </div>
+                        
+                    
+                        <div class=" col-sm-4"> 
+                                <lightning:input label="Mobile"
+                                                 value="{!v.CVCase.Ebt_Mobile_Phone__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled="true"
+                                                 />
+            </div>
+            </div>
+            <!--Mailing Address-->
+                <div class="panel-head2">  <h5 class="mainHeading text-center">Mailing Address</h5> </div>
+                        <div class="row ">
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Address Line1" 
+                                                 value="{!v.CVCase.Mailing_Street__c}"
+                                                 class="alignField modal__FontSize" 
+                                                 disabled = "true"/>       
+                            </div>
+                            
+                            <div class=" col-sm-4"> 
+                                <lightning:input label="Address Line2"
+                                                 value="{!v.CVCase.mailing_address2__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                    <lightning:input label="Suite"
+                                                     value="{!v.CVCase.mailing_suite__c}"
+                                                     class="alignField modal__FontSize"
+                                                     disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="City"
+                                                 value="{!v.CVCase.Mailing_City__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <div class=" col-sm-4">
+                                <lightning:input label="Country"
+                                                 value="{!v.CVCase.Mailing_Countries__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+                            <aura:if isTrue="{!v.showMailingState}">
+                                <div class=" col-sm-4">
+                                    <lightning:input label="State"
+                                                     value="{!v.CVCase.Mailing_States__c}"
+                                                     class="alignField modal__FontSize"
+                                                     disabled = "true"/>   
+                                </div>
+                            </aura:if>
+                            
+                            <aura:if isTrue="{!v.showMailingOtherState}">
+                                <div class=" col-sm-4">
+                                    <lightning:input label="Other State"
+                                                     value="{!v.CVCase.Other_Mailing_State__c}"
+                                                     class="alignField modal__FontSize"
+                                                     disabled = "true"/>   
+                                </div>
+                            </aura:if>
+                            <div class=" col-sm-4">
+                                <lightning:input label="Zip Code"
+                                                 value="{!v.CVCase.Mailing_ZipPostal_Code__c}"
+                                                 class="alignField modal__FontSize"
+                                                 disabled = "true"/>   
+                            </div>
+                            
+            </div>
+            <!--/Mailing Address-->
+
+            <!--Physical Address-->
+            <div class="panel-head2">  <h5 class="mainHeading text-center">Physical Address</h5> </div>
+            <div class="row ">
+                <div class=" col-sm-4"> 
+                    <lightning:input label="Address Line1" 
+                                     value="{!v.CVCase.Physical_Street__c}"
+                                     class="alignField modal__FontSize" 
+                                     disabled = "true"/>       
+                </div>
+                
+                <div class=" col-sm-4"> 
+                    <lightning:input label="Address Line2"
+                                     value="{!v.CVCase.Physical_Address2__c}"
+                                     class="alignField modal__FontSize"
+                                     disabled = "true"/>   
+                </div>
+                
+                <div class=" col-sm-4">
+                    <lightning:input label="Suite"
+                                     value="{!v.CVCase.Physical_Suite__c}"
+                                     class="alignField modal__FontSize"
+                                     disabled = "true"/>   
+                </div>
+                
+                <div class=" col-sm-4">
+                    <lightning:input label="City"
+                                     value="{!v.CVCase.Physical_City__c}"
+                                     class="alignField modal__FontSize"
+                                     disabled = "true"/>   
+                </div>
+                
+                <div class=" col-sm-4">
+                    <lightning:input label="Country"
+                                     value="{!v.CVCase.Physical_Countries__c}"
+                                     class="alignField modal__FontSize"
+                                     disabled = "true"/>   
+                </div>
+                
+                <aura:if isTrue="{!v.showPhysicalState}">
+                    <div class=" col-sm-4">
+                        <lightning:input label="State"
+                                         value="{!v.CVCase.Physical_States__c}"
+                                         class="alignField modal__FontSize"
+                                         disabled = "true"/>   
+                    </div>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.showPhysicalOtherState}">
+                    <div class=" col-sm-4">
+                        <lightning:input label="Other State"
+                                         value="{!v.CVCase.Other_Physical_State__c}"
+                                         class="alignField modal__FontSize"
+                                         disabled = "true"/>   
+                    </div>
+                </aura:if>
+                <div class=" col-sm-4">
+                    <lightning:input label="Zip Code"
+                                     value="{!v.CVCase.Physical_ZipPostal_Code__c }"
+                                     class="alignField modal__FontSize"
+                                     disabled = "true"/>   
+                </div>
+                
+            </div>
+            <!--/Physical Address-->
+            
+            <!--Students Review Table-->     
+            <div class="panel-head2">  <h5 class="mainHeading text-center">Students</h5> </div>
+            <div class="table-responsive-sm">            
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col" class="mTableH" >First Name</th>
+                            <th scope="col" class="mTableH" >Last Name</th>  
+                            <th scope="col" class="mTableH" >Citizen ID</th>
+                            <th scope="col" class="mTableH" >Date of Birth</th>
+                            <th scope="col" class="mTableH" >Grade</th>
+                            <th scope="col" class="mTableH" >School Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.ProcessedStudentsList}" var="studnt" indexVar="index">
+                            <tr scope="row">
+                                <td class="mTable">
+                                    {!studnt.First_Name__c}
+                                </td>
+                                
+                                <td class="mTable">
+                                    {!studnt.Last_Name__c}
+                                </td>
+                                
+                                <td class="mTable">
+                                    {!studnt.Citizen_ID__c}
+                                </td>
+                                
+                                <td class="mTable"> 
+                                    {!studnt.Date_of_Birth__c}
+                                </td>
+                                
+                                <td class="mTable"> 
+                                    {!studnt.Grade__c}
+                                </td>
+                                
+                                <td class="mTable"> 
+                                    {!studnt.Category__c}
+                                </td>
+                                
+                            </tr>
+                            
+                        </aura:iteration>     
+                    </tbody>
+                </table>
+            </div> 
+            <!--/Students Review Table-->
+            
+             <!--Household Information-->  
+            <div class="panel-head2">  <h5 class="mainHeading text-center">Household Information</h5> </div>
+                <!--Household Members Review Table-->     
+                <div class="table-responsive-sm">            
+                    <table class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" class="mTableH" >First Name</th>
+                                <th scope="col" class="mTableH" >Last Name</th>  
+                                <th scope="col" class="mTableH" >Date of Birth</th>
+                                <th scope="col" class="mTableH" >Relation to Student(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <aura:iteration items="{!v.HHMembersList}" var="member" indexVar="index">
+                                <tr scope="row">
+                                    <td class="mTable">
+                                        {!member.First_Name__c}
+                                    </td>
+                                    
+                                    <td class="mTable">
+                                        {!member.Last_Name__c}
+                                    </td>
+                                    
+                                    <td class="mTable"> 
+                                        {!member.Date_of_Birth__c}
+                                    </td>
+                                    
+                                    <td class="mTable"> 
+                                        {!member.Relation__c}
+                                    </td>
+                                </tr>
+                                
+                            </aura:iteration>     
+                        </tbody>
+                    </table>
+                </div> 
+                <!--/Household Members Review Table-->
+            
+            <div class="row ">
+                <div class=" col-sm-6">
+                    <lightning:input label="Household Income (Annual)" 
+                                     value="{!v.CVCase.Household_Income2__c}"
+                                     class="alignField"
+                                     type="number" 
+                                     formatter="currency" 
+                                     step="0.01"
+                                     disabled = "true"
+                                     />  
+                </div>
+                
+                <div class=" col-sm-6"> 
+                    <lightning:input label="Household Size"
+                                     value="{!v.CVCase.Household_Size2__c}"
+                                     class="alignField "
+                                     disabled = "true"
+                                     /> 
+                </div>
+            </div>
+            <!--/Household Information-->  
+            
+            <!--Show Primary Guardian Section -->
+            <aura:if isTrue="{!v.showPrimaryGuardianSection}">     
+                <div class="panel-head2">  <h5 class="mainHeading text-center">Primary Guardian</h5> </div>
+                <div class="row ">
+                    <div class=" col-sm-4"> 
+                        <lightning:input label="First Name" 
+                                         value="{!v.CVCase.PG_First_Name__c}"
+                                         class="alignField modal__FontSize" 
+                                         disabled = "true"/>       
+                    </div>
+                    
+                    <div class=" col-sm-4"> 
+                        <lightning:input label="Last Name"
+                                         value="{!v.CVCase.PG_Last_Name__c}"
+                                         class="alignField modal__FontSize"
+                                         disabled = "true"/>   
+                    </div>
+                    
+                    <div class=" col-sm-4">
+                        <lightning:input label="Mobile"
+                                         value="{!v.CVCase.PG_Mobile_Phone__c}"
+                                         class="alignField modal__FontSize"
+                                         disabled = "true"/>   
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </aura:if> 
+            <!--/Show Primary Guardian Section-->   
+            
+            <div class="panel-head2">  <h5 class="mainHeading text-center">Alternate Contact / Guardian</h5> </div>
+            <div class="row ">
+                <div class=" col-sm-3"> 
+                    <lightning:input label="First Name" 
+                                     value="{!v.CVCase.Sec_First_Name__c}"
+                                     class="alignField modal__FontSize" 
+                                     type="text"
+                                     disabled = "true" />       
+                </div>
+                
+                <div class=" col-sm-3"> 
+                    <lightning:input label="Last Name"
+                                     value="{!v.CVCase.Sec_Last_Name__c}"
+                                     class="alignField modal__FontSize"
+                                     type="text"
+                                     disabled = "true"
+                                     />   
+                </div>
+                
+                <div class=" col-sm-3">
+                        <lightning:input label="Mobile"
+                                         value="{!v.CVCase.Sec_Phone__c}"
+                                         class="alignField modal__FontSize"
+                                         disabled = "true"
+                                         />   
+                </div>
+                <div class=" col-sm-3">
+                    <lightning:input label="Relation to Student(s)"
+                                     value="{!v.CVCase.Relation__c}"
+                                     class="alignField modal__FontSize"
+                                     disabled = "true"
+                                     />  
+                </div>
+                
+            </div>
+            
+            
+      			 <div class=" text-center">
+           			  <lightning:button label="Edit" class="btn mBtn " variant="brand" onclick="{!c.hideModal}"/>     
+            		  <lightning:button label="Submit" disabled="{!v.isActive2}" class="btn mBtn " variant="brand" onclick="{!c.save}"/>
+            </div> 
+                     <lightning:spinner aura:id="Spinner2" alternativeText="Processing.." title="Processing.." variant="brand" size="large" class="slds-hide"/>     
+        </form>
+                        
+		                     
+                    </div> <!--/Modal Body-->
+                    
+                            </div>
+            </section>
+    
+   <div class="slds-backdrop slds-backdrop_open"></div>
+
+            </aura:if> 
+    <!--/Review Section-->  
+</aura:component>

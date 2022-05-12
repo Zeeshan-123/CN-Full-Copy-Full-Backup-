@@ -1,0 +1,116 @@
+<!-- 
+    Component Name  :   SL_cmp_FluPositiveResultView
+    Description     :   Used to display Flu test results
+ -->
+<aura:component access="global">
+
+    <aura:attribute name="patientName" type="string"/>
+    <aura:attribute name="personContactId" type="string"/>
+
+    <!-- Download Doc -->
+    <!-- attribute to accept Visualforce page's javascript method -->
+    <aura:attribute name="sendData" type="object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    
+    <!-- Lightning Navigation -->
+    <lightning:navigation aura:id="navService"/>
+
+    <div class="main-container " > 
+        <div class="card m-box bg-white">
+            <lightning:button label="Download" iconName="utility:download" variant="brand" onclick="{!c.handleResultDownload}"/>
+
+
+            <!-- <iframe src="{!'/apex/SL_PDFGenerator?id=00379000006rH6yAAE'}" width="100%" height="500px;" frameBorder="0"/> -->
+            <!-- <iframe src="{!'/apex/CNPH_IsolationNote?id=00379000006rH6yAAE'}" width="100%" height="500px;" frameBorder="0"/> -->
+
+            <img class="sm-img" src="{!$Resource.Test_Result_Header}" alt=""/>
+            <div class="m-box-style">
+                <div class="row text-center">
+                    <div class=" col-sm-4">
+                        <p class="l2">Name: {!v.patientName}</p>
+                    </div>
+                </div>
+                <div class=" text-center">
+                    <h5 class="mainHeading">Positive Flu Result: Next Steps</h5>
+                </div>
+                <p style="font-weight: bold;">
+                    All test results are available on the CNHS Patient Portal as soon as they are received.
+                </p>
+                <p>
+                    If you need a copy of your test results, you can print them from the Patient Portal or call your nearest CNHS Medical Records Department.
+                </p>
+
+                <div class="row ">
+                    <div class="col-sm-6 col-md-5 col-lg-4"> 
+                        <img class='img-S' src="{!$Resource.Test_Result_Pointer}" alt=""/>
+                    </div>
+                    <div class="col-sm-6 col-md-7"> 
+                        <ul class="slds-list_dotted sm-fnt" style="color: #B22222;">
+                            <li>
+                                Stay home, wear a mask and social distance from others (even family).
+                            </li>
+                            <li>
+                                Stay home for at least 24 hours after fever is gone.
+                            </li>
+                            <li>
+                                You may be eligible to receive medication to treat the flu. The medication works best when taken within two days 
+                                of getting sick, but can be helpful later for some people. Discuss this option with your provider.
+                            </li>
+                        </ul>      
+                    </div>
+                </div>
+                <div class="" style="font-style: italic; font-size: 15px;">
+                    If you are eligible for services within CNHS, follow-up with your Primary Care Provider (PCP) if symptoms worsen.
+                     Please call for an appointment. For all other patients, follow-up with your PCP or nearest Emergency Room.
+                </div>
+                <div class="" style="font-weight: 700;">
+                    For a list of Cherokee Nation health centers and their contact information please visit health.cherokee.org.
+                </div>
+                <div class="">
+                    <h5 class="mainHeading" style="padding-left: 0px;">When to Seek Emergency Medical Attention:</h5>
+                </div>
+
+                <!-- <div class="slds-size_1-of-1"> -->
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col slds-size_1-of-2">
+                        <span style="font-weight: 700;">In Children</span>
+                        <ul class="slds-list_dotted sm-fnt">
+                            <li>Fast breathing or trouble breathing</li>
+                            <li>Bluish lips or face</li>
+                            <li>Ribs pulling in with each breath</li>
+                            <li>Chest pain</li>
+                            <li>Severe muscle pain (child refuses to walk)</li>
+                            <li>Dehydration (no urine for 8 hours, dry mouth, notears when crying)</li>
+                            <li>Not alert or interacting when awake</li>
+                            <li>Seizures</li>
+                            <li>Fever above 104°F</li>
+                            <li>In children less than 12 weeks, any fever</li>
+                            <li>Fever or cough that improve but then return orworsen</li>
+                            <li>Worsening of chronic medical conditions</li>
+                        </ul>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <span style="font-weight: 700;">In Adults</span>
+                        <ul class="slds-list_dotted sm-fnt">
+                            <li>Difficulty breathing or shortness of breath</li>
+                            <li>Persistent pain or pressure in the chest orabdomen</li>
+                            <li>Persistent dizziness, confusion, inability toarouse</li>
+                            <li>Seizures</li>
+                            <li>Not urinating</li>
+                            <li>Severe muscle pain</li>
+                            <li>Severe weakness or unsteadiness</li>
+                            <li>Fever or cough that improve but then returnor worsen</li>
+                            <li>Worsening of chronic medical conditions</li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="text-center" style="font-size: 21px; color: black; font-weight: 700;">
+                    These lists are not all inclusive. Please consult your medical provider for any othersymptom that is severe or concerning.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</aura:component>

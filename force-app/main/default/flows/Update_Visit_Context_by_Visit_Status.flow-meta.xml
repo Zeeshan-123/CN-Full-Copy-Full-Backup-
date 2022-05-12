@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Set_RCV_Count</name>
+        <label>Set RCV Count</label>
+        <locationX>1131</locationX>
+        <locationY>692</locationY>
+        <assignmentItems>
+            <assignToReference>RCVCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_RCV_for_Visit</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Violations</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_BLA_Status_to_Inspection_Completed</name>
+        <label>Update BLA Status to Inspection Completed</label>
+        <locationX>1545</locationX>
+        <locationY>776</locationY>
+        <assignmentItems>
+            <assignToReference>Get_BLA.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Inspection Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_BLA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_BLA_Status_to_Inspection_Scheduled</name>
+        <label>Update BLA Status to Inspection Scheduled</label>
+        <locationX>943</locationX>
+        <locationY>480</locationY>
+        <assignmentItems>
+            <assignToReference>Get_BLA.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Inspection Scheduled</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_BLA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_BLA_Status_to_Violations_Found</name>
+        <label>Update BLA Status to Violations Found</label>
+        <locationX>1536</locationX>
+        <locationY>583</locationY>
+        <assignmentItems>
+            <assignToReference>Get_BLA.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Violations Found</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_BLA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_IA_Status_to_Request_Completed</name>
+        <label>Update IA Status to Request Completed</label>
+        <locationX>901</locationX>
+        <locationY>307</locationY>
+        <assignmentItems>
+            <assignToReference>Get_IA.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Request Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_IA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_IA_Status_to_Scheduled</name>
+        <label>Update IA Status to Scheduled</label>
+        <locationX>892</locationX>
+        <locationY>98</locationY>
+        <assignmentItems>
+            <assignToReference>Get_IA.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_IA</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_BLA_Visit_Status</name>
+        <label>Check BLA Visit Status</label>
+        <locationX>675</locationX>
+        <locationY>593</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_BLA_Visit_Planned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planned</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_BLA_Status_to_Inspection_Scheduled</targetReference>
+            </connector>
+            <label>Is BLA Visit Planned?</label>
+        </rules>
+        <rules>
+            <name>Is_BLA_Visit_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_RCV_for_Visit</targetReference>
+            </connector>
+            <label>Is BLA Visit Completed?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Violations</name>
+        <label>Check Violations</label>
+        <locationX>1289</locationX>
+        <locationY>696</locationY>
+        <defaultConnector>
+            <targetReference>Update_BLA_Status_to_Inspection_Completed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Violations</defaultConnectorLabel>
+        <rules>
+            <name>Violations_Exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RCVCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_BLA_Status_to_Violations_Found</targetReference>
+            </connector>
+            <label>Violations Exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Visit_Context</name>
+        <label>Check Visit Context</label>
+        <locationX>168</locationX>
+        <locationY>337</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Visit_Context_a_BLA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ContextId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0f0</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_BLA</targetReference>
+            </connector>
+            <label>Is Visit Context a BLA?</label>
+        </rules>
+        <rules>
+            <name>Is_Visit_Context_an_IA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ContextId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0iT</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_IA</targetReference>
+            </connector>
+            <label>Is Visit Context an IA?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Visit_Status</name>
+        <label>Check Visit Status</label>
+        <locationX>668</locationX>
+        <locationY>215</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Visit_Planned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planned</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_IA_Status_to_Scheduled</targetReference>
+            </connector>
+            <label>Is Visit Planned?</label>
+        </rules>
+        <rules>
+            <name>Is_Visit_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_IA_Status_to_Request_Completed</targetReference>
+            </connector>
+            <label>Is Visit Completed?</label>
+        </rules>
+    </decisions>
+    <interviewLabel>Update Visit Context by Visit Status {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Update Visit Context by Visit Status</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_BLA</name>
+        <label>Get BLA</label>
+        <locationX>482</locationX>
+        <locationY>590</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_BLA_Visit_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ContextId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>BusinessLicenseApplication</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_IA</name>
+        <label>Get IA</label>
+        <locationX>475</locationX>
+        <locationY>213</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Visit_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ContextId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>IndividualApplication</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_RCV_for_Visit</name>
+        <label>Get RCV for Visit</label>
+        <locationX>958</locationX>
+        <locationY>691</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_RCV_Count</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>InspectionId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>RegulatoryCodeViolation</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_BLA</name>
+        <label>Update BLA</label>
+        <locationX>1880</locationX>
+        <locationY>547</locationY>
+        <inputReference>Get_BLA</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_IA</name>
+        <label>Update IA</label>
+        <locationX>1095</locationX>
+        <locationY>195</locationY>
+        <inputReference>Get_IA</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Check_Visit_Context</targetReference>
+        </connector>
+        <object>Visit</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>RCVCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+</Flow>
